@@ -6,7 +6,7 @@ defmodule HTTPizza.IAM do
   import Ecto.Query, warn: false
   alias HTTPizza.Repo
 
-  alias HTTPizza.IAM.{Organization, OrganizationUser, User, UserToken, UserNotifier}
+  alias HTTPizza.IAM.{Organization, User, UserToken, UserNotifier}
 
   ## Database getters
 
@@ -77,6 +77,7 @@ defmodule HTTPizza.IAM do
   def register_user(attrs) do
     %User{}
     |> User.registration_changeset(attrs)
+    |> User.personal_organization_changeset()
     |> Repo.insert()
   end
 
@@ -443,99 +444,5 @@ defmodule HTTPizza.IAM do
   """
   def change_organization(%Organization{} = organization, attrs \\ %{}) do
     Organization.changeset(organization, attrs)
-  end
-
-  @doc """
-  Returns the list of organization_user.
-
-  ## Examples
-
-      iex> list_organization_users()
-      [%OrganizationUser{}, ...]
-
-  """
-  def list_organization_users do
-    Repo.all(OrganizationUser)
-  end
-
-  @doc """
-  Gets a single organization_user.
-
-  Raises `Ecto.NoResultsError` if the Organization user does not exist.
-
-  ## Examples
-
-      iex> get_organization_user!(123)
-      %OrganizationUser{}
-
-      iex> get_organization_user!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_organization_user!(id), do: Repo.get!(OrganizationUser, id)
-
-  @doc """
-  Creates a organization_user.
-
-  ## Examples
-
-      iex> create_organization_user(%{field: value})
-      {:ok, %OrganizationUser{}}
-
-      iex> create_organization_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_organization_user(attrs \\ %{}) do
-    %OrganizationUser{}
-    |> OrganizationUser.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a organization_user.
-
-  ## Examples
-
-      iex> update_organization_user(organization_user, %{field: new_value})
-      {:ok, %OrganizationUser{}}
-
-      iex> update_organization_user(organization_user, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_organization_user(%OrganizationUser{} = organization_user, attrs) do
-    organization_user
-    |> OrganizationUser.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a organization_user.
-
-  ## Examples
-
-      iex> delete_organization_user(organization_user)
-      {:ok, %OrganizationUser{}}
-
-      iex> delete_organization_user(organization_user)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_organization_user(%OrganizationUser{} = organization_user) do
-    Repo.delete(organization_user)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking organization_user changes.
-
-  ## Examples
-
-      iex> change_organization_user(organization_user)
-      %Ecto.Changeset{data: %OrganizationUser{}}
-
-  """
-  def change_organization_user(%OrganizationUser{} = organization_user, attrs \\ %{}) do
-    OrganizationUser.changeset(organization_user, attrs)
   end
 end

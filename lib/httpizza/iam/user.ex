@@ -49,6 +49,13 @@ defmodule HTTPizza.IAM.User do
     |> validate_password(opts)
   end
 
+  def personal_organization_changeset(user) do
+    user
+    |> put_assoc(:organization_users, [
+      %{organization: %{slug: HTTPizzaWeb.Slug.generate(), name: "Personal"}}
+    ])
+  end
+
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])
