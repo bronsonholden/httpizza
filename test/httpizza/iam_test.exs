@@ -91,7 +91,9 @@ defmodule HTTPizza.IAMTest do
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
       assert is_nil(user.password)
-      assert [_organization] = IAM.list_organizations()
+
+      user = IAM.get_user!(user.id) |> Repo.preload(:personal_organization)
+      assert user.personal_organization
     end
   end
 

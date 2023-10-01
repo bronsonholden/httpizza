@@ -15,6 +15,8 @@ defmodule HTTPizza.IAM.User do
 
     has_many :organization_users, OrganizationUser
     has_many :organizations, through: [:organization_users, :organization]
+    has_one :personal_organization_users, OrganizationUser, where: [personal: true]
+    has_one :personal_organization, through: [:personal_organization_users, :organization]
 
     timestamps()
   end
