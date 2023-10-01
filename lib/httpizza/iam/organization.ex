@@ -1,5 +1,8 @@
 defmodule HTTPizza.IAM.Organization do
   use Ecto.Schema
+
+  alias HTTPizza.IAM.OrganizationUser
+
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -7,6 +10,9 @@ defmodule HTTPizza.IAM.Organization do
   schema "organizations" do
     field :name, :string
     field :slug, :string
+
+    has_many :organization_users, OrganizationUser
+    has_many :users, through: [:organization_users, :user]
 
     timestamps()
   end
