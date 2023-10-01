@@ -17,7 +17,7 @@ defmodule HTTPizzaWeb.UserRegistrationLiveTest do
         conn
         |> log_in_user(user_fixture())
         |> live(~p"/users/register")
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, ~p"/dashboard")
 
       assert {:ok, _conn} = result
     end
@@ -45,10 +45,10 @@ defmodule HTTPizzaWeb.UserRegistrationLiveTest do
       render_submit(form)
       conn = follow_trigger_action(form, conn)
 
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == ~p"/dashboard"
 
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, "/")
+      # Now do a logged in request
+      conn = get(conn, "/dashboard")
       response = html_response(conn, 200)
       assert response =~ "Settings"
       assert response =~ "Sign out"

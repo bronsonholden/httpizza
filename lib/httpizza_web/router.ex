@@ -50,6 +50,7 @@ defmodule HTTPizzaWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{HTTPizzaWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      live "/", LandingLive, :index
       live "/users/register", UserRegistrationLive, :new
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
@@ -64,6 +65,7 @@ defmodule HTTPizzaWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{HTTPizzaWeb.UserAuth, :ensure_authenticated}] do
+      live "/dashboard", DashboardLive, :index
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
@@ -76,7 +78,6 @@ defmodule HTTPizzaWeb.Router do
 
     live_session :current_user,
       on_mount: [{HTTPizzaWeb.UserAuth, :mount_current_user}] do
-      live "/", DashboardLive, :index
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end

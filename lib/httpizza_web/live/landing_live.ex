@@ -1,11 +1,13 @@
-defmodule HTTPizzaWeb.DashboardLive do
+defmodule HTTPizzaWeb.LandingLive do
   use HTTPizzaWeb, :live_view
 
-  on_mount {HTTPizzaWeb.UserAuth, :mount_current_user}
+  on_mount {HTTPizzaWeb.UserAuth, :redirect_if_user_is_authenticated}
 
   def render(assigns) do
     ~H"""
-    Dashboard
+    <div>
+      Landing
+    </div>
     """
   end
 
