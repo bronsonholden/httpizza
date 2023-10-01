@@ -43,4 +43,22 @@ defmodule HTTPizza.IAMFixtures do
 
     organization
   end
+
+  @doc """
+  Generate a organization_user.
+  """
+  def organization_user_fixture(attrs \\ %{}) do
+    user = user_fixture()
+    organization = organization_fixture()
+
+    {:ok, organization_user} =
+      attrs
+      |> Enum.into(%{
+        user_id: user.id,
+        organization_id: organization.id
+      })
+      |> HTTPizza.IAM.create_organization_user()
+
+    organization_user
+  end
 end
