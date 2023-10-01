@@ -10,6 +10,7 @@ defmodule HTTPizza.IAM.OrganizationUser do
   schema "organization_user" do
     belongs_to :organization, IAM.Organization
     belongs_to :user, IAM.User
+    field :personal, :boolean
 
     timestamps()
   end
