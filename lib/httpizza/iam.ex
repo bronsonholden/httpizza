@@ -6,7 +6,7 @@ defmodule HTTPizza.IAM do
   import Ecto.Query, warn: false
   alias HTTPizza.Repo
 
-  alias HTTPizza.IAM.{User, UserToken, UserNotifier}
+  alias HTTPizza.IAM.{Organization, OrganizationUser, User, UserToken, UserNotifier}
 
   ## Database getters
 
@@ -351,8 +351,6 @@ defmodule HTTPizza.IAM do
     end
   end
 
-  alias HTTPizza.IAM.Organization
-
   @doc """
   Returns the list of organizations.
 
@@ -446,8 +444,6 @@ defmodule HTTPizza.IAM do
   def change_organization(%Organization{} = organization, attrs \\ %{}) do
     Organization.changeset(organization, attrs)
   end
-
-  alias HTTPizza.IAM.OrganizationUser
 
   @doc """
   Returns the list of organization_user.
