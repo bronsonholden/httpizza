@@ -20,7 +20,7 @@ defmodule HTTPizzaWeb.Router do
   scope "/", HTTPizzaWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", DashboardLive, :index
   end
 
   # Other scopes may use custom stacks.
