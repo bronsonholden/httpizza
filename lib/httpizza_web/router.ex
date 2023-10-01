@@ -19,8 +19,6 @@ defmodule HTTPizzaWeb.Router do
 
   scope "/", HTTPizzaWeb do
     pipe_through :browser
-
-    live "/", DashboardLive, :index
   end
 
   # Other scopes may use custom stacks.
@@ -78,6 +76,7 @@ defmodule HTTPizzaWeb.Router do
 
     live_session :current_user,
       on_mount: [{HTTPizzaWeb.UserAuth, :mount_current_user}] do
+      live "/", DashboardLive, :index
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
