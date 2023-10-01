@@ -13,7 +13,7 @@ jobs:
       MIX_ENV: test
     strategy:
       matrix:
-        elixir: ['1.15.6']
+        elixir: ['1.15']
         otp: ['26']
     steps:
     - name: Checkout repository
