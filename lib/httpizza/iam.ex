@@ -450,11 +450,11 @@ defmodule HTTPizza.IAM do
 
   ## Examples
 
-      iex> list_organization_user()
+      iex> list_organization_users()
       [%OrganizationUser{}, ...]
 
   """
-  def list_organization_user do
+  def list_organization_users do
     Repo.all(OrganizationUser)
   end
 

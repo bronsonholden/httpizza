@@ -562,16 +562,16 @@ defmodule HTTPizza.IAMTest do
     end
   end
 
-  describe "organization_user" do
+  describe "organization_users" do
     alias HTTPizza.IAM.OrganizationUser
 
     import HTTPizza.IAMFixtures
 
     @invalid_attrs %{organization_id: nil}
 
-    test "list_organization_user/0 returns all organization_user" do
+    test "list_organization_users/0 returns all organization_users" do
       organization_user = organization_user_fixture()
-      assert IAM.list_organization_user() == [organization_user]
+      assert IAM.list_organization_users() == [organization_user]
     end
 
     test "get_organization_user!/1 returns the organization_user with given id" do
