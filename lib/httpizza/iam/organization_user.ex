@@ -7,7 +7,7 @@ defmodule HTTPizza.IAM.OrganizationUser do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "organization_user" do
+  schema "organization_users" do
     belongs_to :organization, IAM.Organization
     belongs_to :user, IAM.User
     field :personal, :boolean
