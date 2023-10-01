@@ -28,4 +28,19 @@ defmodule HTTPizza.IAMFixtures do
     [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")
     token
   end
+
+  @doc """
+  Generate a organization.
+  """
+  def organization_fixture(attrs \\ %{}) do
+    {:ok, organization} =
+      attrs
+      |> Enum.into(%{
+        name: "ACME, Inc.",
+        slug: "acme-inc"
+      })
+      |> HTTPizza.IAM.create_organization()
+
+    organization
+  end
 end

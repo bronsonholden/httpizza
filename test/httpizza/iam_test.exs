@@ -505,4 +505,60 @@ defmodule HTTPizza.IAMTest do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
     end
   end
+
+  describe "organizations" do
+    alias HTTPizza.IAM.Organization
+
+    import HTTPizza.IAMFixtures
+
+    @invalid_attrs %{slug: nil}
+
+    test "list_organizations/0 returns all organizations" do
+      organization = organization_fixture()
+      assert IAM.list_organizations() == [organization]
+    end
+
+    test "get_organization!/1 returns the organization with given id" do
+      organization = organization_fixture()
+      assert IAM.get_organization!(organization.id) == organization
+    end
+
+    test "create_organization/1 with valid data creates a organization" do
+      valid_attrs = %{name: "ACME, Inc.", slug: "acme-inc"}
+
+      assert {:ok, %Organization{} = organization} = IAM.create_organization(valid_attrs)
+      assert organization.name == "ACME, Inc."
+    end
+
+    test "create_organization/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = IAM.create_organization(@invalid_attrs)
+    end
+
+    test "update_organization/2 with valid data updates the organization" do
+      organization = organization_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %Organization{} = organization} =
+               IAM.update_organization(organization, update_attrs)
+
+      assert organization.name == "some updated name"
+    end
+
+    test "update_organization/2 with invalid data returns error changeset" do
+      organization = organization_fixture()
+      assert {:error, %Ecto.Changeset{}} = IAM.update_organization(organization, @invalid_attrs)
+      assert organization == IAM.get_organization!(organization.id)
+    end
+
+    test "delete_organization/1 deletes the organization" do
+      organization = organization_fixture()
+      assert {:ok, %Organization{}} = IAM.delete_organization(organization)
+      assert_raise Ecto.NoResultsError, fn -> IAM.get_organization!(organization.id) end
+    end
+
+    test "change_organization/1 returns a organization changeset" do
+      organization = organization_fixture()
+      assert %Ecto.Changeset{} = IAM.change_organization(organization)
+    end
+  end
 end

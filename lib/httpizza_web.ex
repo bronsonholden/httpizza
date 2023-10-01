@@ -69,6 +69,7 @@ defmodule HTTPizzaWeb do
   def html do
     quote do
       use Phoenix.Component
+      import HTTPizzaWeb.CoreComponents
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
