@@ -22,5 +22,8 @@ defmodule HTTPizza.IAM.Organization do
     organization
     |> cast(attrs, [:name, :slug])
     |> validate_required([:slug])
+    |> validate_length(:slug, min: 2)
+    |> validate_format(:slug, ~r/^([a-z0-9]+-)*[a-z0-9]+$/)
+    |> validate_exclusion(:slug, ~w(personal))
   end
 end
