@@ -3,6 +3,8 @@ defmodule HTTPizzaWeb.NewOrganizationLive do
 
   alias HTTPizza.IAM
 
+  import HTTPizzaWeb.Templates
+
   on_mount {HTTPizzaWeb.UserAuth, :ensure_authenticated}
 
   @impl true
@@ -23,7 +25,7 @@ defmodule HTTPizzaWeb.NewOrganizationLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
+    <.container>
       <.simple_form for={@form} id="new-organization-form" phx-submit="create" phx-change="validate">
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
@@ -44,7 +46,7 @@ defmodule HTTPizzaWeb.NewOrganizationLive do
           </.button>
         </:actions>
       </.simple_form>
-    </div>
+    </.container>
     """
   end
 
