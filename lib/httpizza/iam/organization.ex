@@ -17,6 +17,16 @@ defmodule HTTPizza.IAM.Organization do
     timestamps()
   end
 
+  def changeset(organization, %{"users" => users} = attrs) do
+    changeset(organization, Map.delete(attrs, "users"))
+    |> put_assoc(
+      :organization_users,
+      Enum.map(users, fn user ->
+        %{user_id: user.id}
+      end)
+    )
+  end
+
   @doc false
   def changeset(organization, attrs) do
     organization
