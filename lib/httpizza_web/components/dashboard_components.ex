@@ -3,12 +3,13 @@ defmodule HTTPizzaWeb.DashboardComponents do
   use HTTPizzaWeb, :verified_routes
 
   alias Phoenix.LiveView.JS
+  alias HTTPizza.IAM.Organization
 
   import HTTPizzaWeb.CoreComponents, only: [icon: 1]
 
   attr(:id, :string, required: true)
   attr(:personal_organization_id, :string, required: true)
-  attr(:selection, :any, required: true)
+  attr(:selection, Organization, required: true)
   attr(:organizations, :list, required: true)
 
   def organization_select(assigns) do
@@ -51,7 +52,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
     """
   end
 
-  defp display_name(organization, personal_organization_id) do
+  defp display_name(%Organization{} = organization, personal_organization_id) do
     if organization.id == personal_organization_id do
       "Personal"
     else
@@ -59,7 +60,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
     end
   end
 
-  defp proper_slug(organization, personal_organization_id) do
+  defp proper_slug(%Organization{} = organization, personal_organization_id) do
     if organization.id == personal_organization_id do
       "personal"
     else
