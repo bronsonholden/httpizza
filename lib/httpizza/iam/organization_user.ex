@@ -18,7 +18,7 @@ defmodule HTTPizza.IAM.OrganizationUser do
   @doc false
   def changeset(organization_user, attrs) do
     organization_user
-    |> cast(attrs, [:organization_id, :user_id])
+    |> cast(attrs, [:organization_id, :user_id, :personal])
     |> validate_required([:organization_id, :user_id])
   end
 end
