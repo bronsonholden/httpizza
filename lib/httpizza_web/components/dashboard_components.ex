@@ -11,7 +11,6 @@ defmodule HTTPizzaWeb.DashboardComponents do
   attr(:selection, :any, required: true)
   attr(:organizations, :list, required: true)
 
-  @spec organization_select(map) :: Phoenix.LiveView.Rendered.t()
   def organization_select(assigns) do
     ~H"""
     <div>
