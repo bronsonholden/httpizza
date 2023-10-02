@@ -9,7 +9,6 @@ defmodule HTTPizzaWeb.NewOrganizationLive do
   def mount(_params, _session, socket) do
     changeset =
       IAM.change_organization(%IAM.Organization{}, %{
-        name: "ACME, Inc.",
         slug: HTTPizzaWeb.Slug.generate()
       })
 
