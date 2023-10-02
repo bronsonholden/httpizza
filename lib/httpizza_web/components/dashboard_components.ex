@@ -45,6 +45,15 @@ defmodule HTTPizzaWeb.DashboardComponents do
             >
               <%= display_name(organization, @personal_organization_id) %>
             </.link>
+
+            <hr class="my-2" />
+
+            <.link
+              navigate={~p"/organizations/new"}
+              class="block flex items-center gap-2 p-2 font-medium truncate text-zinc-500 hover:text-black"
+            >
+              <.icon name="hero-plus" /> New
+            </.link>
           </div>
         </div>
       </div>
