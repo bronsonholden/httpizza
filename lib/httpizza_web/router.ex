@@ -66,6 +66,7 @@ defmodule HTTPizzaWeb.Router do
     live_session :require_authenticated_user,
       on_mount: [{HTTPizzaWeb.UserAuth, :ensure_authenticated}] do
       live "/dashboard", DashboardLive, :index
+      live "/dashboard/:slug", DashboardLive, :index
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end

@@ -49,6 +49,10 @@ defmodule HTTPizzaWeb.UserRegistrationLiveTest do
 
       # Now do a logged in request
       conn = get(conn, "/dashboard")
+
+      assert redirected_to(conn) == ~p"/dashboard/personal"
+
+      conn = get(conn, "/dashboard/personal")
       response = html_response(conn, 200)
       assert response =~ "Settings"
       assert response =~ "Sign out"

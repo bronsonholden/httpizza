@@ -6,7 +6,7 @@ defmodule HTTPizza.IAM do
   import Ecto.Query, warn: false
   alias HTTPizza.Repo
 
-  alias HTTPizza.IAM.{Organization, User, UserToken, UserNotifier}
+  alias HTTPizza.IAM.{Organization, OrganizationUser, User, UserToken, UserNotifier}
 
   ## Database getters
 
@@ -382,6 +382,30 @@ defmodule HTTPizza.IAM do
 
   """
   def get_organization!(id), do: Repo.get!(Organization, id)
+
+  @doc """
+  Get an organization associated with the given user by its slug.
+
+  Returns `nil` if the organization does not exist or the given user does
+  not have access to it.
+
+  ## Examples
+
+      iex> get_user_organization_by_slug(%User{}, "acme-inc")
+      %Organization{}
+
+      iex> get_user_organization_by_slug(%User{}, "pseudo-co")
+      nil
+  """
+  def get_user_organization_by_slug(user, slug) do
+    from(
+      ou in OrganizationUser,
+      join: o in Organization,
+      on: ou.organization_id == o.id,
+      where: ou.user_id == ^user.id and o.slug == ^slug
+    )
+    |> Repo.one()
+  end
 
   @doc """
   Creates a organization.

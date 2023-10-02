@@ -8,10 +8,20 @@ defmodule HTTPizzaWeb.DashboardLiveTest do
     %{user: user_fixture()}
   end
 
-  test "renders dashboard page", %{conn: conn, user: user} do
+  test "redirects naked dashboard to personal org", %{conn: conn, user: user} do
     conn = log_in_user(conn, user)
 
-    assert {:ok, _live_view, html} = live(conn, ~p"/dashboard")
+    assert {:ok, _live_view, html} =
+             live(conn, ~p"/dashboard")
+             |> follow_redirect(conn, ~p"/dashboard/personal")
+
+    assert html
+  end
+
+  test "renders dashboard page for personal org", %{conn: conn, user: user} do
+    conn = log_in_user(conn, user)
+
+    assert {:ok, _live_view, html} = live(conn, ~p"/dashboard/personal")
 
     assert html
   end
