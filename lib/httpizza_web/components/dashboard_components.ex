@@ -42,7 +42,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
               navigate={~p"/dashboard/#{proper_slug(organization, @personal_organization_id)}"}
               class="block p-2 hover:bg-zinc-100 font-medium truncate"
             >
-              <%= display_name(@selection, @personal_organization_id) %>
+              <%= display_name(organization, @personal_organization_id) %>
             </.link>
           </div>
         </div>
