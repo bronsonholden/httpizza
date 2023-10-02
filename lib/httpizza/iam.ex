@@ -402,7 +402,8 @@ defmodule HTTPizza.IAM do
       ou in OrganizationUser,
       join: o in Organization,
       on: ou.organization_id == o.id,
-      where: ou.user_id == ^user.id and o.slug == ^slug
+      where: ou.user_id == ^user.id and o.slug == ^slug,
+      select: o
     )
     |> Repo.one()
   end
