@@ -12,6 +12,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
     field :hostname, :string
     field :schedule, :string
     field :response_head_checks, {:array, :string}
+    field :method, Ecto.Enum, values: [:get]
 
     timestamps()
   end
@@ -19,8 +20,16 @@ defmodule HTTPizza.Observers.HTTPObserver do
   @doc false
   def changeset(http_observer, attrs) do
     http_observer
-    |> cast(attrs, [:schedule, :https, :hostname, :port, :path, :response_head_checks])
-    |> validate_required([:schedule, :https, :hostname, :port, :path, :response_head_checks])
+    |> cast(attrs, [:schedule, :https, :hostname, :port, :path, :response_head_checks, :method])
+    |> validate_required([
+      :schedule,
+      :https,
+      :hostname,
+      :port,
+      :path,
+      :response_head_checks,
+      :method
+    ])
     |> validate_inclusion(:schedule, [
       # every minute
       "* * * * *",
