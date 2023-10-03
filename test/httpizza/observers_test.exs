@@ -34,7 +34,8 @@ defmodule HTTPizza.ObserversTest do
         path: ["option1", "option2"],
         hostname: "some hostname",
         schedule: "0 * * * *",
-        response_head_checks: ["option1", "option2"]
+        response_head_checks: ["option1", "option2"],
+        method: :get
       }
 
       assert {:ok, %HTTPObserver{} = http_observer} = Observers.create_http_observer(valid_attrs)
