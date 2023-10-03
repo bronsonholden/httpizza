@@ -3,9 +3,11 @@ defmodule HTTPizzaWeb.UserConfirmationLive do
 
   alias HTTPizza.IAM
 
+  import HTTPizzaWeb.Templates
+
   def render(%{live_action: :edit} = assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <.container size="sm">
       <.header class="text-center">Confirm Account</.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
@@ -19,7 +21,7 @@ defmodule HTTPizzaWeb.UserConfirmationLive do
         <.link href={~p"/users/register"}>Register</.link>
         | <.link href={~p"/users/log_in"}>Log in</.link>
       </p>
-    </div>
+    </.container>
     """
   end
 

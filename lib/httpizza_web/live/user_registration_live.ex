@@ -4,9 +4,11 @@ defmodule HTTPizzaWeb.UserRegistrationLive do
   alias HTTPizza.IAM
   alias HTTPizza.IAM.User
 
+  import HTTPizzaWeb.Templates
+
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <.container size="sm">
       <.header class="text-center">
         Register for an account
         <:subtitle>
@@ -38,7 +40,7 @@ defmodule HTTPizzaWeb.UserRegistrationLive do
           <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
         </:actions>
       </.simple_form>
-    </div>
+    </.container>
     """
   end
 

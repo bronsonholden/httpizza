@@ -1,9 +1,11 @@
 defmodule HTTPizzaWeb.UserLoginLive do
   use HTTPizzaWeb, :live_view
 
+  import HTTPizzaWeb.Templates
+
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <.container size="sm">
       <.header class="text-center">
         Sign in to account
         <:subtitle>
@@ -31,7 +33,7 @@ defmodule HTTPizzaWeb.UserLoginLive do
           </.button>
         </:actions>
       </.simple_form>
-    </div>
+    </.container>
     """
   end
 
