@@ -28,7 +28,7 @@ defmodule HTTPizzaWeb.Organization do
         ...
       end
   """
-  def on_mount(:mount_current_organization, params, _sessionn, socket) do
+  def on_mount(:mount_current_organization, params, _session, socket) do
     {:cont, maybe_mount_current_organization(socket, params)}
   end
 
