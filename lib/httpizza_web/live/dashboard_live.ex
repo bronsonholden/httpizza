@@ -7,7 +7,8 @@ defmodule HTTPizzaWeb.DashboardLive do
 
   import HTTPizzaWeb.Templates
 
-  on_mount {HTTPizzaWeb.UserAuth, :mount_current_user}
+  on_mount {HTTPizzaWeb.UserAuth, :ensure_authenticated}
+  on_mount {HTTPizzaWeb.Organization, :mount_current_organization}
 
   @impl true
   def mount(_params, _session, socket) do
