@@ -14,6 +14,8 @@ defmodule HTTPizza.Observers.HTTPObserver do
     field :response_head_checks, {:array, :string}
     field :method, Ecto.Enum, values: [:get]
 
+    has_many :http_head_checks, HTTPizza.Checks.HTTPHeadCheck
+
     timestamps()
   end
 
