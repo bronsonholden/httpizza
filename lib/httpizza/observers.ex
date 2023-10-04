@@ -22,6 +22,18 @@ defmodule HTTPizza.Observers do
   end
 
   @doc """
+  Returns the list of HTTP Observers associated with the given organization by `id`.
+  """
+  def list_organization_http_observers(organization_id) do
+    from(o in HTTPObserver,
+      where:
+        o.organization_id ==
+          ^organization_id
+    )
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single HTTP Observer.
 
   Raises `Ecto.NoResultsError` if the Http observer does not exist.
