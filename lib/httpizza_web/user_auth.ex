@@ -143,12 +143,12 @@ defmodule HTTPizzaWeb.UserAuth do
         live "/profile", ProfileLive, :index
       end
   """
-  def on_mount(:mount_current_user, _params, session, socket) do
-    {:cont, mount_current_user(socket, session)}
+  def on_mount(:mount_current_user, params, session, socket) do
+    {:cont, mount_current_user(socket, session, params)}
   end
 
-  def on_mount(:ensure_authenticated, _params, session, socket) do
-    socket = mount_current_user(socket, session)
+  def on_mount(:ensure_authenticated, params, session, socket) do
+    socket = mount_current_user(socket, session, params)
 
     if socket.assigns.current_user do
       {:cont, socket}
@@ -162,8 +162,8 @@ defmodule HTTPizzaWeb.UserAuth do
     end
   end
 
-  def on_mount(:redirect_if_user_is_authenticated, _params, session, socket) do
-    socket = mount_current_user(socket, session)
+  def on_mount(:redirect_if_user_is_authenticated, params, session, socket) do
+    socket = mount_current_user(socket, session, params)
 
     if socket.assigns.current_user do
       {:halt, Phoenix.LiveView.redirect(socket, to: signed_in_path(socket))}
@@ -172,10 +172,21 @@ defmodule HTTPizzaWeb.UserAuth do
     end
   end
 
-  defp mount_current_user(socket, session) do
-    Phoenix.Component.assign_new(socket, :current_user, fn ->
-      if user_token = session["user_token"] do
-        IAM.get_user_by_session_token(user_token)
+  defp mount_current_user(socket, session, params) do
+    socket =
+      Phoenix.Component.assign_new(socket, :current_user, fn ->
+        if user_token = session["user_token"] do
+          IAM.get_user_by_session_token(user_token)
+        end
+      end)
+
+    Phoenix.Component.assign_new(socket, :current_organization, fn ->
+      current_user = socket.assigns.current_user
+
+      case params["organization"] do
+        "personal" -> current_user.personal_organization
+        nil -> nil
+        slug -> HTTPizza.IAM.get_user_organization_by_slug(current_user, slug)
       end
     end)
   end
