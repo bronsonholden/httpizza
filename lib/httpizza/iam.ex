@@ -409,6 +409,24 @@ defmodule HTTPizza.IAM do
   end
 
   @doc """
+  Creates an organization user.
+
+  ## Examples
+
+      iex> create_organization_user(%{user_id: "...", organization_id: "..."})
+      {:ok, %Organization{}}
+
+      iex> create_organization_user(%{})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_organization_user(attrs \\ %{}) do
+    %OrganizationUser{}
+    |> OrganizationUser.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
   Creates a organization.
 
   ## Examples
