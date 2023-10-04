@@ -6,7 +6,7 @@ defmodule HTTPizza.ObserversTest do
   describe "http_observers" do
     alias HTTPizza.Observers.HTTPObserver
 
-    import HTTPizza.ObserversFixtures
+    import HTTPizza.{IAMFixtures, ObserversFixtures}
 
     @invalid_attrs %{
       https: nil,
@@ -17,13 +17,13 @@ defmodule HTTPizza.ObserversTest do
     }
 
     test "list_http_observers/0 returns all http_observers" do
-      http_observer = http_observer_fixture()
-      assert Observers.list_http_observers() == [http_observer]
+      %{id: id} = http_observer_fixture()
+      assert [%{id: ^id}] = Observers.list_http_observers()
     end
 
     test "get_http_observer!/1 returns the http_observer with given id" do
       http_observer = http_observer_fixture()
-      assert Observers.get_http_observer!(http_observer.id) == http_observer
+      assert Observers.get_http_observer!(http_observer.id).id == http_observer.id
     end
 
     test "create_http_observer/1 with valid data creates a http_observer" do
@@ -33,7 +33,8 @@ defmodule HTTPizza.ObserversTest do
         path: ["option1", "option2"],
         hostname: "some hostname",
         schedule: "0 * * * *",
-        method: :get
+        method: :get,
+        organization: organization_fixture()
       }
 
       assert {:ok, %HTTPObserver{} = http_observer} = Observers.create_http_observer(valid_attrs)
@@ -75,7 +76,7 @@ defmodule HTTPizza.ObserversTest do
       assert {:error, %Ecto.Changeset{}} =
                Observers.update_http_observer(http_observer, @invalid_attrs)
 
-      assert http_observer == Observers.get_http_observer!(http_observer.id)
+      assert http_observer.id == Observers.get_http_observer!(http_observer.id).id
     end
 
     test "delete_http_observer/1 deletes the http_observer" do

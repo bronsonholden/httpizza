@@ -13,15 +13,26 @@ defmodule HTTPizza.Observers.HTTPObserver do
     field :schedule, :string
     field :method, Ecto.Enum, values: [:get]
 
+    belongs_to :organization, HTTPizza.IAM.Organization
     has_many :http_head_checks, HTTPizza.Checks.HTTPHeadCheck
 
     timestamps()
   end
 
   @doc false
+  def changeset(
+        http_observer,
+        %{organization: %HTTPizza.IAM.Organization{} = organization} = attrs
+      ) do
+    http_observer
+    |> changeset(Map.delete(attrs, :organization))
+    |> put_assoc(:organization, organization)
+  end
+
+  @doc false
   def changeset(http_observer, attrs) do
     http_observer
-    |> cast(attrs, [:schedule, :https, :hostname, :port, :path, :method])
+    |> cast(attrs, [:schedule, :https, :hostname, :port, :path, :method, :organization_id])
     |> validate_required([
       :schedule,
       :https,
