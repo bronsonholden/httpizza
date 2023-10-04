@@ -34,6 +34,21 @@ defmodule HTTPizzaWeb.DashboardLive do
           organizations={@current_user.organizations}
           personal_organization_id={@current_user.personal_organization.id}
         />
+
+        <nav class="py border rounded-lg w-[14rem]">
+          <ul class="my-2">
+            <li class="hover:bg-zinc-100">
+              <.link
+                class="block p-2 w-full h-full flex gap-2 items-center text-sm font-medium text-zinc-600 hover:text-zinc-700"
+                navigate={
+                  ~p"/dashboard/#{HTTPizzaWeb.Slug.humanize(@current_organization.slug, @current_user.personal_organization.slug)}/observers"
+                }
+              >
+                <.icon name="hero-lifebuoy-mini" /> Observers
+              </.link>
+            </li>
+          </ul>
+        </nav>
       </div>
     </.container>
     """

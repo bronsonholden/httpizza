@@ -26,4 +26,12 @@ defmodule HTTPizzaWeb.Slug do
     ]
     |> Enum.join("-")
   end
+
+  def humanize(slug, personal_organization_slug) do
+    if slug == personal_organization_slug do
+      "personal"
+    else
+      slug
+    end
+  end
 end
