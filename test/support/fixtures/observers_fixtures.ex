@@ -16,7 +16,6 @@ defmodule HTTPizza.ObserversFixtures do
         path: [],
         hostname: "example.com",
         schedule: "0 0 * * *",
-        response_head_checks: ["200"],
         method: :get
       })
       |> HTTPizza.Observers.create_http_observer()

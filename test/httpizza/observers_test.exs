@@ -13,8 +13,7 @@ defmodule HTTPizza.ObserversTest do
       port: nil,
       path: nil,
       hostname: nil,
-      schedule: nil,
-      response_head_checks: nil
+      schedule: nil
     }
 
     test "list_http_observers/0 returns all http_observers" do
@@ -34,7 +33,6 @@ defmodule HTTPizza.ObserversTest do
         path: ["option1", "option2"],
         hostname: "some hostname",
         schedule: "0 * * * *",
-        response_head_checks: ["option1", "option2"],
         method: :get
       }
 
@@ -44,7 +42,6 @@ defmodule HTTPizza.ObserversTest do
       assert http_observer.path == ["option1", "option2"]
       assert http_observer.hostname == "some hostname"
       assert http_observer.schedule == "0 * * * *"
-      assert http_observer.response_head_checks == ["option1", "option2"]
     end
 
     test "create_http_observer/1 with invalid data returns error changeset" do
@@ -59,11 +56,7 @@ defmodule HTTPizza.ObserversTest do
         port: 43,
         path: ["images", "old.png"],
         hostname: "www.example.com",
-        schedule: "*/5 * * * *",
-        response_head_checks: [
-          "301",
-          "Location: https://www.example.com/images/redirected.png"
-        ]
+        schedule: "*/5 * * * *"
       }
 
       assert {:ok, %HTTPObserver{} = http_observer} =
@@ -74,11 +67,6 @@ defmodule HTTPizza.ObserversTest do
       assert http_observer.path == ["images", "old.png"]
       assert http_observer.hostname == "www.example.com"
       assert http_observer.schedule == "*/5 * * * *"
-
-      assert http_observer.response_head_checks == [
-               "301",
-               "Location: https://www.example.com/images/redirected.png"
-             ]
     end
 
     test "update_http_observer/2 with invalid data returns error changeset" do
