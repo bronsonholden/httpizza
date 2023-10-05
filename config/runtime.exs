@@ -97,7 +97,7 @@ if config_env() == :prod do
 
   config :httpizza, HTTPizza.Mailer,
     adapter: Swoosh.Adapters.AmazonSES,
-    region: "us-east-1",
+    region: "us-west-2",
     access_key: System.get_env("AWS_ACCESS_KEY_ID"),
     secret: System.get_env("AWS_SECRET_ACCESS_KEY")
 
