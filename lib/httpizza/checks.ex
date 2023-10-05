@@ -24,7 +24,7 @@ defmodule HTTPizza.Checks do
   @doc """
   Gets a single HTTP head check.
 
-  Raises `Ecto.NoResultsError` if the Http head check does not exist.
+  Raises `Ecto.NoResultsError` if the HTTP head check does not exist.
 
   ## Examples
 

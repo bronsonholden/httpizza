@@ -1,4 +1,4 @@
-defmodule HTTPizza.Repo.Migrations.DropHttpObserversResponseHeadChecks do
+defmodule HTTPizza.Repo.Migrations.DropHTTPObserversResponseHeadChecks do
   use Ecto.Migration
 
   def change do

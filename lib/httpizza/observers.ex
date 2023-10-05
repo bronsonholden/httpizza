@@ -36,7 +36,7 @@ defmodule HTTPizza.Observers do
   @doc """
   Gets a single HTTP Observer.
 
-  Raises `Ecto.NoResultsError` if the Http observer does not exist.
+  Raises `Ecto.NoResultsError` if the HTTP observer does not exist.
 
   ## Examples
 
