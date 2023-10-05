@@ -16,6 +16,8 @@ defmodule HTTPizza.Application do
       {Phoenix.PubSub, name: HTTPizza.PubSub},
       # Start Finch
       {Finch, name: HTTPizza.Finch},
+      # Start Oban
+      {Oban, Application.fetch_env!(:httpizza, Oban)},
       # Start the Endpoint (http/https)
       HTTPizzaWeb.Endpoint
       # Start a worker by calling: HTTPizza.Worker.start_link(arg)
