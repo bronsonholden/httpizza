@@ -5,6 +5,7 @@ defmodule HTTPizza.IAM.UserToken do
 
   @hash_algorithm :sha256
   @rand_size 32
+  @timestamps_opts [type: :utc_datetime]
 
   # It is very important to keep the reset password token expiry short,
   # since someone with access to the email may take over the account.

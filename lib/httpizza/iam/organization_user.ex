@@ -5,6 +5,8 @@ defmodule HTTPizza.IAM.OrganizationUser do
 
   import Ecto.Changeset
 
+  @timestamps_opts [type: :utc_datetime]
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "organization_users" do
