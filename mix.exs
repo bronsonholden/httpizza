@@ -57,7 +57,8 @@ defmodule HTTPizza.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:hackney, "~> 1.9"},
       {:gen_smtp, "~> 1.0"},
-      {:excoveralls, "~> 0.13", only: :test}
+      {:excoveralls, "~> 0.13", only: :test},
+      {:oban, "~> 2.16"}
     ]
   end
 
