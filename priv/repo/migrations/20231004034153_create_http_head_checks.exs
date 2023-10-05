@@ -1,4 +1,4 @@
-defmodule Httpizza.Repo.Migrations.CreateHttpHeadChecks do
+defmodule HTTPizza.Repo.Migrations.CreateHTTPHeadChecks do
   use Ecto.Migration
 
   def change do

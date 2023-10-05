@@ -19,4 +19,19 @@ defmodule HTTPizza.ChecksFixtures do
 
     http_head_check
   end
+
+  @doc """
+  Generate an HTTP status check.
+  """
+  def http_status_check_fixture(attrs \\ %{}) do
+    {:ok, http_status_check} =
+      attrs
+      |> Enum.into(%{
+        code: "200",
+        comparator: :is_exactly
+      })
+      |> HTTPizza.Checks.create_http_status_check()
+
+    http_status_check
+  end
 end
