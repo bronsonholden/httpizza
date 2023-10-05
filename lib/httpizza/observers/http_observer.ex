@@ -12,6 +12,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
     field :hostname, :string
     field :schedule, :string
     field :method, Ecto.Enum, values: [:get]
+    field :scheduled_at, :utc_datetime
 
     belongs_to :organization, HTTPizza.IAM.Organization
     has_many :http_head_checks, HTTPizza.Checks.HTTPHeadCheck
