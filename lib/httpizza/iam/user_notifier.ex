@@ -3,8 +3,6 @@ defmodule HTTPizza.IAM.UserNotifier do
 
   alias HTTPizza.Mailer
 
-  @timestamps_opts [type: :utc_datetime]
-
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
     email =
