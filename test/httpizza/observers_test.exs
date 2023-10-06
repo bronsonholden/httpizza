@@ -1,7 +1,7 @@
 defmodule HTTPizza.ObserversTest do
   use HTTPizza.DataCase
 
-  alias HTTPizza.Observers
+  alias HTTPizza.{Checks, Observers}
 
   describe "http_observers" do
     alias HTTPizza.Observers.HTTPObserver
@@ -115,7 +115,14 @@ defmodule HTTPizza.ObserversTest do
         status: :ok,
         started_at: ~U[2023-10-05 02:42:00Z],
         duration: 42,
-        http_observer_id: http_observer.id
+        http_observer_id: http_observer.id,
+        check_results: [
+          %{
+            status: :ok,
+            kind: to_string(Checks.HTTPHeadCheck),
+            reason: "Received Location: https://example.com"
+          }
+        ]
       }
 
       assert {:ok, %HTTPObservation{} = http_observation} =
