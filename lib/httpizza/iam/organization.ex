@@ -33,6 +33,7 @@ defmodule HTTPizza.IAM.Organization do
   def changeset(organization, attrs) do
     organization
     |> cast(attrs, [:name, :slug])
+    |> unique_constraint(:slug)
     |> validate_required([:slug])
     |> validate_length(:slug, min: 2)
     |> validate_format(:slug, ~r/^([a-z0-9]+-)*[a-z0-9]+$/)
