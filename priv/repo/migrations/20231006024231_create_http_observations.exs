@@ -1,8 +1,6 @@
 defmodule HTTPizza.Repo.Migrations.CreateHttpObservations do
   use Ecto.Migration
 
-  @timestamps_opts [type: :utc_datetime]
-
   def change do
     create table(:http_observations, primary_key: false) do
       add :id, :binary_id, primary_key: true
