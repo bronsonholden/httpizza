@@ -18,6 +18,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
 
     belongs_to :organization, HTTPizza.IAM.Organization
     has_many :http_head_checks, HTTPizza.Checks.HTTPHeadCheck
+    has_many :http_observations, HTTPizza.Observers.HTTPObservation
 
     timestamps()
   end
