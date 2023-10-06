@@ -1,4 +1,4 @@
-defmodule HTTPizza.Repo.Migrations.AddScheduledAtToHttpObservers do
+defmodule HTTPizza.Repo.Migrations.AddScheduledAtToHTTPObservers do
   use Ecto.Migration
 
   def change do
