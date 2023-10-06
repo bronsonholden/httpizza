@@ -8,7 +8,13 @@ defmodule HTTPizza.Service do
     header = String.downcase(check.header)
     comparator = check.comparator
     expected = check.value
-    received = Enum.find(response.headers, fn {^header, _} -> true end) |> elem(1)
+
+    received =
+      Enum.find(response.headers, fn
+        {^header, _} -> true
+        _ -> false
+      end)
+      |> elem(1)
 
     if header_value_match?(header, expected, received, comparator, check.case_sensitive) do
       %Checks.CheckResult{
