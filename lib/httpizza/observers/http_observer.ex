@@ -20,6 +20,8 @@ defmodule HTTPizza.Observers.HTTPObserver do
     has_many :http_head_checks, HTTPizza.Checks.HTTPHeadCheck
     has_many :http_observations, HTTPizza.Observers.HTTPObservation
 
+    embeds_many :email_recipients, HTTPizza.Notifications.EmailRecipient
+
     timestamps()
   end
 
