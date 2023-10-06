@@ -113,4 +113,100 @@ defmodule HTTPizza.Observers do
   def change_http_observer(%HTTPObserver{} = http_observer, attrs \\ %{}) do
     HTTPObserver.changeset(http_observer, attrs)
   end
+
+  alias HTTPizza.Observers.HTTPObservation
+
+  @doc """
+  Returns the list of http_observations.
+
+  ## Examples
+
+      iex> list_http_observations()
+      [%HTTPObservation{}, ...]
+
+  """
+  def list_http_observations do
+    Repo.all(HTTPObservation)
+  end
+
+  @doc """
+  Gets a single http_observation.
+
+  Raises `Ecto.NoResultsError` if the Http observation does not exist.
+
+  ## Examples
+
+      iex> get_http_observation!(123)
+      %HTTPObservation{}
+
+      iex> get_http_observation!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_http_observation!(id), do: Repo.get!(HTTPObservation, id)
+
+  @doc """
+  Creates a http_observation.
+
+  ## Examples
+
+      iex> create_http_observation(%{field: value})
+      {:ok, %HTTPObservation{}}
+
+      iex> create_http_observation(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_http_observation(attrs \\ %{}) do
+    %HTTPObservation{}
+    |> HTTPObservation.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a http_observation.
+
+  ## Examples
+
+      iex> update_http_observation(http_observation, %{field: new_value})
+      {:ok, %HTTPObservation{}}
+
+      iex> update_http_observation(http_observation, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_http_observation(%HTTPObservation{} = http_observation, attrs) do
+    http_observation
+    |> HTTPObservation.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a http_observation.
+
+  ## Examples
+
+      iex> delete_http_observation(http_observation)
+      {:ok, %HTTPObservation{}}
+
+      iex> delete_http_observation(http_observation)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_http_observation(%HTTPObservation{} = http_observation) do
+    Repo.delete(http_observation)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking http_observation changes.
+
+  ## Examples
+
+      iex> change_http_observation(http_observation)
+      %Ecto.Changeset{data: %HTTPObservation{}}
+
+  """
+  def change_http_observation(%HTTPObservation{} = http_observation, attrs \\ %{}) do
+    HTTPObservation.changeset(http_observation, attrs)
+  end
 end
