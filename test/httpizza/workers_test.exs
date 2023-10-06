@@ -4,7 +4,7 @@ defmodule HTTPizza.WorkersTest do
   alias HTTPizza.Observers.HTTPObservation
 
   describe "HTTPObserverWorker" do
-    import HTTPizza.{ChecksFixtures, ObserversFixtures}
+    import HTTPizza.ObserversFixtures
 
     test "produces successful observation" do
       observer =

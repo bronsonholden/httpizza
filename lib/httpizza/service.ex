@@ -66,17 +66,6 @@ defmodule HTTPizza.Service do
     end
   end
 
-  @spec default_path_uri(String.t()) :: URI.t()
-  defp default_path_uri(uri) do
-    result = URI.new!(uri)
-
-    if is_nil(result.path) do
-      %{result | path: "/"}
-    else
-      result
-    end
-  end
-
   defp reason(comparator, expected, received) do
     expr =
       case comparator do
