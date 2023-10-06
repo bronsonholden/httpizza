@@ -11,9 +11,9 @@ defmodule HTTPizza.ChecksFixtures do
     {:ok, http_head_check} =
       attrs
       |> Enum.into(%{
-        value: "some value",
-        header: "some header",
-        comparator: :contains
+        value: "Location",
+        header: "https://example.com/",
+        comparator: :equal_to
       })
       |> HTTPizza.Checks.create_http_head_check()
 

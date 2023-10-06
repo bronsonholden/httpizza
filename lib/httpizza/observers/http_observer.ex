@@ -39,6 +39,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
   def changeset(http_observer, attrs) do
     http_observer
     |> cast(attrs, [:schedule, :https, :hostname, :port, :path, :method, :organization_id])
+    |> cast_assoc(:http_head_checks)
     |> validate_required([
       :schedule,
       :https,
