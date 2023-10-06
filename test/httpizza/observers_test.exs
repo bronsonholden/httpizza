@@ -34,7 +34,11 @@ defmodule HTTPizza.ObserversTest do
         hostname: "some hostname",
         schedule: "0 * * * *",
         method: :get,
-        organization: organization_fixture()
+        organization: organization_fixture(),
+        email_recipients: [
+          %{ok: true, failed: true, email: "johndoe@example.com"},
+          %{ok: false, failed: false, error: true, email: "janeroe@example.com"}
+        ]
       }
 
       assert {:ok, %HTTPObserver{} = http_observer} = Observers.create_http_observer(valid_attrs)
