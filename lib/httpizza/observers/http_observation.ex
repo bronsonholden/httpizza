@@ -19,10 +19,16 @@ defmodule HTTPizza.Observers.HTTPObservation do
   end
 
   @doc false
+  def changeset(http_observation, %{check_results: check_results} = attrs) do
+    http_observation
+    |> changeset(Map.delete(attrs, :check_results))
+    |> put_embed(:check_results, check_results)
+  end
+
+  @doc false
   def changeset(http_observation, attrs) do
     http_observation
     |> cast(attrs, [:status, :started_at, :duration, :http_observer_id])
-    |> cast_embed(:check_results)
     |> validate_required(:http_observer_id)
     |> assoc_constraint(:http_observer)
   end
