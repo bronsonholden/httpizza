@@ -57,7 +57,7 @@ defmodule HTTPizza.HTTPObserverWorker do
     URI.new!(%URI{
       host: observer.hostname,
       port: observer.port,
-      path: Enum.join(observer.path, "/"),
+      path: observer.path,
       scheme: if(observer.https, do: "https", else: "http")
     })
     |> URI.to_string()
