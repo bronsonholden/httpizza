@@ -19,7 +19,19 @@ defmodule HTTPizzaWeb.ObserversLive do
   def render(assigns) do
     ~H"""
     <.container>
-      <p class="text-lg font-bold">HTTP Observers</p>
+      <div class="flex items-center justify-between w-full">
+        <p class="text-lg font-bold">
+          HTTP Observers
+        </p>
+        <.link
+          class="p-3 hover:bg-zinc-100"
+          navigate={
+            ~p"/dashboard/#{HTTPizzaWeb.Slug.humanize(@current_organization.slug, @current_user.personal_organization.slug)}/http-observers/new"
+          }
+        >
+          New
+        </.link>
+      </div>
       <.table id="http-observers" rows={@http_observers}>
         <:col :let={http_observer} label="Endpoint">
           <%= display_endpoint(http_observer) %>
