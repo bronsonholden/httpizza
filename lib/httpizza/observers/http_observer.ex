@@ -10,7 +10,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
   schema "http_observers" do
     field :https, :boolean, default: false
     field :port, :integer
-    field :path, {:array, :string}
+    field :path, :string
     field :hostname, :string
     field :schedule, :string
     field :method, Ecto.Enum, values: [:get]

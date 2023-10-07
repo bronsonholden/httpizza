@@ -49,7 +49,7 @@ defmodule HTTPizzaWeb.ObserversLive do
     URI.to_string(%URI{
       host: http_observer.hostname,
       port: http_observer.port,
-      path: Enum.join(http_observer.path, "/"),
+      path: http_observer.path,
       scheme: if(http_observer.https, do: "https", else: "http")
     })
   end

@@ -17,7 +17,7 @@ defmodule HTTPizza.ObserversFixtures do
       |> Enum.into(%{
         https: false,
         port: 80,
-        path: [],
+        path: "/",
         hostname: "example.com",
         schedule: "0 0 * * *",
         method: :get

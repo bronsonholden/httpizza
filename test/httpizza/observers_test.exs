@@ -30,7 +30,7 @@ defmodule HTTPizza.ObserversTest do
       valid_attrs = %{
         https: true,
         port: 42,
-        path: ["option1", "option2"],
+        path: "/",
         hostname: "some hostname",
         schedule: "0 * * * *",
         method: :get,
@@ -44,7 +44,7 @@ defmodule HTTPizza.ObserversTest do
       assert {:ok, %HTTPObserver{} = http_observer} = Observers.create_http_observer(valid_attrs)
       assert http_observer.https == true
       assert http_observer.port == 42
-      assert http_observer.path == ["option1", "option2"]
+      assert http_observer.path == "/"
       assert http_observer.hostname == "some hostname"
       assert http_observer.schedule == "0 * * * *"
     end
@@ -59,7 +59,7 @@ defmodule HTTPizza.ObserversTest do
       update_attrs = %{
         https: false,
         port: 43,
-        path: ["images", "old.png"],
+        path: "images/old.png",
         hostname: "www.example.com",
         schedule: "*/5 * * * *"
       }
@@ -69,7 +69,7 @@ defmodule HTTPizza.ObserversTest do
 
       assert http_observer.https == false
       assert http_observer.port == 43
-      assert http_observer.path == ["images", "old.png"]
+      assert http_observer.path == "images/old.png"
       assert http_observer.hostname == "www.example.com"
       assert http_observer.schedule == "*/5 * * * *"
     end
