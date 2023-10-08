@@ -1,8 +1,6 @@
 defmodule HTTPizzaWeb.ObserversLive do
   use HTTPizzaWeb, :live_view
 
-  alias HTTPizza.Observers.HTTPObserver
-
   import HTTPizzaWeb.Templates
 
   on_mount {HTTPizzaWeb.UserAuth, :ensure_authenticated}
@@ -32,31 +30,58 @@ defmodule HTTPizzaWeb.ObserversLive do
           HTTP Observers
         </h1>
         <.link
-          class="py-2 pl-2 pr-3 text-sm font-medium hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
+          class="py-2 pl-2 pr-3 text-sm font-bold hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
           navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
         >
           <.icon name="hero-plus-mini" /> New
         </.link>
       </div>
-      <.table id="http-observers" rows={@http_observers}>
-        <:col :let={http_observer} label="Endpoint">
-          <%= display_endpoint(http_observer) %>
-        </:col>
-        <:action :let={_http_observer}>
-          <p data-todo>Edit</p>
-          <p data-todo>Delete</p>
-        </:action>
-      </.table>
+      <table id="http-observers" class="border-collapse my-4 w-full">
+        <tbody class="border-t">
+          <tr :for={{http_observer, index} <- Enum.with_index(@http_observers)} class="border-b">
+            <td class="text-xs text-zinc-400 pr-4">
+              <%= index + 1 %>
+            </td>
+            <td class="py-3 w-full font-mono">
+              <div class="flex flex-col gap-2">
+                <p class="tracking-tight text-blue-500 text-sm font-bold">
+                  <%= http_observer.hostname %><span class="text-zinc-400"><%= http_observer.path %></span>
+                </p>
+                <div class="tracking-tighter text-xs flex gap-1 justify-across font-medium">
+                  <.info_label
+                    label="scheme"
+                    value={if(http_observer.https, do: "https", else: "http")}
+                  />
+                  <.info_label label="port" value={http_observer.port} />
+                  <.info_label label="method" value={String.upcase(to_string(http_observer.method))} />
+                </div>
+              </div>
+            </td>
+            <td class="py-3">
+              <div class="flex items-center">
+                <.link navigate="#" class="block hover:text-zinc-800 text-zinc-400 rounded-full">
+                  <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
+                </.link>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </.dashboard>
     """
   end
 
-  defp display_endpoint(%HTTPObserver{} = http_observer) do
-    URI.to_string(%URI{
-      host: http_observer.hostname,
-      port: http_observer.port,
-      path: http_observer.path,
-      scheme: if(http_observer.https, do: "https", else: "http")
-    })
+  attr(:label, :string, required: true)
+  attr(:value, :string, required: true)
+
+  defp info_label(assigns) do
+    ~H"""
+    <p class="px-1 border bg-zinc-100 rounded shrink-0 whitespace-nowrap">
+      <span class="text-orange-500"><%= @label %>:</span>
+      <span class="text-zinc-400 font-bold">
+        <%= @value %>
+      </span>
+    </p>
+    """
   end
 end
