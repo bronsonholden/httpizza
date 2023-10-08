@@ -39,7 +39,7 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
 
         <.input field={@form[:https]} type="checkbox" label="HTTPS" phx-debounce="200" />
         <.input field={@form[:hostname]} type="text" label="Hostname" required phx-debounce="200" />
-        <.input field={@form[:path]} multiple type="text" label="Path" phx-debounce="200" />
+        <.input field={@form[:path]} type="text" label="Path" phx-debounce="200" />
         <.input field={@form[:port]} type="text" label="Port" required phx-debounce="200" />
 
         <.input
