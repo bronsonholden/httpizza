@@ -70,6 +70,7 @@ defmodule HTTPizzaWeb.Router do
 
         scope "/:organization" do
           live "/", DashboardLive, :show
+          live "/settings", OrganizationLive, :show
 
           scope "/observers" do
             live "/", ObserversLive, :index
