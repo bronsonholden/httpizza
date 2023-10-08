@@ -28,9 +28,9 @@ defmodule HTTPizzaWeb.ObserversLive do
       slug={@current_organization_slug}
     >
       <div class="flex items-center justify-between w-full">
-        <p class="text-lg font-bold">
+        <h1 class="text-2xl font-bold">
           HTTP Observers
-        </p>
+        </h1>
         <.link
           class="p-3 hover:bg-zinc-100"
           navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
