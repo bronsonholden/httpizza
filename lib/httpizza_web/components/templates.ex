@@ -113,14 +113,4 @@ defmodule HTTPizzaWeb.Templates do
     </div>
     """
   end
-
-  slot(:inner_block)
-
-  def card(assigns) do
-    ~H"""
-    <div class="shadow-sm border rounded-xl p-4">
-      <%= render_slot(@inner_block) %>
-    </div>
-    """
-  end
 end
