@@ -29,4 +29,35 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
 
     assert has_element?(live_view, "[id=new-http-observer-head-checks] fieldset:nth-of-type(2)")
   end
+
+  test "creates new HTTP head check", %{conn: conn} do
+    assert {:ok, live_view, _html} = live(conn, ~p"/dashboard/personal/http-observers/new")
+
+    assert live_view
+           |> render_change("create", %{
+             "http_observer" => %{
+               "hostname" => "htt.pizza",
+               "path" => "/",
+               "port" => 80,
+               "https" => false,
+               "method" => "get",
+               "schedule" => "0 0 * * *",
+               "http_head_checks" => %{
+                 "0" => %{
+                   "header" => "Location",
+                   "comparator" => "equal_to",
+                   "value" => "https://htt.pizza/"
+                 }
+               }
+             }
+           })
+
+    assert [observer | _] =
+             HTTPizza.Observers.list_http_observers() |> HTTPizza.Repo.preload(:http_head_checks)
+
+    assert [%{header: "Location", comparator: :equal_to, value: "https://htt.pizza/"}] =
+             observer.http_head_checks
+
+    assert_redirected(live_view, ~p"/dashboard/personal/observers")
+  end
 end
