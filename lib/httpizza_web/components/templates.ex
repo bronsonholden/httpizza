@@ -7,6 +7,7 @@ defmodule HTTPizzaWeb.Templates do
   attr(:current_organization, :any, required: true)
   attr(:personal_organization, :any, required: true)
   attr(:organizations, :list, required: true)
+  attr(:slug, :string, required: true)
 
   slot(:org)
   slot(:nav)
@@ -25,13 +26,6 @@ defmodule HTTPizzaWeb.Templates do
 
     assigns =
       assigns
-      |> assign(
-        :slug,
-        HTTPizzaWeb.Slug.humanize(
-          assigns.current_organization.slug,
-          assigns.personal_organization.slug
-        )
-      )
       |> assign(:path, path)
 
     ~H"""
