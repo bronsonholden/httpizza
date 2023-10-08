@@ -1,9 +1,7 @@
 defmodule HTTPizzaWeb.DashboardLive do
-  alias HTTPizzaWeb.DashboardComponents
   use HTTPizzaWeb, :live_view
 
   alias HTTPizza.IAM
-  alias HTTPizzaWeb.DashboardComponents
 
   import HTTPizzaWeb.Templates
 
