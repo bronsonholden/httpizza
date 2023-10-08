@@ -15,7 +15,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
     assigns = assign(assigns, :current_path, path)
 
     ~H"""
-    <nav>
+    <nav class="flex flex-col gap-1">
       <.navigation_link
         current_path={@current_path}
         path={~p"/dashboard/#{@slug}"}
