@@ -16,9 +16,16 @@ defmodule HTTPizzaWeb.ObserversLive do
     {:ok, assign(socket, :http_observers, http_observers)}
   end
 
+  def handle_params(_, uri, socket), do: {:noreply, assign(socket, :current_uri, uri)}
+
   def render(assigns) do
     ~H"""
-    <.container>
+    <.dashboard
+      current_uri={@current_uri}
+      current_organization={@current_organization}
+      personal_organization={@current_user.personal_organization}
+      organizations={@current_user.organizations}
+    >
       <div class="flex items-center justify-between w-full">
         <p class="text-lg font-bold">
           HTTP Observers
@@ -41,7 +48,7 @@ defmodule HTTPizzaWeb.ObserversLive do
           <p data-todo>Delete</p>
         </:action>
       </.table>
-    </.container>
+    </.dashboard>
     """
   end
 

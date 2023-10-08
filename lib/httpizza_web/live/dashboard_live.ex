@@ -16,7 +16,8 @@ defmodule HTTPizzaWeb.DashboardLive do
   end
 
   @impl true
-  def handle_params(_, _, %{assigns: %{current_organization: %IAM.Organization{}}} = socket) do
+  def handle_params(_, uri, %{assigns: %{current_organization: %IAM.Organization{}}} = socket) do
+    socket = assign(socket, :current_uri, uri)
     {:noreply, socket}
   end
 
@@ -26,31 +27,13 @@ defmodule HTTPizzaWeb.DashboardLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.container>
-      <div class="flex flex-col gap-4">
-        <DashboardComponents.organization_select
-          id="organization-select"
-          selection={@current_organization}
-          organizations={@current_user.organizations}
-          personal_organization_id={@current_user.personal_organization.id}
-        />
-
-        <nav class="py border rounded-lg w-[14rem]">
-          <ul class="my-2">
-            <li class="hover:bg-zinc-100">
-              <.link
-                class="block p-2 w-full h-full flex gap-2 items-center text-sm font-medium text-zinc-600 hover:text-zinc-700"
-                navigate={
-                  ~p"/dashboard/#{HTTPizzaWeb.Slug.humanize(@current_organization.slug, @current_user.personal_organization.slug)}/observers"
-                }
-              >
-                <.icon name="hero-lifebuoy-mini" /> Observers
-              </.link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </.container>
+    <.dashboard
+      current_uri={@current_uri}
+      organizations={@current_user.organizations}
+      personal_organization={@current_user.personal_organization}
+      current_organization={@current_organization}
+    >
+    </.dashboard>
     """
   end
 end
