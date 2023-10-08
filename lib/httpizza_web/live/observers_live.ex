@@ -32,10 +32,10 @@ defmodule HTTPizzaWeb.ObserversLive do
           HTTP Observers
         </h1>
         <.link
-          class="p-3 hover:bg-zinc-100"
+          class="py-2 pl-2 pr-3 text-sm font-medium hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
           navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
         >
-          New
+          <.icon name="hero-plus-mini" /> New
         </.link>
       </div>
       <.table id="http-observers" rows={@http_observers}>
