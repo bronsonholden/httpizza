@@ -36,7 +36,7 @@ defmodule HTTPizzaWeb.Templates do
 
     ~H"""
     <div class="w-full bg-slate-100 relative min-h-[calc(100vh-64px)]">
-      <div class="absolute left-0 top-0 bottom-0 right-1/2 bg-white" />
+      <div class="max-md:hidden absolute left-0 top-0 bottom-0 right-1/2 bg-white" />
       <div class="grow max-w-[96rem] mx-auto h-full flex flex-col md:flex-row bg-white min-h-[calc(100vh-64px)]">
         <div class={[
           "grow flex flex-col",
@@ -77,7 +77,7 @@ defmodule HTTPizzaWeb.Templates do
           "bg-slate-100 p-4"
         ]}>
           <div class={[
-            "sm:min-w-[22rem] sm:w-[22rem] sm:max-w-[22rem]"
+            "md:min-w-[22rem] md:w-[22rem] md:max-w-[22rem]"
           ]}>
             <div class="p-4 rounded-lg bg-white shadow">
               <h2 class="text-xl font-bold">Getting Started</h2>
