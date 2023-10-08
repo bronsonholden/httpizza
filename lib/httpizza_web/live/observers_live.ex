@@ -25,6 +25,7 @@ defmodule HTTPizzaWeb.ObserversLive do
       current_organization={@current_organization}
       personal_organization={@current_user.personal_organization}
       organizations={@current_user.organizations}
+      slug={@current_organization_slug}
     >
       <div class="flex items-center justify-between w-full">
         <p class="text-lg font-bold">
@@ -32,9 +33,7 @@ defmodule HTTPizzaWeb.ObserversLive do
         </p>
         <.link
           class="p-3 hover:bg-zinc-100"
-          navigate={
-            ~p"/dashboard/#{HTTPizzaWeb.Slug.humanize(@current_organization.slug, @current_user.personal_organization.slug)}/http-observers/new"
-          }
+          navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
         >
           New
         </.link>

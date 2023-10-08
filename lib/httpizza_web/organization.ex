@@ -46,13 +46,20 @@ defmodule HTTPizzaWeb.Organization do
          %{assigns: %{current_user: %IAM.User{} = current_user}} = socket,
          params
        ) do
-    Phoenix.Component.assign_new(socket, :current_organization, fn ->
-      case params["organization"] do
-        "personal" -> current_user.personal_organization
-        nil -> nil
-        slug -> HTTPizza.IAM.get_user_organization_by_slug(current_user, slug)
-      end
-    end)
+    socket =
+      Phoenix.Component.assign_new(socket, :current_organization, fn ->
+        case params["organization"] do
+          "personal" -> current_user.personal_organization
+          nil -> nil
+          slug -> HTTPizza.IAM.get_user_organization_by_slug(current_user, slug)
+        end
+      end)
+
+    Phoenix.Component.assign(
+      socket,
+      :current_organization_slug,
+      if(socket.assigns[:current_organization], do: params["organization"])
+    )
   end
 
   defp maybe_mount_current_organization(socket, _params), do: socket

@@ -30,6 +30,7 @@ defmodule HTTPizzaWeb.DashboardLive do
       organizations={@current_user.organizations}
       personal_organization={@current_user.personal_organization}
       current_organization={@current_organization}
+      slug={@current_organization_slug}
     >
     </.dashboard>
     """
