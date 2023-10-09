@@ -40,7 +40,16 @@ defmodule HTTPizza.Observers.HTTPObserver do
   @doc false
   def changeset(http_observer, attrs) do
     http_observer
-    |> cast(attrs, [:schedule, :https, :hostname, :port, :path, :method, :organization_id])
+    |> cast(attrs, [
+      :schedule,
+      :scheduled_at,
+      :https,
+      :hostname,
+      :port,
+      :path,
+      :method,
+      :organization_id
+    ])
     |> cast_embed(:header_checks)
     |> validate_required([
       :schedule,
