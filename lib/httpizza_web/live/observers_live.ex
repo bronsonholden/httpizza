@@ -30,7 +30,7 @@ defmodule HTTPizzaWeb.ObserversLive do
           HTTP Observers
         </h1>
         <.link
-          class="py-2 pl-2 pr-3 text-sm font-bold hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
+          class="h-full py-1 pl-1 pr-2 text-sm font-bold hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
           navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
         >
           <.icon name="hero-plus-mini" /> New
@@ -59,7 +59,12 @@ defmodule HTTPizzaWeb.ObserversLive do
             </td>
             <td class="py-3">
               <div class="flex items-center">
-                <.link navigate="#" class="block hover:text-zinc-800 text-zinc-400 rounded-full">
+                <.link
+                  navigate={
+                    ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}"
+                  }
+                  class="block hover:text-zinc-800 text-zinc-400 rounded-full"
+                >
                   <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
                 </.link>
               </div>
