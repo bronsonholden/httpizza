@@ -38,42 +38,44 @@ defmodule HTTPizzaWeb.ObserversLive do
           <.icon name="hero-plus-mini" /> New
         </.link>
       </div>
-      <table id="http-observers" class="border-collapse my-4 w-full">
-        <tbody class="border-t">
-          <tr :for={{http_observer, index} <- Enum.with_index(@http_observers)} class="border-b">
-            <td class="text-xs text-zinc-400 pr-4">
+      <ObserverComponents.timeline_guide />
+      <div id="http-observers" class="border-collapse my-4 w-full flex flex-col gap-2">
+        <div :for={{http_observer, index} <- Enum.with_index(@http_observers)} class="border-b">
+          <div class="flex gap-2 items-center">
+            <div class="text-xs text-zinc-400 pr-1">
               <%= index + 1 %>
-            </td>
-            <td class="py-3 pr-3 w-full font-mono">
-              <div class="flex flex-col gap-2">
-                <p class="tracking-tight text-blue-500 text-sm font-bold">
-                  <%= http_observer.hostname %><span class="text-zinc-400"><%= http_observer.path %></span>
-                </p>
-                <div class="tracking-tighter text-xs flex gap-1 justify-across font-medium">
-                  <.info_label
-                    label="scheme"
-                    value={if(http_observer.https, do: "https", else: "http")}
-                  />
-                  <.info_label label="port" value={http_observer.port} />
-                  <.info_label label="method" value={String.upcase(to_string(http_observer.method))} />
-                </div>
+            </div>
 
-                <ObserverComponents.status_bar http_observations={http_observer.http_observations} />
-              </div>
-            </td>
-            <td class="flex items-start">
-              <.link
-                navigate={
-                  ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}"
-                }
-                class="block hover:text-zinc-800 text-zinc-400 rounded-full"
-              >
-                <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
-              </.link>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <div class="grow font-mono">
+              <p class="tracking-tight text-blue-500 text-sm font-bold break-all" phx-no-format>
+                  <span class="text-orange-500">
+                    <%= String.upcase(to_string(http_observer.method)) %>
+                  </span>
+                  <span class="text-zinc-400"><%=
+                    if(http_observer.https, do: "https", else: "http")
+                  %>://</span><%=
+                    http_observer.hostname
+                  %><span class="text-zinc-400"><%=
+                    http_observer.path
+                  %></span>
+                </p>
+            </div>
+
+            <.link
+              navigate={
+                ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}"
+              }
+              class="block hover:text-zinc-800 text-zinc-400 rounded-full"
+            >
+              <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
+            </.link>
+          </div>
+
+          <div class="py-2">
+            <ObserverComponents.status_bar http_observations={http_observer.http_observations} />
+          </div>
+        </div>
+      </div>
     </.dashboard>
     """
   end

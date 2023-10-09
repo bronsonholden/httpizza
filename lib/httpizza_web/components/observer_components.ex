@@ -1,6 +1,8 @@
 defmodule HTTPizzaWeb.ObserverComponents do
   use Phoenix.Component
 
+  import HTTPizzaWeb.CoreComponents, only: [icon: 1]
+
   attr(:http_observations, :list, required: true)
 
   def status_bar(assigns) do
@@ -19,6 +21,20 @@ defmodule HTTPizzaWeb.ObserverComponents do
           ]}
         />
       </div>
+    </div>
+    """
+  end
+
+  def timeline_guide(assigns) do
+    ~H"""
+    <div class="w-full flex justify-between items-center text-zinc-400 text-xs my-4 gap-2">
+      <p class="flex items-center italic">
+        <.icon name="hero-arrow-left-mini" class="scale-50" /> older
+      </p>
+      <hr class="grow border-t-[1px] border-zinc-200" />
+      <p class="flex items-center italic">
+        newer <.icon name="hero-arrow-right-mini" class="scale-50" />
+      </p>
     </div>
     """
   end
