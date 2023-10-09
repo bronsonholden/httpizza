@@ -13,10 +13,15 @@ defmodule HTTPizzaWeb.HTTPObserverLive do
 
   @impl true
   def handle_params(%{"id" => id}, uri, socket) do
+    http_observer =
+      id
+      |> HTTPizza.Observers.get_http_observer!()
+      |> HTTPizza.Repo.preload(:http_observations)
+
     socket =
       socket
       |> assign(:current_uri, uri)
-      |> assign(:http_observer, HTTPizza.Observers.get_http_observer!(id))
+      |> assign(:http_observer, http_observer)
 
     {:noreply, socket}
   end
@@ -43,7 +48,23 @@ defmodule HTTPizzaWeb.HTTPObserverLive do
       <p class="text-sm text-zinc-400 font-medium">
         HTTP Observer
       </p>
-      <div class="my-4"></div>
+      <div class="my-4">
+        <div class="overflow-hidden w-full relative h-[2rem]">
+          <div class="absolute top-0 bottom-0 right-0 flex flex-row-reverse gap-[1px]">
+            <div
+              :for={http_observation <- @http_observer.http_observations}
+              class={[
+                "rounded w-[4px] h-full",
+                case http_observation.status do
+                  :ok -> "bg-green-500"
+                  :failed -> "bg-red-500"
+                  _ -> "bg-zinc-500"
+                end
+              ]}
+            />
+          </div>
+        </div>
+      </div>
       <div class="flex gap-2">
         <button
           phx-click="delete_http_observer"

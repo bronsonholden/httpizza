@@ -62,7 +62,13 @@ config :phoenix, :json_library, Jason
 
 config :httpizza, Oban,
   queues: [default: 2, observers: 5, notifiers: 2],
-  plugins: [Oban.Plugins.Pruner],
+  plugins: [
+    Oban.Plugins.Pruner,
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"* * * * *", HTTPizza.Observers.HTTPObserver.Scheduler}
+     ]}
+  ],
   repo: HTTPizza.Repo
 
 # Import environment specific config. This must remain at the bottom
