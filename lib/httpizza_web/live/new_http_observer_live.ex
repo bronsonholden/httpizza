@@ -60,9 +60,9 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
           label="Schedule"
           phx-debounce="200"
           options={[
-            {"Every minute", "0 * * * *"},
-            {"Every hour", "0 0 * * *"},
-            {"Every day", "0 0 0 * *"}
+            {"Every minute", "* * * * *"},
+            {"Every hour", "0 * * * *"},
+            {"Every day", "0 0 * * *"}
           ]}
         />
 
