@@ -77,7 +77,7 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
           </button>
         </div>
 
-        <div id="new-http-observer-head-checks">
+        <div id="new-http-observer-header-checks">
           <.inputs_for :let={check} field={@form[:header_checks]}>
             <fieldset class="pl-8 border-l-[4px] border-zinc-200 flex flex-col gap-2">
               <.input field={check[:header]} type="text" label="Header" required phx-debounce="200" />
