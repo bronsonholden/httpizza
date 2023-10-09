@@ -67,7 +67,7 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
         />
 
         <div class="flex items-center gap-4">
-          <p>Head checks</p>
+          <p>Header checks</p>
           <button
             type="button"
             class="rounded-full border p-1 rounded-full h-full aspect-square block flex items-center justify-center"
