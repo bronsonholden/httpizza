@@ -60,7 +60,8 @@ defmodule HTTPizza.MixProject do
       {:gen_smtp, "~> 1.0"},
       {:excoveralls, "~> 0.13", only: :test},
       {:oban, "~> 2.16"},
-      {:crontab, "~> 1.1"}
+      {:crontab, "~> 1.1"},
+      {:timex, "~> 3.0"}
     ]
   end
 
