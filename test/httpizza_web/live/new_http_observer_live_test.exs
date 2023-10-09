@@ -42,7 +42,7 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
                "https" => false,
                "method" => "get",
                "schedule" => "0 0 * * *",
-               "http_head_checks" => %{
+               "header_checks" => %{
                  "0" => %{
                    "header" => "Location",
                    "comparator" => "equal_to",
@@ -52,11 +52,10 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
              }
            })
 
-    assert [observer | _] =
-             HTTPizza.Observers.list_http_observers() |> HTTPizza.Repo.preload(:http_head_checks)
+    assert [observer | _] = HTTPizza.Observers.list_http_observers()
 
     assert [%{header: "Location", comparator: :equal_to, value: "https://htt.pizza/"}] =
-             observer.http_head_checks
+             observer.header_checks
 
     assert_redirected(live_view, ~p"/dashboard/personal/observers")
   end
