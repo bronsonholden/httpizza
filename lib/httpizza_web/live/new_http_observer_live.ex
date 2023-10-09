@@ -1,7 +1,7 @@
 defmodule HTTPizzaWeb.NewHTTPObserverLive do
   use HTTPizzaWeb, :live_view
 
-  alias HTTPizza.Checks.HTTPHeadCheck
+  alias HTTPizza.Checks.HeaderCheck
   alias HTTPizza.Observers
 
   import HTTPizzaWeb.Templates
@@ -15,7 +15,7 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
       %Observers.HTTPObserver{}
       |> Observers.change_http_observer(%{
         hostname: "",
-        http_head_checks: [%{}],
+        header_checks: [%{}],
         port: 80
       })
 
@@ -71,14 +71,14 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
           <button
             type="button"
             class="rounded-full border p-1 rounded-full h-full aspect-square block flex items-center justify-center"
-            phx-click="add_head_check"
+            phx-click="add_header_check"
           >
             <.icon name="hero-plus-mini" />
           </button>
         </div>
 
         <div id="new-http-observer-head-checks">
-          <.inputs_for :let={check} field={@form[:http_head_checks]}>
+          <.inputs_for :let={check} field={@form[:header_checks]}>
             <fieldset class="pl-8 border-l-[4px] border-zinc-200 flex flex-col gap-2">
               <.input field={check[:header]} type="text" label="Header" required phx-debounce="200" />
               <.input
@@ -113,21 +113,20 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
   end
 
   @impl true
-  def handle_event("add_head_check", _params, socket) do
+  def handle_event("add_header_check", _params, socket) do
     # TODO: when editing observer
-    # default value for Map.get/3 `socket.assigns.http_observer.http_head_checks`
-    existing = Map.get(socket.assigns.changeset.changes, :http_head_checks, [])
+    # default value for Map.get/3 `socket.assigns.http_observer.header_checks`
+    existing = Map.get(socket.assigns.changeset.changes, :header_checks, [])
 
-    http_head_checks =
+    header_checks =
       existing
       |> Enum.concat([
-        HTTPizza.Checks.change_http_head_check(%HTTPHeadCheck{id: Ecto.UUID.generate()})
+        HeaderCheck.changeset(%HeaderCheck{}, %{})
       ])
 
     changeset =
-      %Observers.HTTPObserver{}
-      |> Observers.change_http_observer()
-      |> Ecto.Changeset.put_assoc(:http_head_checks, http_head_checks)
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_change(:header_checks, header_checks)
 
     form = to_form(changeset, as: "http_observer")
 
@@ -154,15 +153,12 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset)
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
     end
   end
 
   @impl true
   def handle_event("validate", %{"http_observer" => http_observer_params}, socket) do
-    IO.inspect(http_observer_params)
-
     changeset =
       %Observers.HTTPObserver{}
       |> Observers.change_http_observer(http_observer_params)
