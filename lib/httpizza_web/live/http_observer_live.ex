@@ -13,10 +13,15 @@ defmodule HTTPizzaWeb.HTTPObserverLive do
 
   @impl true
   def handle_params(%{"id" => id}, uri, socket) do
+    http_observer =
+      id
+      |> HTTPizza.Observers.get_http_observer!()
+      |> HTTPizza.Repo.preload(:http_observations)
+
     socket =
       socket
       |> assign(:current_uri, uri)
-      |> assign(:http_observer, HTTPizza.Observers.get_http_observer!(id))
+      |> assign(:http_observer, http_observer)
 
     {:noreply, socket}
   end
