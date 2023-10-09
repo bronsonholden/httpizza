@@ -6,7 +6,7 @@ defmodule HTTPizza.Observers do
   import Ecto.Query, warn: false
 
   alias HTTPizza.Repo
-  alias HTTPizza.Observers.HTTPObserver
+  alias HTTPizza.Observers.{HTTPObserver, HTTPObservation}
 
   @doc """
   Returns the list of HTTP Observers.
@@ -56,7 +56,14 @@ defmodule HTTPizza.Observers do
       ** (Ecto.NoResultsError)
 
   """
-  def get_http_observer!(id), do: Repo.get!(HTTPObserver, id)
+  def get_http_observer!(id) do
+    observations =
+      from o in HTTPObservation,
+        order_by: [desc: o.inserted_at]
+
+    from(h in HTTPObserver, preload: [http_observations: ^observations])
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates an HTTP Observer.

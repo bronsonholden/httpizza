@@ -13,15 +13,10 @@ defmodule HTTPizzaWeb.HTTPObserverLive do
 
   @impl true
   def handle_params(%{"id" => id}, uri, socket) do
-    http_observer =
-      id
-      |> HTTPizza.Observers.get_http_observer!()
-      |> HTTPizza.Repo.preload(:http_observations)
-
     socket =
       socket
       |> assign(:current_uri, uri)
-      |> assign(:http_observer, http_observer)
+      |> assign(:http_observer, HTTPizza.Observers.get_http_observer!(id))
 
     {:noreply, socket}
   end
@@ -64,6 +59,66 @@ defmodule HTTPizzaWeb.HTTPObserverLive do
             />
           </div>
         </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th class="pr-2 pt-1 text-sm text-zinc-500 text-left">Run at</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm">
+            <tr :if={@http_observer.scheduled_at}>
+              <td>
+                <.icon name="hero-clock" class="text-zinc-500 animate-pulse scale-[85%]" />
+              </td>
+              <td class="text-xs">
+                <span class="text-zinc-500 font-mono">
+                  <%= Timex.format!(@http_observer.scheduled_at, "{ISO:Extended:Z}") %>
+                </span>
+                (<%= Timex.format!(
+                  @http_observer.scheduled_at,
+                  "{relative}",
+                  :relative
+                ) %>)
+              </td>
+            </tr>
+            <tr :for={http_observation <- @http_observer.http_observations}>
+              <td class="pr-2 pt-1 text-center">
+                <.icon
+                  name={
+                    case http_observation.status do
+                      :ok -> "hero-check"
+                      :failed -> "hero-x-mark"
+                      _ -> "hero-question-mark-circle"
+                    end
+                  }
+                  class={
+                    [
+                      "scale-[85%]",
+                      case http_observation.status do
+                        :ok -> "text-green-500"
+                        :failed -> "text-red-500"
+                        _ -> "text-yellow-500"
+                      end
+                    ]
+                    |> Enum.join(" ")
+                  }
+                />
+              </td>
+              <td class="pr-2 pt-1 text-xs">
+                <span class="text-zinc-500 font-mono">
+                  <%= Timex.format!(http_observation.inserted_at, "{ISO:Extended:Z}") %>
+                </span>
+                (<%= Timex.format!(
+                  http_observation.inserted_at,
+                  "{relative}",
+                  :relative
+                ) %>)
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="flex gap-2">
         <button
