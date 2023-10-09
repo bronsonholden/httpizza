@@ -1,6 +1,8 @@
 defmodule HTTPizzaWeb.ObserversLive do
   use HTTPizzaWeb, :live_view
 
+  alias HTTPizzaWeb.ObserverComponents
+
   import HTTPizzaWeb.Templates
 
   on_mount {HTTPizzaWeb.UserAuth, :ensure_authenticated}
@@ -42,7 +44,7 @@ defmodule HTTPizzaWeb.ObserversLive do
             <td class="text-xs text-zinc-400 pr-4">
               <%= index + 1 %>
             </td>
-            <td class="py-3 w-full font-mono">
+            <td class="py-3 pr-3 w-full font-mono">
               <div class="flex flex-col gap-2">
                 <p class="tracking-tight text-blue-500 text-sm font-bold">
                   <%= http_observer.hostname %><span class="text-zinc-400"><%= http_observer.path %></span>
@@ -55,19 +57,19 @@ defmodule HTTPizzaWeb.ObserversLive do
                   <.info_label label="port" value={http_observer.port} />
                   <.info_label label="method" value={String.upcase(to_string(http_observer.method))} />
                 </div>
+
+                <ObserverComponents.status_bar http_observations={http_observer.http_observations} />
               </div>
             </td>
-            <td class="py-3">
-              <div class="flex items-center">
-                <.link
-                  navigate={
-                    ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}"
-                  }
-                  class="block hover:text-zinc-800 text-zinc-400 rounded-full"
-                >
-                  <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
-                </.link>
-              </div>
+            <td class="flex items-start">
+              <.link
+                navigate={
+                  ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}"
+                }
+                class="block hover:text-zinc-800 text-zinc-400 rounded-full"
+              >
+                <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
+              </.link>
             </td>
           </tr>
         </tbody>
