@@ -24,7 +24,7 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
     refute has_element?(live_view, "[id=new-http-observer-head-checks] fieldset:nth-of-type(2)")
 
     assert live_view
-           |> element("[phx-click=add_head_check]")
+           |> element("[phx-click=add_header_check]")
            |> render_click()
 
     assert has_element?(live_view, "[id=new-http-observer-head-checks] fieldset:nth-of-type(2)")

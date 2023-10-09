@@ -38,17 +38,12 @@ defmodule HTTPizza.Observers.HTTPObserver do
     |> put_assoc(:organization, organization)
   end
 
-  def changeset(http_observer, %{header_checks: header_checks} = attrs) do
-    http_observer
-    |> changeset(Map.delete(attrs, :header_checks))
-    |> put_embed(:header_checks, header_checks)
-  end
-
   @doc false
   def changeset(http_observer, attrs) do
     http_observer
     |> cast(attrs, [:schedule, :https, :hostname, :port, :path, :method, :organization_id])
     |> cast_assoc(:http_head_checks)
+    |> cast_embed(:header_checks)
     |> validate_required([
       :schedule,
       :https,
