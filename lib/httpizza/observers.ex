@@ -33,6 +33,15 @@ defmodule HTTPizza.Observers do
     |> Repo.all()
   end
 
+  def list_http_observers_past_scheduled_run() do
+    now = DateTime.utc_now()
+
+    from(o in HTTPObserver,
+      where: is_nil(o.scheduled_at) or fragment("? <= ?", o.scheduled_at, ^now)
+    )
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single HTTP Observer.
 
