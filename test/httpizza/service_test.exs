@@ -4,6 +4,23 @@ defmodule HTTPizza.ServiceTest do
   alias HTTPizza.Checks.HeaderCheck
 
   describe "validate_header_check/2" do
+    test "returns failed CheckResult with no matching header" do
+      header_check =
+        %HeaderCheck{
+          header: "Content-Type",
+          comparator: :equal_to,
+          value: "application/json",
+          case_sensitive: true
+        }
+
+      result =
+        HTTPizza.Service.validate_header_check(header_check, %Finch.Response{
+          headers: []
+        })
+
+      assert result.status == :failed
+    end
+
     test "returns successful CheckResult with matching header" do
       header_check =
         %HeaderCheck{
