@@ -123,7 +123,7 @@ defmodule HTTPizza.ObserversTest do
         check_results: [
           %{
             status: :ok,
-            kind: to_string(Checks.HTTPHeadCheck),
+            kind: to_string(Checks.HeaderCheck),
             reason: "Received Location: https://example.com"
           }
         ]

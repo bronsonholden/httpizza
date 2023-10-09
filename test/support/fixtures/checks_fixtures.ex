@@ -5,22 +5,6 @@ defmodule HTTPizza.ChecksFixtures do
   """
 
   @doc """
-  Generate an HTTP head check.
-  """
-  def http_head_check_fixture(attrs \\ %{}) do
-    {:ok, http_head_check} =
-      attrs
-      |> Enum.into(%{
-        value: "Location",
-        header: "https://example.com/",
-        comparator: :equal_to
-      })
-      |> HTTPizza.Checks.create_http_head_check()
-
-    http_head_check
-  end
-
-  @doc """
   Generate an HTTP status check.
   """
   def http_status_check_fixture(attrs \\ %{}) do

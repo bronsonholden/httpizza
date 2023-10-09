@@ -1,9 +1,9 @@
 defmodule HTTPizza.Service do
   alias HTTPizza.Checks
 
-  @spec validate_http_check(%Checks.HTTPHeadCheck{}, Finch.Response.t()) :: %Checks.CheckResult{}
-  def validate_http_check(%Checks.HTTPHeadCheck{} = check, %Finch.Response{} = response) do
-    kind = to_string(Checks.HTTPHeadCheck)
+  @spec validate_header_check(%Checks.HeaderCheck{}, Finch.Response.t()) :: %Checks.CheckResult{}
+  def validate_header_check(%Checks.HeaderCheck{} = check, %Finch.Response{} = response) do
+    kind = to_string(Checks.HeaderCheck)
 
     header = String.downcase(check.header)
     comparator = check.comparator

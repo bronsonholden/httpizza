@@ -19,7 +19,7 @@ defmodule HTTPizza.HTTPObserverWorker do
       |> Finch.request(HTTPizza.Finch)
 
     check_results =
-      Enum.map(observer.http_head_checks, &HTTPizza.Service.validate_http_check(&1, response))
+      Enum.map(observer.header_checks, &HTTPizza.Service.validate_header_check(&1, response))
 
     status =
       check_results

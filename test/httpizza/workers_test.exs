@@ -12,7 +12,7 @@ defmodule HTTPizza.WorkersTest do
           https: false,
           hostname: "htt.pizza",
           schedule: "0 0 * * *",
-          http_head_checks: [
+          header_checks: [
             %{comparator: :equal_to, header: "Location", value: "https://htt.pizza/"}
           ]
         })
@@ -28,8 +28,12 @@ defmodule HTTPizza.WorkersTest do
           https: false,
           hostname: "htt.pizza",
           schedule: "0 0 * * *",
-          http_head_checks: [
-            %{comparator: :not_equal_to, header: "Location", value: "https://htt.pizza/"}
+          header_checks: [
+            %{
+              comparator: :not_equal_to,
+              header: "Location",
+              value: "https://htt.pizza/"
+            }
           ]
         })
 
