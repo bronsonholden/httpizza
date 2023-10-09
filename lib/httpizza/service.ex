@@ -14,7 +14,10 @@ defmodule HTTPizza.Service do
         {^header, _} -> true
         _ -> false
       end)
-      |> elem(1)
+      |> case do
+        nil -> nil
+        tuple -> elem(tuple, 1)
+      end
 
     if header_value_match?(header, expected, received, comparator, check.case_sensitive) do
       %Checks.CheckResult{
@@ -30,6 +33,8 @@ defmodule HTTPizza.Service do
       }
     end
   end
+
+  def header_value_match(_, _, nil, _, _), do: false
 
   # in the context of the given header, do the `expected` and `received` string values
   # match when considering case sensitivity?
@@ -65,6 +70,8 @@ defmodule HTTPizza.Service do
       :not_equal_to -> expected != received
     end
   end
+
+  defp reason(_comparator, _expected, nil), do: "No matching header found"
 
   defp reason(comparator, expected, received) do
     expr =
