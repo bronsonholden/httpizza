@@ -59,7 +59,8 @@ defmodule HTTPizza.MixProject do
       {:hackney, "~> 1.9"},
       {:gen_smtp, "~> 1.0"},
       {:excoveralls, "~> 0.13", only: :test},
-      {:oban, "~> 2.16"}
+      {:oban, "~> 2.16"},
+      {:crontab, "~> 1.1"}
     ]
   end
 
