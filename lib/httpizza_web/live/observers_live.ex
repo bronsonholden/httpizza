@@ -59,7 +59,12 @@ defmodule HTTPizzaWeb.ObserversLive do
             </td>
             <td class="py-3">
               <div class="flex items-center">
-                <.link navigate="#" class="block hover:text-zinc-800 text-zinc-400 rounded-full">
+                <.link
+                  navigate={
+                    ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}"
+                  }
+                  class="block hover:text-zinc-800 text-zinc-400 rounded-full"
+                >
                   <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
                 </.link>
               </div>
