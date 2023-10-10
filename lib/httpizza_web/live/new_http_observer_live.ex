@@ -145,9 +145,7 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
       {:ok, _observer} ->
         socket =
           socket
-          |> push_navigate(
-            to: ~p"/dashboard/#{socket.assigns.current_organization_slug}/observers"
-          )
+          |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")
           |> put_flash(:info, "HTTP observer created")
 
         {:noreply, socket}

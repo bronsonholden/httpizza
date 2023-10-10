@@ -32,7 +32,7 @@ defmodule HTTPizzaWeb.HTTPObserverLive do
       slug={@current_organization_slug}
     >
       <.link
-        navigate={~p"/dashboard/#{@current_organization_slug}/observers"}
+        navigate={~p"/dashboard/#{@current_organization_slug}"}
         class="mb-4 text-sm flex items-center text-zinc-500 hover:text-zinc-800 font-medium"
       >
         <.icon name="hero-chevron-left-mini" class="scale-75" />Back
@@ -123,7 +123,7 @@ defmodule HTTPizzaWeb.HTTPObserverLive do
     socket =
       socket
       |> put_flash(:info, "HTTP observer deleted")
-      |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}/observers")
+      |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")
 
     {:noreply, socket}
   end
