@@ -34,10 +34,10 @@ defmodule HTTPizza.Service do
     end
   end
 
-  def header_value_match?(_, _, nil, _, _), do: false
-
   # in the context of the given header, do the `expected` and `received` string values
   # match when considering case sensitivity?
+  def header_value_match?(_, _, nil, _, _), do: false
+
   def header_value_match?("location", expected_uri, received_uri, comparator, case_sensitive) do
     header_value_match?(
       "_location",
