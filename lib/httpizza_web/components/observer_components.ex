@@ -7,9 +7,9 @@ defmodule HTTPizzaWeb.ObserverComponents do
 
   def check_list_item(%{check: %HTTPizza.Checks.HeaderCheck{}} = assigns) do
     ~H"""
-    <p class="font-mono font-medium text-sm">
+    <p class="font-mono font-medium text-xs">
       <span class="text-zinc-500"><%= @check.header %></span>
-      <span class="rounded p-1 bg-zinc-200"><%= @check.comparator %></span>
+      <span class="rounded px-1 py-[2px] bg-zinc-200"><%= @check.comparator %></span>
       <span class="text-zinc-500"><%= @check.value %></span>
     </p>
     """
