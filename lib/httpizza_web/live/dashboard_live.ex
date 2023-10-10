@@ -43,7 +43,7 @@ defmodule HTTPizzaWeb.DashboardLive do
       current_organization={@current_organization}
       slug={@current_organization_slug}
     >
-      <div class="flex items-center justify-between w-full">
+      <div class="flex items-start justify-between w-full">
         <DashboardComponents.breadcrumbs
           organization={@current_organization}
           slug={@current_organization_slug}
