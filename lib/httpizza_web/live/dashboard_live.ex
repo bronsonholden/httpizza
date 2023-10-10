@@ -1,4 +1,5 @@
 defmodule HTTPizzaWeb.DashboardLive do
+  alias HTTPizzaWeb.DashboardComponents
   use HTTPizzaWeb, :live_view
 
   alias Phoenix.LiveView.JS
@@ -43,9 +44,11 @@ defmodule HTTPizzaWeb.DashboardLive do
       slug={@current_organization_slug}
     >
       <div class="flex items-center justify-between w-full">
-        <h1 class="text-2xl font-bold">
-          HTTP Observers
-        </h1>
+        <DashboardComponents.breadcrumbs
+          organization={@current_organization}
+          slug={@current_organization_slug}
+          title="HTTP Observers"
+        />
         <.link
           class="h-full py-1 pl-1 pr-2 text-sm font-bold hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
           navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
