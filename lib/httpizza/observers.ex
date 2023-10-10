@@ -25,7 +25,7 @@ defmodule HTTPizza.Observers do
   Returns the list of HTTP Observers associated with the given organization by `id`.
   """
   def list_organization_http_observers(organization_id) do
-    observations = from(o in HTTPObservation, order_by: [desc: o.inserted_at])
+    observations = from(o in HTTPObservation, order_by: [desc: o.inserted_at], limit: 200)
 
     from(o in HTTPObserver,
       where: o.organization_id == ^organization_id,
@@ -61,7 +61,8 @@ defmodule HTTPizza.Observers do
   def get_http_observer!(id) do
     observations =
       from o in HTTPObservation,
-        order_by: [desc: o.inserted_at]
+        order_by: [desc: o.inserted_at],
+        limit: 20
 
     from(h in HTTPObserver, preload: [http_observations: ^observations])
     |> Repo.get!(id)
