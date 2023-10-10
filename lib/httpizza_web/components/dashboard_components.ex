@@ -7,6 +7,27 @@ defmodule HTTPizzaWeb.DashboardComponents do
 
   import HTTPizzaWeb.CoreComponents, only: [icon: 1]
 
+  attr(:organization, :any, required: true)
+  attr(:slug, :string, required: true)
+  attr(:title, :string, required: true)
+
+  def breadcrumbs(assigns) do
+    ~H"""
+    <div class="flex items-center">
+      <.link
+        class="font-mono font-bold text-sm text-zinc-500 hover:text-zinc-900"
+        navigate={~p"/dashboard/#{@slug}"}
+      >
+        <%= @slug %>
+      </.link>
+      <div class="aspect-square">
+        <.icon name="hero-chevron-right-solid" class="font-bold text-zinc-400 scale-75 mr-2" />
+      </div>
+      <p class="font-bold text-zinc-600"><%= @title %></p>
+    </div>
+    """
+  end
+
   attr(:current_uri, :string, required: true)
   attr(:slug, :string, required: true)
 

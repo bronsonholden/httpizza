@@ -1,6 +1,8 @@
 defmodule HTTPizzaWeb.OrganizationLive do
   use HTTPizzaWeb, :live_view
 
+  alias HTTPizzaWeb.DashboardComponents
+
   import HTTPizzaWeb.Templates
 
   on_mount {HTTPizzaWeb.UserAuth, :ensure_authenticated}
@@ -23,7 +25,11 @@ defmodule HTTPizzaWeb.OrganizationLive do
       current_organization={@current_organization}
       slug={@current_organization_slug}
     >
-      <h1 class="text-2xl font-bold">Organization settings</h1>
+      <DashboardComponents.breadcrumbs
+        organization={@current_organization}
+        slug={@current_organization_slug}
+        title="Settings"
+      />
     </.dashboard>
     """
   end
