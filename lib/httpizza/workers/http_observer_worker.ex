@@ -1,5 +1,5 @@
 defmodule HTTPizza.HTTPObserverWorker do
-  use Oban.Worker, queue: :observers
+  use Oban.Worker, queue: :observers, unique: [period: 60, fields: [:args, :worker]]
 
   alias HTTPizza.Observers
   alias HTTPizza.Observers.{HTTPObserver, HTTPObservation}
