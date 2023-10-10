@@ -1,7 +1,7 @@
 defmodule HTTPizza.Observers.HTTPObserver.Scheduler do
   require Logger
 
-  use Oban.Worker, queue: :default
+  use Oban.Worker, queue: :default, unique: [period: 60, fields: [:worker]]
 
   alias HTTPizza.Observers
 
