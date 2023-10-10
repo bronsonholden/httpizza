@@ -26,7 +26,9 @@ defmodule HTTPizzaWeb.ObserverComponents do
   def status_bar(assigns) do
     ~H"""
     <div class="overflow-hidden w-full relative h-[1rem]">
-      <div class="absolute top-0 bottom-0 right-0 flex flex-row-reverse gap-[2px]">
+      <div class="absolute top-0 left-0 right-1/3 bottom-0 bg-gradient-to-r from-white/20 z-50" />
+      <div class="absolute top-0 left-0 right-[90%] bottom-0 bg-gradient-to-r from-white/90 z-50" />
+      <div class="absolute top-0 bottom-0 right-0 flex flex-row-reverse gap-[2px] z-40">
         <div
           :for={http_observation <- Enum.take(@http_observations, 200)}
           class={[
