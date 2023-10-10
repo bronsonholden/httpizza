@@ -6,12 +6,9 @@ defmodule HTTPizza.HTTPObserverWorker do
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: %{"id" => id}}) do
-    {:ok, _} =
-      id
-      |> Observers.get_http_observer!()
-      |> observe()
-
-    :ok
+    id
+    |> Observers.get_http_observer!()
+    |> observe()
   end
 
   def observe(%HTTPObserver{} = observer) do
