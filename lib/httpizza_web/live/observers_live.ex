@@ -1,6 +1,7 @@
 defmodule HTTPizzaWeb.ObserversLive do
   use HTTPizzaWeb, :live_view
 
+  alias Phoenix.LiveView.JS
   alias HTTPizzaWeb.ObserverComponents
 
   import HTTPizzaWeb.Templates
@@ -40,25 +41,44 @@ defmodule HTTPizzaWeb.ObserversLive do
       </div>
       <ObserverComponents.timeline_guide />
       <div id="http-observers" class="border-collapse my-4 w-full flex flex-col gap-2">
-        <div :for={{http_observer, index} <- Enum.with_index(@http_observers)} class="border-b">
+        <div
+          :for={{http_observer, index} <- Enum.with_index(@http_observers)}
+          id={"observer-#{http_observer.id}"}
+          class="open border-b group/observer"
+        >
           <div class="flex gap-2 items-center">
             <div class="text-xs text-zinc-400 pr-1">
               <%= index + 1 %>
             </div>
 
+            <button
+              type="button"
+              phx-click={expand_js(http_observer.id)}
+              class="rounded-full h-full flex items-center aspect-square hover:bg-zinc-100 hover:text-zinc-800"
+            >
+              <.icon
+                name="hero-chevron-right"
+                class="text-zinc-500 scale-[60%] group-[.open]/observer:hidden"
+              />
+              <.icon
+                name="hero-chevron-down"
+                class="text-zinc-500 scale-[60%] hidden group-[.open]/observer:block"
+              />
+            </button>
+
             <div class="grow font-mono">
               <p class="tracking-tight text-blue-500 text-sm font-bold break-all" phx-no-format>
-                  <span class="text-orange-500">
-                    <%= String.upcase(to_string(http_observer.method)) %>
-                  </span>
-                  <span class="text-zinc-400"><%=
-                    if(http_observer.https, do: "https", else: "http")
-                  %>://</span><%=
-                    http_observer.hostname
-                  %><span class="text-zinc-400"><%=
-                    http_observer.path
-                  %></span>
-                </p>
+                <span class="text-orange-500">
+                  <%= String.upcase(to_string(http_observer.method)) %>
+                </span>
+                <span class="text-zinc-400"><%=
+                  if(http_observer.https, do: "https", else: "http")
+                %>://</span><%=
+                  http_observer.hostname
+                %><span class="text-zinc-400"><%=
+                  http_observer.path
+                %></span>
+              </p>
             </div>
 
             <.link
@@ -69,6 +89,13 @@ defmodule HTTPizzaWeb.ObserversLive do
             >
               <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
             </.link>
+          </div>
+
+          <div class="ml-20 hidden group-[.open]/observer:block">
+            <div :for={check <- http_observer.header_checks} class="flex items-center">
+              <ObserverComponents.check_list_icon />
+              <ObserverComponents.check_list_item check={check} />
+            </div>
           </div>
 
           <div class="py-2">
@@ -92,5 +119,11 @@ defmodule HTTPizzaWeb.ObserversLive do
       </span>
     </p>
     """
+  end
+
+  defp expand_js(id) do
+    %JS{}
+    |> JS.add_class("open", to: "[id='observer-#{id}']:not(.open)")
+    |> JS.remove_class("open", to: "[id='observer-#{id}'].open")
   end
 end

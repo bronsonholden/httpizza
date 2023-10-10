@@ -3,6 +3,24 @@ defmodule HTTPizzaWeb.ObserverComponents do
 
   import HTTPizzaWeb.CoreComponents, only: [icon: 1]
 
+  attr(:check, :any, required: true)
+
+  def check_list_item(%{check: %HTTPizza.Checks.HeaderCheck{}} = assigns) do
+    ~H"""
+    <p class="font-mono font-medium text-sm">
+      <span class="text-zinc-500"><%= @check.header %></span>
+      <span class="rounded p-1 bg-zinc-200"><%= @check.comparator %></span>
+      <span class="text-zinc-500"><%= @check.value %></span>
+    </p>
+    """
+  end
+
+  def check_list_icon(assigns) do
+    ~H"""
+    <p class="inline-block text-zinc-500 font-bold pb-2 align-text-top mr-2">↳</p>
+    """
+  end
+
   attr(:http_observations, :list, required: true)
 
   def status_bar(assigns) do
