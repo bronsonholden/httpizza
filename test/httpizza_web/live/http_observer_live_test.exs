@@ -12,7 +12,7 @@ defmodule HTTPizzaWeb.HTTPObserverLiveTest do
 
   test "renders HTTP observer page", %{conn: conn, http_observer: http_observer} do
     assert {:ok, _live_view, html} =
-             live(conn, ~p"/dashboard/personal/http-observers/#{http_observer.id}")
+             live(conn, ~p"/dashboard/personal/observers/#{http_observer.id}")
 
     assert html =~ http_observer.hostname
   end

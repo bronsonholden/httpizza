@@ -14,19 +14,18 @@ defmodule HTTPizzaWeb.Templates do
   slot(:inner_block)
 
   def dashboard(assigns) do
-    parts =
+    path =
       assigns.current_uri
       |> URI.new!()
       |> Map.get(:path)
       |> String.split("/")
-      # ["", "dashboard", _slug]
-      |> Enum.drop(3)
-
-    path = Enum.join(["" | parts], "/")
+      # ["", "dashboard", _slug, page]
+      # ^-- we want to append `page` to org selector links
+      |> Enum.at(3)
 
     assigns =
       assigns
-      |> assign(:path, path)
+      |> assign(:path, "/#{path}")
 
     ~H"""
     <div class="w-full bg-slate-100 relative min-h-[calc(100vh-64px)]">

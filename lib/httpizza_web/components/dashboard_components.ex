@@ -48,7 +48,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
     <ul>
       <li class={[
         "hover:bg-zinc-100 rounded",
-        if(@current_path == @path,
+        if(is_active?(@current_path, @path),
           do: "bg-zinc-100/75 text-zinc-900",
           else: "text-zinc-500"
         )
@@ -137,5 +137,21 @@ defmodule HTTPizzaWeb.DashboardComponents do
     else
       organization.slug
     end
+  end
+
+  defp is_active?(current_path, path) do
+    # drop `/dashboard/:slug` from paths
+    path_matches?(
+      String.split(current_path, "/") |> Enum.at(3),
+      String.split(path, "/") |> Enum.at(3)
+    )
+  end
+
+  defp path_matches?(current_path, nil), do: is_nil(current_path)
+
+  defp path_matches?(nil, path), do: is_nil(path)
+
+  defp path_matches?(current_path, path) do
+    String.starts_with?(current_path, path)
   end
 end
