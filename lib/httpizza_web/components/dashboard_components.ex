@@ -13,16 +13,14 @@ defmodule HTTPizzaWeb.DashboardComponents do
 
   def breadcrumbs(assigns) do
     ~H"""
-    <div class="flex items-center">
+    <div class="flex gap-2 items-center">
       <.link
         class="font-mono font-bold text-sm text-zinc-500 hover:text-zinc-900"
         navigate={~p"/dashboard/#{@slug}"}
       >
         <%= @slug %>
       </.link>
-      <div class="aspect-square">
-        <.icon name="hero-chevron-right-solid" class="font-bold text-zinc-400 scale-75 mr-2" />
-      </div>
+      <.icon name="hero-chevron-right-solid" class="shrink-0 font-bold text-zinc-400 scale-75" />
       <p class="font-bold text-zinc-600"><%= @title %></p>
     </div>
     """
