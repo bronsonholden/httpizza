@@ -19,14 +19,8 @@ defmodule HTTPizzaWeb.DashboardComponents do
       <.navigation_link
         current_path={@current_path}
         path={~p"/dashboard/#{@slug}"}
-        icon="hero-home"
-        label="Home"
-      />
-      <.navigation_link
-        current_path={@current_path}
-        path={~p"/dashboard/#{@slug}/observers"}
         icon="hero-lifebuoy"
-        label="Observers"
+        label="HTTP Observers"
       />
       <.navigation_link
         current_path={@current_path}

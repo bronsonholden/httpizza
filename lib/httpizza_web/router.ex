@@ -72,12 +72,10 @@ defmodule HTTPizzaWeb.Router do
           live "/", DashboardLive, :show
           live "/settings", OrganizationLive, :show
 
-          scope "/observers" do
-            live "/", ObserversLive, :index
+          scope "/http-observers" do
+            live "/new", NewHTTPObserverLive, :new
+            live "/:id", HTTPObserverLive, :new
           end
-
-          live "/observers/new", NewHTTPObserverLive, :new
-          live "/observers/:id", HTTPObserverLive, :new
         end
       end
 

@@ -11,13 +11,13 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
   end
 
   test "renders new HTTP observer page", %{conn: conn} do
-    assert {:ok, _live_view, html} = live(conn, ~p"/dashboard/personal/observers/new")
+    assert {:ok, _live_view, html} = live(conn, ~p"/dashboard/personal/http-observers/new")
 
     assert html
   end
 
   test "renders additional sections for header checks", %{conn: conn} do
-    assert {:ok, live_view, _html} = live(conn, ~p"/dashboard/personal/observers/new")
+    assert {:ok, live_view, _html} = live(conn, ~p"/dashboard/personal/http-observers/new")
 
     # start with single
     assert has_element?(live_view, "[id=new-http-observer-header-checks] fieldset:nth-of-type(1)")
@@ -31,7 +31,7 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
   end
 
   test "creates new HTTP observer", %{conn: conn} do
-    assert {:ok, live_view, _html} = live(conn, ~p"/dashboard/personal/observers/new")
+    assert {:ok, live_view, _html} = live(conn, ~p"/dashboard/personal/http-observers/new")
 
     assert live_view
            |> render_change("create", %{
@@ -57,6 +57,6 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
     assert [%{header: "Location", comparator: :equal_to, value: "https://htt.pizza/"}] =
              observer.header_checks
 
-    assert_redirected(live_view, ~p"/dashboard/personal/observers")
+    assert_redirected(live_view, ~p"/dashboard/personal")
   end
 end

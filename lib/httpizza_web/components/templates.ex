@@ -22,10 +22,13 @@ defmodule HTTPizzaWeb.Templates do
       # ["", "dashboard", _slug, page]
       # ^-- we want to append `page` to org selector links
       |> Enum.at(3)
+      |> case do
+        "" -> ""
+        nil -> ""
+        path -> "/#{path}"
+      end
 
-    assigns =
-      assigns
-      |> assign(:path, "/#{path}")
+    assigns = assign(assigns, :path, path)
 
     ~H"""
     <div class="w-full bg-slate-100 relative min-h-[calc(100vh-64px)]">
