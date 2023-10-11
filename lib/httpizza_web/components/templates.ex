@@ -3,6 +3,8 @@ defmodule HTTPizzaWeb.Templates do
 
   alias HTTPizzaWeb.DashboardComponents
 
+  import HTTPizzaWeb.CoreComponents, only: [icon: 1]
+
   attr(:current_uri, :string, required: true)
   attr(:current_organization, :any, required: true)
   attr(:personal_organization, :any, required: true)
@@ -73,10 +75,10 @@ defmodule HTTPizzaWeb.Templates do
           "bg-slate-100 p-4"
         ]}>
           <div class={[
-            "md:min-w-[22rem] md:w-[22rem] md:max-w-[22rem]"
+            "md:min-w-[22rem] md:w-[22rem] md:max-w-[22rem] flex flex-col gap-4"
           ]}>
             <div class="p-4 rounded-lg bg-white shadow">
-              <h2 class="text-xl font-bold">Getting Started</h2>
+              <h2 class="text-xl font-bold text-zinc-800">Getting Started</h2>
               <p class="text-sm text-zinc-500 font-medium my-2">
                 HTTPizza is a practical monitoring system for websites and APIs—any online service
                 can be observed, alerting you when outages or errors occur.
@@ -84,6 +86,31 @@ defmodule HTTPizzaWeb.Templates do
               <p class="text-xs text-zinc-400 mt-3 font-medium">
                 * Pizza delivery notifications coming soon
               </p>
+            </div>
+
+            <div class="p-4 rounded-lg bg-white shadow">
+              <h2 class="text-xl font-bold text-zinc-800">Example use cases</h2>
+              <p class="text-sm text-zinc-500 font-medium my-2">
+                Not sure what to do? Try these!
+              </p>
+              <ul class="text-sm text-zinc-500">
+                <li class="flex items-start gap-2">
+                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%] text-zinc-500" />
+                  <p>
+                    Verify non-<span class="font-mono bg-zinc-100 px-1">www</span> to
+                    <span class="font-mono bg-zinc-100 px-1">www</span>
+                    redirects (or vice versa).
+                  </p>
+                </li>
+                <li class="flex items-start gap-2">
+                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%] text-zinc-500" />
+                  <p>Security probing—ensure unauthenticated requests receive appropriate errors.</p>
+                </li>
+                <li class="flex items-start gap-2">
+                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%] text-zinc-500" />
+                  <p>Performance monitoring—be alerted when endpoints take too long to respond.</p>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
