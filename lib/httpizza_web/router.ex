@@ -76,6 +76,10 @@ defmodule HTTPizzaWeb.Router do
             live "/new", NewHTTPObserverLive, :new
             live "/:id", HTTPObserverLive, :new
           end
+
+          scope "/http-observations" do
+            live "/:id", HTTPObservationLive, :show
+          end
         end
       end
 

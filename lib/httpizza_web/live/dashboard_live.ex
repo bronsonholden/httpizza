@@ -116,7 +116,10 @@ defmodule HTTPizzaWeb.DashboardLive do
           </div>
 
           <div class="py-2">
-            <ObserverComponents.status_bar http_observations={http_observer.http_observations} />
+            <ObserverComponents.status_bar
+              slug={@current_organization_slug}
+              http_observations={http_observer.http_observations}
+            />
           </div>
         </div>
       </div>
