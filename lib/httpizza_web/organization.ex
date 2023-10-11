@@ -32,6 +32,17 @@ defmodule HTTPizzaWeb.Organization do
     {:cont, maybe_mount_current_organization(socket, params)}
   end
 
+  # for nested LiveViews, grab slug from session
+  def on_mount(:ensure_organization_selected, :not_mounted_at_router, %{"slug" => slug}, socket) do
+    socket = maybe_mount_current_organization(socket, %{"organization" => slug})
+
+    if socket.assigns.current_organization do
+      {:cont, socket}
+    else
+      {:halt, Phoenix.LiveView.redirect(socket, to: ~p"/dashboard")}
+    end
+  end
+
   def on_mount(:ensure_organization_selected, params, _session, socket) do
     socket = maybe_mount_current_organization(socket, params)
 
