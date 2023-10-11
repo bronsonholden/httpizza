@@ -1,5 +1,6 @@
 defmodule HTTPizzaWeb.ObserverComponents do
   use Phoenix.Component
+  use HTTPizzaWeb, :verified_routes
 
   import HTTPizzaWeb.CoreComponents, only: [icon: 1]
 
@@ -22,24 +23,29 @@ defmodule HTTPizzaWeb.ObserverComponents do
   end
 
   attr(:http_observations, :list, required: true)
+  attr(:slug, :string, required: true)
 
   def status_bar(assigns) do
     ~H"""
     <div class="overflow-hidden w-full relative h-[1rem]">
-      <div class="absolute top-0 left-0 right-1/3 bottom-0 bg-gradient-to-r from-white/20 z-50" />
-      <div class="absolute top-0 left-0 right-[90%] bottom-0 bg-gradient-to-r from-white/90 z-50" />
-      <div class="absolute top-0 bottom-0 right-0 flex flex-row-reverse gap-[2px] z-40">
-        <div
+      <div class="pointer-events-none absolute top-0 left-0 right-1/3 bottom-0 bg-gradient-to-r from-white/20 z-50" />
+      <div class="pointer-events-none absolute top-0 left-0 right-[90%] bottom-0 bg-gradient-to-r from-white/90 z-50" />
+      <div class="absolute top-0 bottom-0 right-0 flex flex-row-reverse z-40">
+        <.link
           :for={http_observation <- Enum.take(@http_observations, 200)}
-          class={[
-            "rounded w-[4px] h-full",
+          navigate={~p"/dashboard/#{@slug}/http-observations/#{http_observation.id}"}
+          class="w-[6px] h-full p-[1px] group/pill"
+        >
+          <div class={[
+            "h-full w-full rounded group-hover/pill:scale-[110%]",
             case http_observation.status do
-              :ok -> "bg-green-500"
-              :failed -> "bg-red-500"
-              _ -> "bg-zinc-500"
+              :ok -> "bg-green-500 group-hover/pill:bg-green-400"
+              :failed -> "bg-red-500 group-hover/pill:bg-red-400"
+              _ -> "bg-zinc-500 group-hover/pill:bg-zinc-400"
             end
-          ]}
-        />
+          ]}>
+          </div>
+        </.link>
       </div>
     </div>
     """
