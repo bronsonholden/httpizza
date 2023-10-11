@@ -23,6 +23,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
 
     embeds_many :email_recipients, HTTPizza.Notifications.EmailRecipient
     embeds_many :header_checks, HTTPizza.Checks.HeaderCheck, on_replace: :delete
+    embeds_many :status_checks, HTTPizza.Checks.StatusCheck, on_replace: :delete
 
     timestamps()
   end
@@ -51,6 +52,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
       :organization_id
     ])
     |> cast_embed(:header_checks)
+    |> cast_embed(:status_checks)
     |> validate_required([
       :schedule,
       :https,

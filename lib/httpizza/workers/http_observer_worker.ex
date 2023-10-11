@@ -56,7 +56,11 @@ defmodule HTTPizza.HTTPObserverWorker do
 
   defp process_response(%HTTPObserver{} = observer, %Finch.Response{} = response) do
     check_results =
-      Enum.map(observer.header_checks, &HTTPizza.Service.validate_header_check(&1, response))
+      [
+        Enum.map(observer.header_checks, &HTTPizza.Service.validate_header_check(&1, response)),
+        Enum.map(observer.status_checks, &HTTPizza.Service.validate_status_check(&1, response))
+      ]
+      |> Enum.concat()
 
     status =
       check_results

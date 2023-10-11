@@ -34,6 +34,36 @@ defmodule HTTPizza.Service do
     end
   end
 
+  @spec validate_header_check(%Checks.StatusCheck{}, Finch.Response.t()) :: %Checks.CheckResult{}
+  def validate_status_check(%Checks.StatusCheck{} = check, %Finch.Response{} = response) do
+    kind = to_string(Checks.StatusCheck)
+
+    status =
+      response.status
+      |> to_string()
+
+    match =
+      case check.comparator do
+        :equal_to -> check.code == status
+        :is_success -> String.starts_with?(status, "2")
+        :is_redirect -> String.starts_with?(status, "3")
+      end
+
+    if match do
+      %Checks.CheckResult{
+        kind: kind,
+        status: :ok,
+        reason: "Received #{status}"
+      }
+    else
+      %Checks.CheckResult{
+        kind: kind,
+        status: :failed,
+        reason: reason(check.comparator, check.code, status)
+      }
+    end
+  end
+
   # in the context of the given header, do the `expected` and `received` string values
   # match when considering case sensitivity?
   def header_value_match?(_, _, nil, _, _), do: false
@@ -82,8 +112,10 @@ defmodule HTTPizza.Service do
         :ends_with -> "to end with"
         :does_not_contain -> "to not contain"
         :not_equal_to -> "to not equal"
+        :is_success -> "to be successful"
+        :is_redirect -> "to be redirected"
       end
 
-    "Expected #{received} #{expr} #{expected}"
+    String.trim("Expected #{received} #{expr} #{expected}")
   end
 end

@@ -16,6 +16,16 @@ defmodule HTTPizzaWeb.ObserverComponents do
     """
   end
 
+  def check_list_item(%{check: %HTTPizza.Checks.StatusCheck{}} = assigns) do
+    ~H"""
+    <p class="font-mono font-medium text-xs">
+      <span class="text-zinc-500">Status</span>
+      <span class="rounded px-1 py-[2px] bg-zinc-200"><%= @check.comparator %></span>
+      <span :if={@check.comparator == :equal_to} class="text-zinc-500"><%= @check.code %></span>
+    </p>
+    """
+  end
+
   def check_list_icon(assigns) do
     ~H"""
     <p class="inline-block text-zinc-500 font-bold pb-2 align-text-top mr-2">↳</p>
