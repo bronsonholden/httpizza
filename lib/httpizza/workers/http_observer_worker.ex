@@ -21,8 +21,8 @@ defmodule HTTPizza.HTTPObserverWorker do
     with {:ok, response} <- result do
       process_response(observer, response)
     else
-      {:error, _} ->
-        reason = "Unable to complete the HTTP request as configured"
+      {:error, error} ->
+        reason = "Error: #{Exception.message(error)}"
 
         {:ok, observation} =
           observation_changeset(observer, %{
@@ -69,11 +69,21 @@ defmodule HTTPizza.HTTPObserverWorker do
         _ -> :failed
       end
 
+    reason =
+      case status do
+        :ok -> "All checks passed"
+        :failed -> "One or more checks failed"
+      end
+
     {:ok, %{observation: observation}} =
       Ecto.Multi.new()
       |> Ecto.Multi.insert(
         :observation,
-        observation_changeset(observer, %{status: status, check_results: check_results})
+        observation_changeset(observer, %{
+          reason: reason,
+          status: status,
+          check_results: check_results
+        })
       )
       # |> Oban.insert() # notification job(s)
       |> HTTPizza.Repo.transaction()

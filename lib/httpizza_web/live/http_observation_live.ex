@@ -40,6 +40,10 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
         <.icon name="hero-chevron-left-mini" class="scale-75" />Back
       </.link>
 
+      <p class="my-4 font-medium">
+        <span class="text-zinc-400">Result:</span> <%= @http_observation.reason %>
+      </p>
+
       <table>
         <thead>
           <tr class="text-xs text-zinc-400">
