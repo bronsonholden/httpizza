@@ -113,6 +113,10 @@ defmodule HTTPizzaWeb.DashboardLive do
               <ObserverComponents.check_list_icon />
               <ObserverComponents.check_list_item check={check} />
             </div>
+            <div :for={status_check <- http_observer.status_checks} class="flex items-center">
+              <ObserverComponents.check_list_icon />
+              <ObserverComponents.check_list_item check={status_check} />
+            </div>
           </div>
 
           <div class="py-2">

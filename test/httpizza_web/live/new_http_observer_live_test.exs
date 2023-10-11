@@ -19,15 +19,14 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
   test "renders additional sections for header checks", %{conn: conn} do
     assert {:ok, live_view, _html} = live(conn, ~p"/dashboard/personal/http-observers/new")
 
-    # start with single
-    assert has_element?(live_view, "[id=new-http-observer-header-checks] fieldset:nth-of-type(1)")
-    refute has_element?(live_view, "[id=new-http-observer-header-checks] fieldset:nth-of-type(2)")
+    # start with empty list
+    refute has_element?(live_view, "[id=new-http-observer-header-checks] fieldset")
 
     assert live_view
            |> element("[phx-click=add_header_check]")
            |> render_click()
 
-    assert has_element?(live_view, "[id=new-http-observer-header-checks] fieldset:nth-of-type(2)")
+    assert has_element?(live_view, "[id=new-http-observer-header-checks] fieldset")
   end
 
   test "creates new HTTP observer", %{conn: conn} do
