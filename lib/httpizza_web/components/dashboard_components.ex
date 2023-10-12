@@ -82,7 +82,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
   attr(:id, :string, required: true)
   attr(:personal_organization_id, :string, required: true)
   attr(:selection, Organization, required: true)
-  attr(:organizations, :list, required: true)
+  attr(:organizations_with_status_counts, :list, required: true)
   attr(:path, :string, default: "")
 
   def organization_select(assigns) do
@@ -112,13 +112,24 @@ defmodule HTTPizzaWeb.DashboardComponents do
             class="bg-white absolute top-0 left-0 right-0 rounded border py-1 hidden"
           >
             <.link
-              :for={organization <- @organizations}
+              :for={%{organization: organization} = item <- @organizations_with_status_counts}
               navigate={
                 "/dashboard/#{proper_slug(organization, @personal_organization_id)}#{@path}"
               }
               class="text-sm block p-2 hover:bg-zinc-100 font-medium truncate"
             >
-              <%= display_name(organization, @personal_organization_id) %>
+              <div class="flex items-center gap-1">
+                <p class="grow"><%= display_name(organization, @personal_organization_id) %></p>
+                <p class="text-xs rounded-full px-2 text-white bg-green-500">
+                  <%= item.green %>
+                </p>
+                <p :if={item.yellow > 0} class="text-xs rounded-full px-2 text-zinc-700 bg-yellow-300">
+                  <%= item.yellow %>
+                </p>
+                <p :if={item.red > 0} class="text-xs rounded-full px-2 text-white bg-red-500">
+                  <%= item.red %>
+                </p>
+              </div>
             </.link>
 
             <hr class="my-2" />

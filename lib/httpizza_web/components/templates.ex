@@ -8,7 +8,7 @@ defmodule HTTPizzaWeb.Templates do
   attr(:current_uri, :string, required: true)
   attr(:current_organization, :any, required: true)
   attr(:personal_organization, :any, required: true)
-  attr(:organizations, :list, required: true)
+  attr(:organizations_with_status_counts, :list, required: true)
   attr(:slug, :string, required: true)
 
   slot(:org)
@@ -53,7 +53,7 @@ defmodule HTTPizzaWeb.Templates do
               <DashboardComponents.organization_select
                 id="organization-select"
                 selection={@current_organization}
-                organizations={@organizations}
+                organizations_with_status_counts={@organizations_with_status_counts}
                 personal_organization_id={@personal_organization.id}
                 path={@path}
               />

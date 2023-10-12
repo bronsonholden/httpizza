@@ -24,6 +24,7 @@ defmodule HTTPizza.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import HTTPizza.DataCase
+      import HTTPizza.TestUtil
     end
   end
 

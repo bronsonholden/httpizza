@@ -20,7 +20,9 @@ defmodule HTTPizzaWeb.OrganizationLive do
     ~H"""
     <.dashboard
       current_uri={@current_uri}
-      organizations={@current_user.organizations}
+      organizations_with_status_counts={
+        HTTPizza.Status.get_organizations_with_status_counts(@current_user)
+      }
       personal_organization={@current_user.personal_organization}
       current_organization={@current_organization}
       slug={@current_organization_slug}

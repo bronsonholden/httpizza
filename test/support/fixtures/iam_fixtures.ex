@@ -20,7 +20,7 @@ defmodule HTTPizza.IAMFixtures do
       |> valid_user_attributes()
       |> HTTPizza.IAM.register_user()
 
-    user
+    user |> HTTPizza.Repo.preload(:personal_organization)
   end
 
   def extract_user_token(fun) do
