@@ -1,4 +1,4 @@
-defmodule HTTPizzaWeb.NewHTTPObserverLive do
+defmodule HTTPizzaWeb.EditHTTPObserverLive do
   use HTTPizzaWeb, :live_view
 
   alias HTTPizza.Observers
@@ -9,8 +9,11 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
   on_mount {HTTPizzaWeb.Organization, :ensure_organization_selected}
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, socket}
+  def mount(%{"id" => id}, _session, socket) do
+    # TODO: verify in org
+    http_observer = Observers.get_http_observer!(id)
+
+    {:ok, assign(socket, :http_observer, http_observer)}
   end
 
   @impl true
@@ -21,8 +24,8 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
         id: "new-http-observer-form",
         session: %{
           "slug" => @current_organization_slug,
-          "action" => :new,
-          "http_observer" => %Observers.HTTPObserver{port: 80, method: :get, schedule: "0 * * * *"}
+          "action" => :edit,
+          "http_observer" => @http_observer
         }
       ) %>
     </.container>
