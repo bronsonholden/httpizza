@@ -98,24 +98,14 @@ defmodule HTTPizzaWeb.DashboardLive do
               </p>
             </div>
 
-            <div class="flex gap-1">
-              <.link
-                navigate={
-                  ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}"
-                }
-                class="block hover:text-zinc-800 text-zinc-400 rounded-full"
-              >
-                <.icon name="hero-information-circle" class="scale-[90%]" />
-              </.link>
-              <.link
-                navigate={
-                  ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}/edit"
-                }
-                class="block hover:text-zinc-800 text-zinc-400 rounded-full"
-              >
-                <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
-              </.link>
-            </div>
+            <.link
+              navigate={
+                ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}/edit"
+              }
+              class="block hover:text-zinc-800 text-zinc-400 rounded-full"
+            >
+              <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
+            </.link>
           </div>
 
           <div class="ml-20 hidden group-[.open]/observer:block">

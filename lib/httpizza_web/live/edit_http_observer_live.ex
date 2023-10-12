@@ -9,17 +9,28 @@ defmodule HTTPizzaWeb.EditHTTPObserverLive do
   on_mount {HTTPizzaWeb.Organization, :ensure_organization_selected}
 
   @impl true
-  def mount(%{"id" => id}, _session, socket) do
+  def handle_params(%{"id" => id}, uri, socket) do
     # TODO: verify in org
     http_observer = Observers.get_http_observer!(id)
 
-    {:ok, assign(socket, :http_observer, http_observer)}
+    socket =
+      socket
+      |> assign(:http_observer, http_observer)
+      |> assign(:current_uri, uri)
+
+    {:noreply, socket}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <.container size="sm">
+    <.dashboard
+      current_uri={@current_uri}
+      organizations={@current_user.organizations}
+      personal_organization={@current_user.personal_organization}
+      current_organization={@current_organization}
+      slug={@current_organization_slug}
+    >
       <%= live_render(@socket, HTTPizzaWeb.HTTPObserverFormLive,
         id: "new-http-observer-form",
         session: %{
@@ -28,7 +39,7 @@ defmodule HTTPizzaWeb.EditHTTPObserverLive do
           "http_observer" => @http_observer
         }
       ) %>
-    </.container>
+    </.dashboard>
     """
   end
 end

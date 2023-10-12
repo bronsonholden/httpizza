@@ -153,16 +153,19 @@ defmodule HTTPizzaWeb.DashboardComponents do
   end
 
   defp is_active?(current_path, path) do
+    IO.inspect(current_path)
+    IO.inspect(path)
     # drop `/dashboard/:slug` from paths
     path_matches?(
-      String.split(current_path, "/") |> Enum.at(3),
+      String.split(current_path, "/") |> Enum.drop(3) |> Enum.join("/"),
       String.split(path, "/") |> Enum.at(3)
     )
   end
 
-  defp path_matches?(current_path, nil), do: is_nil(current_path)
+  defp path_matches?(current_path, nil),
+    do: current_path == "" or String.starts_with?(current_path, "http-observers")
 
-  defp path_matches?(nil, path), do: is_nil(path)
+  defp path_matches?("", path), do: is_nil(path)
 
   defp path_matches?(current_path, path) do
     String.starts_with?(current_path, path)
