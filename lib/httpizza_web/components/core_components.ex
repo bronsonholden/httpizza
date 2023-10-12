@@ -256,8 +256,8 @@ defmodule HTTPizzaWeb.CoreComponents do
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
   attr :rest, :global,
-    include: ~w(autocomplete cols disabled form list max maxlength min minlength
-                pattern placeholder readonly required rows size step)
+    include: ~w(autocomplete autocorrect cols disabled form list max maxlength min minlength
+                pattern placeholder readonly required rows size spellcheck step)
 
   slot :inner_block
 

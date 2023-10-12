@@ -38,7 +38,17 @@ defmodule HTTPizzaWeb.NewOrganizationLive do
           required
           phx-debounce="200"
         />
-        <.input field={@form[:slug]} type="text" label="Slug" required phx-debounce="200" />
+        <.input
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          field={@form[:slug]}
+          type="text"
+          label="Slug"
+          required
+          phx-debounce="200"
+        />
 
         <:actions>
           <.button phx-disable-with="Creating organization..." class="w-full">
