@@ -199,8 +199,6 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
   @impl true
   def handle_event("add_header_check", _params, socket) do
-    # TODO: when editing observer
-    # default value for Map.get/3 `socket.assigns.http_observer.header_checks`
     existing =
       Map.get(
         socket.assigns.form.source.changes,
@@ -240,8 +238,6 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
   @impl true
   def handle_event("add_status_check", _params, socket) do
-    # TODO: when editing observer
-    # default value for Map.get/3 `socket.assigns.http_observer.status_checks`
     existing =
       Map.get(
         socket.assigns.form.source.changes,
