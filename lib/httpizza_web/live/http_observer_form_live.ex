@@ -249,8 +249,6 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
         socket.assigns.http_observer.status_checks
       )
 
-    IO.inspect(existing)
-
     status_checks =
       existing
       |> Enum.concat([

@@ -153,8 +153,6 @@ defmodule HTTPizzaWeb.DashboardComponents do
   end
 
   defp is_active?(current_path, path) do
-    IO.inspect(current_path)
-    IO.inspect(path)
     # drop `/dashboard/:slug` from paths
     path_matches?(
       String.split(current_path, "/") |> Enum.drop(3) |> Enum.join("/"),
