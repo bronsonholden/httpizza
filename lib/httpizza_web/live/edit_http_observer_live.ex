@@ -10,15 +10,20 @@ defmodule HTTPizzaWeb.EditHTTPObserverLive do
 
   @impl true
   def handle_params(%{"id" => id}, uri, socket) do
-    # TODO: verify in org
-    http_observer = Observers.get_http_observer!(id)
+    Observers.get_organization_observer(socket.assigns.current_organization.id, id)
+    |> case do
+      nil ->
+        {:noreply,
+         push_navigate(socket, to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")}
 
-    socket =
-      socket
-      |> assign(:http_observer, http_observer)
-      |> assign(:current_uri, uri)
+      http_observer ->
+        socket =
+          socket
+          |> assign(:http_observer, http_observer)
+          |> assign(:current_uri, uri)
 
-    {:noreply, socket}
+        {:noreply, socket}
+    end
   end
 
   @impl true

@@ -69,6 +69,18 @@ defmodule HTTPizza.Observers do
   end
 
   @doc """
+  Gets a single HTTP observer that is associated with the given organization by ID.
+
+  Returns `nil` if no such HTTP observer exists.
+  """
+  @spec get_organization_observer(String.t(), String.t()) ::
+          %HTTPizza.Observers.HTTPObserver{} | nil
+  def get_organization_observer(organization_id, observer_id) do
+    from(o in HTTPObserver, where: o.organization_id == ^organization_id)
+    |> Repo.get(observer_id)
+  end
+
+  @doc """
   Creates an HTTP Observer.
 
   ## Examples
@@ -163,6 +175,22 @@ defmodule HTTPizza.Observers do
 
   """
   def get_http_observation!(id), do: Repo.get!(HTTPObservation, id)
+
+  @doc """
+  Gets a single HTTP observation that is associated with the given organization by ID.
+
+  Returns `nil` if no such HTTP observation exists.
+  """
+  @spec get_organization_observation(String.t(), String.t()) ::
+          %HTTPizza.Observers.HTTPObserver{} | nil
+  def get_organization_observation(organization_id, observation_id) do
+    from(atn in HTTPObservation,
+      join: ver in HTTPObserver,
+      on: ver.id == atn.http_observer_id,
+      where: ver.organization_id == ^organization_id
+    )
+    |> Repo.get(observation_id)
+  end
 
   @doc """
   Creates a http_observation.

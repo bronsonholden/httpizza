@@ -1,6 +1,8 @@
 defmodule HTTPizzaWeb.HTTPObservationLive do
   use HTTPizzaWeb, :live_view
 
+  alias HTTPizza.Observers
+
   import HTTPizzaWeb.Templates
 
   on_mount {HTTPizzaWeb.UserAuth, :ensure_authenticated}
@@ -13,14 +15,20 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
 
   @impl true
   def handle_params(%{"id" => id}, uri, socket) do
-    http_observation = HTTPizza.Observers.get_http_observation!(id)
+    Observers.get_organization_observation(socket.assigns.current_organization.id, id)
+    |> case do
+      nil ->
+        {:noreply,
+         push_navigate(socket, to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")}
 
-    socket =
-      socket
-      |> assign(:current_uri, uri)
-      |> assign(:http_observation, http_observation)
+      http_observation ->
+        socket =
+          socket
+          |> assign(:http_observation, http_observation)
+          |> assign(:current_uri, uri)
 
-    {:noreply, socket}
+        {:noreply, socket}
+    end
   end
 
   @impl true

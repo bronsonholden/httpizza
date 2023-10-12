@@ -15,4 +15,14 @@ defmodule HTTPizzaWeb.NewHTTPObserverLiveTest do
 
     assert html
   end
+
+  test "redirects when creating HTTP observer for organization without access", %{conn: conn} do
+    organization = organization_fixture()
+
+    result =
+      live(conn, ~p"/dashboard/#{organization.slug}/http-observers/new")
+      |> follow_redirect(conn, ~p"/dashboard")
+
+    assert {:ok, _conn} = result
+  end
 end
