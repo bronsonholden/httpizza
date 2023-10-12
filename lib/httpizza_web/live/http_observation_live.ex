@@ -36,7 +36,9 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
     ~H"""
     <.dashboard
       current_uri={@current_uri}
-      organizations={@current_user.organizations}
+      organizations_with_status_counts={
+        HTTPizza.Status.get_organizations_with_status_counts(@current_user)
+      }
       personal_organization={@current_user.personal_organization}
       current_organization={@current_organization}
       slug={@current_organization_slug}
@@ -47,6 +49,10 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
       >
         <.icon name="hero-chevron-left-mini" class="scale-75" />Back
       </.link>
+
+      <p>
+        Run <%= Timex.format!(@http_observation.inserted_at, "{relative}", :relative) %>
+      </p>
 
       <p class="my-4 font-medium">
         <span class="text-zinc-400">Result:</span> <%= @http_observation.reason %>
