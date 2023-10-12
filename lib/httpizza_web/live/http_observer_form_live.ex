@@ -44,6 +44,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
      |> assign_form(changeset)
      |> assign(:slug, slug)
      |> assign(:action, action)
+     |> assign(:http_observer, http_observer)
      |> assign(:check_errors, false)}
   end
 
@@ -51,7 +52,8 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
   def render(assigns) do
     ~H"""
     <div>
-      <.simple_form for={@form} id="http-observer-form" phx-submit="create" phx-change="validate">
+      <%!-- <%= inspect(@form) %> --%>
+      <.simple_form for={@form} id="http-observer-form" phx-submit="save" phx-change="validate">
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
         </.error>
@@ -183,7 +185,11 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
         <:actions>
           <button phx-disable-with="Saving..." class="bg-orange-500 text-white rounded p-2">
-            Create
+            <%= if @action == :edit do %>
+              Save
+            <% else %>
+              Create
+            <% end %>
           </button>
         </:actions>
       </.simple_form>
@@ -195,7 +201,12 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
   def handle_event("add_header_check", _params, socket) do
     # TODO: when editing observer
     # default value for Map.get/3 `socket.assigns.http_observer.header_checks`
-    existing = Map.get(socket.assigns.form.source.changes, :header_checks, [])
+    existing =
+      Map.get(
+        socket.assigns.form.source.changes,
+        :header_checks,
+        socket.assigns.http_observer.header_checks
+      )
 
     header_checks =
       existing
@@ -231,7 +242,14 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
   def handle_event("add_status_check", _params, socket) do
     # TODO: when editing observer
     # default value for Map.get/3 `socket.assigns.http_observer.status_checks`
-    existing = Map.get(socket.assigns.form.source.changes, :status_checks, [])
+    existing =
+      Map.get(
+        socket.assigns.form.source.changes,
+        :status_checks,
+        socket.assigns.http_observer.status_checks
+      )
+
+    IO.inspect(existing)
 
     status_checks =
       existing
@@ -264,7 +282,11 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
   end
 
   @impl true
-  def handle_event("create", %{"http_observer" => http_observer_params}, socket) do
+  def handle_event(
+        "save",
+        %{"http_observer" => http_observer_params},
+        %{assigns: %{action: :new}} = socket
+      ) do
     organization = socket.assigns.current_organization
     params = Map.put(http_observer_params, "organization_id", organization.id)
 
@@ -277,6 +299,28 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
           socket
           |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")
           |> put_flash(:info, "HTTP observer created")
+
+        {:noreply, socket}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
+    end
+  end
+
+  @impl true
+  def handle_event(
+        "save",
+        %{"http_observer" => http_observer_params},
+        %{assigns: %{action: :edit}} = socket
+      ) do
+    socket.assigns.http_observer
+    |> Observers.update_http_observer(http_observer_params)
+    |> case do
+      {:ok, _observer} ->
+        socket =
+          socket
+          |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")
+          |> put_flash(:info, "HTTP observer updated")
 
         {:noreply, socket}
 

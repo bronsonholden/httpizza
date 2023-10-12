@@ -2,7 +2,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLiveTest do
   use HTTPizzaWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import HTTPizza.IAMFixtures
+  import HTTPizza.{IAMFixtures, ObserversFixtures}
 
   setup %{conn: conn} do
     user = user_fixture()
@@ -52,7 +52,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLiveTest do
       )
 
     assert live_view
-           |> render_change("create", %{
+           |> render_change("save", %{
              "http_observer" => %{
                "hostname" => "htt.pizza",
                "path" => "/",
@@ -76,5 +76,24 @@ defmodule HTTPizzaWeb.HTTPObserverFormLiveTest do
              observer.header_checks
 
     assert_redirected(live_view, ~p"/dashboard/personal")
+  end
+
+  test "edits existing HTTP observer", %{conn: conn} do
+    http_observer = http_observer_fixture(%{schedule: "* * * * *"})
+
+    {:ok, live_view, _html} =
+      live_isolated(conn, HTTPizzaWeb.HTTPObserverFormLive,
+        id: "test-http-observer-form",
+        session: %{
+          "action" => :edit,
+          "http_observer" => http_observer,
+          "slug" => "personal"
+        }
+      )
+
+    assert live_view
+           |> render_change("save", %{"http_observer" => %{"schedule" => "0 * * * *"}})
+
+    assert %{schedule: "0 * * * *"} = HTTPizza.Observers.get_http_observer!(http_observer.id)
   end
 end
