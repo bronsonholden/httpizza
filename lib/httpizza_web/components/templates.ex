@@ -26,6 +26,7 @@ defmodule HTTPizzaWeb.Templates do
       |> Enum.at(3)
       |> case do
         "" -> ""
+        "http-observers" -> ""
         nil -> ""
         path -> "/#{path}"
       end
