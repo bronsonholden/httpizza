@@ -35,4 +35,15 @@ defmodule HTTPizzaWeb.DashboardLiveTest do
 
     assert Phoenix.Flash.get(conn.assigns.flash, :error) =~ "You must log in to access this page"
   end
+
+  test "redirects if viewing dashboard for org without access", %{conn: conn, user: user} do
+    conn = log_in_user(conn, user)
+    organization = organization_fixture()
+
+    result =
+      live(conn, ~p"/dashboard/#{organization.slug}")
+      |> follow_redirect(conn, ~p"/dashboard/personal")
+
+    assert {:ok, _live_view, _html} = result
+  end
 end
