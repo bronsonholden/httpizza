@@ -563,6 +563,61 @@ defmodule HTTPizzaWeb.CoreComponents do
     """
   end
 
+  attr(:id, :string, required: true)
+  attr(:direction, :string, values: ~w[top bottom left right], default: "bottom")
+  slot(:trigger, required: true)
+  slot(:inner_block, required: true)
+
+  def tooltip(assigns) do
+    ~H"""
+    <div
+      id={@id}
+      phx-hook="Tooltip"
+      class={[
+        "group/tooltip",
+        "tooltip-#{@direction}",
+        "flex items-center",
+        "[&.tooltip-top]:flex-col-reverse [&.tooltip-bottom]:flex-col [&.tooltip-left]:flex-row-reverse"
+      ]}
+    >
+      <div class="peer/trigger">
+        <%= render_slot(@trigger) %>
+      </div>
+      <div class={[
+        "hidden hover:block peer-hover/trigger:block relative z-[1000]"
+      ]}>
+        <div class={[
+          "absolute border border-[12px] pointer-events-none",
+          "-translate-x-1/2 -translate-y-1/2",
+          "border-transparent",
+          "group-[.tooltip-top]/tooltip:tooltip-arrow-top",
+          "group-[.tooltip-right]/tooltip:tooltip-arrow-right",
+          "group-[.tooltip-bottom]/tooltip:tooltip-arrow-bottom",
+          "group-[.tooltip-left]/tooltip:tooltip-arrow-left"
+        ]} />
+        <div data-tooltip-bubble-anchor class="relative">
+          <div
+            data-tooltip-bubble
+            class={[
+              "absolute group/tooltip",
+              "group-[.tooltip-top]/tooltip:tooltip-bubble-top",
+              "group-[.tooltip-right]/tooltip:tooltip-bubble-right",
+              "group-[.tooltip-bottom]/tooltip:tooltip-bubble-bottom",
+              "group-[.tooltip-left]/tooltip:tooltip-bubble-left"
+            ]}
+          >
+            <div class="p-2">
+              <div class="bg-slate-800 text-white max-w-[80vw] overflow-hidden w-full h-full p-2 rounded">
+                <%= render_slot(@inner_block) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do

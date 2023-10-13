@@ -5,7 +5,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
   alias Phoenix.LiveView.JS
   alias HTTPizza.IAM.Organization
 
-  import HTTPizzaWeb.CoreComponents, only: [icon: 1]
+  import HTTPizzaWeb.CoreComponents, only: [icon: 1, tooltip: 1]
 
   attr(:organization, :any, required: true)
   attr(:slug, :string, required: true)
@@ -116,19 +116,39 @@ defmodule HTTPizzaWeb.DashboardComponents do
               navigate={
                 "/dashboard/#{proper_slug(organization, @personal_organization_id)}#{@path}"
               }
-              class="text-sm block p-2 hover:bg-zinc-100 font-medium truncate"
+              class="text-sm block p-2 hover:bg-zinc-100 font-medium"
             >
               <div class="flex items-center gap-1">
-                <p class="grow"><%= display_name(organization, @personal_organization_id) %></p>
-                <p class="text-xs rounded-full px-2 text-white bg-green-500">
-                  <%= item.green %>
+                <p class="grow truncate">
+                  <%= display_name(organization, @personal_organization_id) %>
                 </p>
-                <p :if={item.yellow > 0} class="text-xs rounded-full px-2 text-zinc-700 bg-yellow-300">
-                  <%= item.yellow %>
-                </p>
-                <p :if={item.red > 0} class="text-xs rounded-full px-2 text-white bg-red-500">
-                  <%= item.red %>
-                </p>
+                <.tooltip id={"#{organization.id}-green-observer-count"}>
+                  <:trigger>
+                    <p class="text-xs rounded-full px-2 text-white bg-green-500">
+                      <%= item.green %>
+                    </p>
+                  </:trigger>
+                  <p class="whitespace-nowrap">No failures in last 24 hours</p>
+                </.tooltip>
+                <.tooltip id={"#{organization.id}-yellow-observer-count"} direction="bottom">
+                  <:trigger>
+                    <p
+                      :if={item.yellow > 0}
+                      class="text-xs rounded-full px-2 text-zinc-700 bg-yellow-300"
+                    >
+                      <%= item.yellow %>
+                    </p>
+                  </:trigger>
+                  <p class="whitespace-nowrap">At least one failure within last 24 hours</p>
+                </.tooltip>
+                <.tooltip id={"#{organization.id}-red-observer-count"} direction="bottom">
+                  <:trigger>
+                    <p :if={item.red > 0} class="text-xs rounded-full px-2 text-white bg-red-500">
+                      <%= item.red %>
+                    </p>
+                  </:trigger>
+                  <p class="whitespace-nowrap">At least one failure within last hour</p>
+                </.tooltip>
               </div>
             </.link>
 

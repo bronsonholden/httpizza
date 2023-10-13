@@ -3,3 +3,37 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+
+@layer components {
+  .tooltip-bubble-top {
+    @apply -translate-x-1/2 bottom-full;
+  }
+
+  .tooltip-bubble-right {
+    @apply -translate-y-1/2 left-full;
+  }
+
+  .tooltip-bubble-bottom {
+    @apply -translate-x-1/2 top-full;
+  }
+
+  .tooltip-bubble-left {
+    @apply -translate-y-1/2 right-full;
+  }
+
+  .tooltip-arrow-top {
+    @apply border-t-slate-800 pb-[5px];
+  }
+
+  .tooltip-arrow-right {
+    @apply border-r-slate-800 pl-[5px];
+  }
+
+  .tooltip-arrow-bottom {
+    @apply border-b-slate-800 pt-[5px];
+  }
+
+  .tooltip-arrow-left {
+    @apply border-l-slate-800 pr-[5px];
+  }
+}
