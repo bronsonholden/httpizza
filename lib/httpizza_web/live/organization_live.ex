@@ -26,6 +26,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
       personal_organization={@current_user.personal_organization}
       current_organization={@current_organization}
       slug={@current_organization_slug}
+      path="/settings"
     >
       <DashboardComponents.breadcrumbs
         organization={@current_organization}
