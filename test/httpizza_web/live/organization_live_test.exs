@@ -43,4 +43,19 @@ defmodule HTTPizzaWeb.OrganizationLiveTest do
              live(conn, ~p"/dashboard/#{organization.slug}/settings")
              |> follow_redirect(conn, ~p"/users/log_in")
   end
+
+  test "selecting another organization takes you to its settings page", %{conn: conn, user: user} do
+    conn = log_in_user(conn, user)
+    acme = organization_fixture(%{slug: "acme"})
+    globex = organization_fixture(%{slug: "globex"})
+    organization_user_fixture(%{user_id: user.id, organization_id: acme.id})
+    organization_user_fixture(%{user_id: user.id, organization_id: globex.id})
+
+    {:ok, live_view, _html} = live(conn, ~p"/dashboard/#{acme.slug}/settings")
+
+    assert live_view
+           |> element("#organization-select-list [href*=globex]")
+           |> render_click()
+           |> follow_redirect(conn, ~p"/dashboard/#{globex.slug}/settings")
+  end
 end
