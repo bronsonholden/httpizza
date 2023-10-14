@@ -85,11 +85,11 @@ defmodule HTTPizzaWeb.DashboardLive do
               />
             </button>
 
-            <div class="grow font-mono">
-              <p class="tracking-tight text-blue-500 text-sm font-bold break-all" phx-no-format>
-                <span class="text-orange-500">
-                  <%= String.upcase(to_string(http_observer.method)) %>
-                </span>
+            <div class="grow flex items-start gap-2 font-mono text-sm tracking-tight font-bold">
+              <p class="shrink-0 text-orange-500">
+                <%= String.upcase(to_string(http_observer.method)) %>
+              </p>
+              <p class="text-blue-500 break-all" phx-no-format>
                 <span class="text-zinc-400"><%=
                   if(http_observer.https, do: "https", else: "http")
                 %>://</span><%=
