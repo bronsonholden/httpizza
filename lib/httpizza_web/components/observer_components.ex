@@ -42,9 +42,9 @@ defmodule HTTPizzaWeb.ObserverComponents do
       <div class="pointer-events-none absolute top-0 left-0 right-[90%] bottom-0 bg-gradient-to-r from-white/90 z-50" />
       <div class="absolute top-0 bottom-0 right-0 flex flex-row-reverse z-40">
         <.link
-          :for={http_observation <- Enum.take(@http_observations, 200)}
+          :for={http_observation <- Enum.take(@http_observations, 60)}
           navigate={~p"/dashboard/#{@slug}/http-observations/#{http_observation.id}"}
-          class="w-[14px] sm:w-[12px] h-full p-[2px] group/pill"
+          class="w-[13px] sm:w-[11px] h-full p-[2px] group/pill"
         >
           <div class={[
             "h-full w-full rounded-full group-hover/pill:scale-[110%]",
