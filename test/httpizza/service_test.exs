@@ -13,12 +13,12 @@ defmodule HTTPizza.ServiceTest do
           case_sensitive: true
         }
 
-      result =
+      changeset =
         HTTPizza.Service.validate_header_check(header_check, %Finch.Response{
           headers: []
         })
 
-      assert result.status == :failed
+      assert Ecto.Changeset.get_field(changeset, :status) == :failed
     end
 
     test "returns successful CheckResult with matching header" do
@@ -30,12 +30,12 @@ defmodule HTTPizza.ServiceTest do
           case_sensitive: true
         }
 
-      result =
+      changeset =
         HTTPizza.Service.validate_header_check(header_check, %Finch.Response{
           headers: [{"accept", "application/json"}]
         })
 
-      assert result.status == :ok
+      assert Ecto.Changeset.get_field(changeset, :status) == :ok
     end
 
     test "isn't picky with empty path" do
@@ -47,12 +47,12 @@ defmodule HTTPizza.ServiceTest do
           case_sensitive: true
         }
 
-      result =
+      changeset =
         HTTPizza.Service.validate_header_check(header_check, %Finch.Response{
           headers: [{"location", "https://example.com/"}]
         })
 
-      assert result.status == :ok
+      assert Ecto.Changeset.get_field(changeset, :status) == :ok
     end
 
     test "returns failed CheckResult without matching header" do
@@ -64,12 +64,12 @@ defmodule HTTPizza.ServiceTest do
           case_sensitive: true
         }
 
-      result =
+      changeset =
         HTTPizza.Service.validate_header_check(header_check, %Finch.Response{
           headers: [{"location", "https://janeroe.org/"}]
         })
 
-      assert result.status == :failed
+      assert Ecto.Changeset.get_field(changeset, :status) == :failed
     end
 
     test "returns successful CheckResult with case insensitive match" do
@@ -81,12 +81,12 @@ defmodule HTTPizza.ServiceTest do
           case_sensitive: false
         }
 
-      result =
+      changeset =
         HTTPizza.Service.validate_header_check(header_check, %Finch.Response{
           headers: [{"x-request-id", "abc123"}]
         })
 
-      assert result.status == :ok
+      assert Ecto.Changeset.get_field(changeset, :status) == :ok
     end
 
     test "returns failed CheckResult with case sensitive mismatch" do
@@ -98,12 +98,12 @@ defmodule HTTPizza.ServiceTest do
           case_sensitive: true
         }
 
-      result =
+      changeset =
         HTTPizza.Service.validate_header_check(header, %Finch.Response{
           headers: [{"x-request-id", "abc123"}]
         })
 
-      assert result.status == :failed
+      assert Ecto.Changeset.get_field(changeset, :status) == :failed
     end
   end
 end
