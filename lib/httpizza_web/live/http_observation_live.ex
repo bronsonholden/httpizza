@@ -1,4 +1,5 @@
 defmodule HTTPizzaWeb.HTTPObservationLive do
+  alias HTTPizzaWeb.ObserverComponents
   use HTTPizzaWeb, :live_view
 
   alias HTTPizza.Observers
@@ -43,70 +44,69 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
       current_organization={@current_organization}
       slug={@current_organization_slug}
     >
-      <.link
-        navigate={~p"/dashboard/#{@current_organization_slug}"}
-        class="mb-4 text-sm flex items-center text-zinc-500 hover:text-zinc-800 font-medium"
-      >
-        <.icon name="hero-chevron-left-mini" class="scale-75" />Back
-      </.link>
+      <div class="flex items-start justify-between">
+        <div class="mb-6">
+          <p class={[
+            "font-bold text-xl",
+            if(@http_observation.status == :ok, do: "text-green-500", else: "text-red-500")
+          ]}>
+            <%= @http_observation.reason %>
+          </p>
 
-      <p>
-        Run <%= Timex.format!(@http_observation.inserted_at, "{relative}", :relative) %>
-      </p>
+          <p class="text-zinc-400 text-xs">
+            <%= Timex.format!(@http_observation.inserted_at, "{relative}", :relative) %>
+          </p>
+        </div>
+        <.link
+          navigate={~p"/dashboard/#{@current_organization_slug}"}
+          class="mb-4 text-sm flex items-center text-zinc-500 hover:text-zinc-800 font-medium"
+        >
+          <.icon name="hero-arrow-uturn-left" />
+        </.link>
+      </div>
 
-      <p class="my-4 font-medium">
-        <span class="text-zinc-400">Result:</span> <%= @http_observation.reason %>
-      </p>
-
-      <table>
-        <thead>
-          <tr class="text-xs text-zinc-400">
-            <th></th>
-            <th class="text-left">Check</th>
-            <th class="text-left">Result</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr :for={check_result <- @http_observation.check_results}>
-            <td class="pr-4 pt-2">
-              <.icon
-                name={
-                  case check_result.status do
-                    :ok -> "hero-check"
-                    :failed -> "hero-x-mark"
-                    :error -> "hero-x-mark"
-                  end
-                }
-                class={
-                  [
-                    "scale-75",
-                    case check_result.status do
-                      :ok -> "text-green-500"
-                      :failed -> "text-red-500"
-                      :error -> "text-zinc-500"
-                    end
-                  ]
-                  |> Enum.join(" ")
-                }
-              />
-            </td>
-            <td class="pr-4 pt-2 font-medium">
-              <%= display_kind(check_result.kind) %>
-            </td>
-            <td class="pr-4 pt-2">
-              <%= check_result.reason %>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div :for={check_result <- @http_observation.check_results}>
+        <div class="flex gap-2 items-start">
+          <.icon
+            name={
+              case check_result.status do
+                :ok -> "hero-check"
+                :failed -> "hero-x-mark"
+                :error -> "hero-x-mark"
+              end
+            }
+            class={
+              [
+                "scale-75 mt-[6px]",
+                case check_result.status do
+                  :ok -> "text-green-500"
+                  :failed -> "text-red-500"
+                  :error -> "text-zinc-500"
+                end
+              ]
+              |> Enum.join(" ")
+            }
+          />
+          <div class="w-2/3 pr-4 pt-2 font-medium">
+            <ObserverComponents.check_list_item check={get_check(check_result)} />
+            <div class="text-xs font-mono text-zinc-500 flex">
+              <ObserverComponents.check_list_icon />
+              <p class="mt-2">
+                <%= check_result.reason %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </.dashboard>
     """
   end
 
-  defp display_kind(module_name) do
-    # Elixir.HTTPizza.Checks.{CheckModuleName}
-    String.split(module_name, ".")
-    |> Enum.at(3)
-    |> String.replace("Check", "")
+  defp get_check(%{kind: "Elixir.HTTPizza.Checks.HeaderCheck"} = check_result) do
+    check_result.header_check
+  end
+
+  defp get_check(%{kind: "Elixir.HTTPizza.Checks.StatusCheck"} = check_result) do
+    check_result.status_check
   end
 end

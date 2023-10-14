@@ -28,7 +28,9 @@ defmodule HTTPizzaWeb.ObserverComponents do
 
   def check_list_icon(assigns) do
     ~H"""
-    <p class="inline-block text-zinc-500 font-bold pb-2 align-text-top mr-2">↳</p>
+    <p class="inline-block text-zinc-500 font-bold pb-2 align-text-top mr-2 text-base font-serif">
+      ↳
+    </p>
     """
   end
 

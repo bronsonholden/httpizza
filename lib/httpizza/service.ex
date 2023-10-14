@@ -25,7 +25,7 @@ defmodule HTTPizza.Service do
         %{
           kind: kind,
           status: :ok,
-          reason: "Received: #{received}",
+          reason: "Received #{received}",
           header_check: Map.from_struct(check)
         }
       )
