@@ -87,11 +87,11 @@ defmodule HTTPizzaWeb.DashboardComponents do
 
   def organization_select(assigns) do
     ~H"""
-    <div>
+    <div id={@id}>
       <p class="font-bold text-xs text-orange-500 mb-2 ml-3">Organization</p>
       <div class="flex flex-col items-start gap-2">
         <button
-          id={@id}
+          id={"#{@id}-toggle"}
           type="button"
           class="flex items-center font-medium border rounded text-sm py-1 px-2 w-full text-left group/button"
           phx-click={JS.toggle(to: "##{@id}-list")}
