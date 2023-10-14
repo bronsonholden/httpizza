@@ -1,7 +1,7 @@
 defmodule HTTPizza.Service do
   alias HTTPizza.Checks
 
-  @spec validate_header_check(%Checks.HeaderCheck{}, Finch.Response.t()) :: %Checks.CheckResult{}
+  @spec validate_header_check(%Checks.HeaderCheck{}, Finch.Response.t()) :: Ecto.Changeset.t()
   def validate_header_check(%Checks.HeaderCheck{} = check, %Finch.Response{} = response) do
     kind = to_string(Checks.HeaderCheck)
 
@@ -20,21 +20,29 @@ defmodule HTTPizza.Service do
       end
 
     if header_value_match?(header, expected, received, comparator, check.case_sensitive) do
-      %Checks.CheckResult{
-        kind: kind,
-        status: :ok,
-        reason: "Received: #{received}"
-      }
+      Checks.CheckResult.changeset(
+        %Checks.CheckResult{},
+        %{
+          kind: kind,
+          status: :ok,
+          reason: "Received: #{received}",
+          header_check: Map.from_struct(check)
+        }
+      )
     else
-      %Checks.CheckResult{
-        kind: kind,
-        status: :failed,
-        reason: reason(comparator, expected, received)
-      }
+      Checks.CheckResult.changeset(
+        %Checks.CheckResult{},
+        %{
+          kind: kind,
+          status: :failed,
+          reason: reason(comparator, expected, received),
+          header_check: Map.from_struct(check)
+        }
+      )
     end
   end
 
-  @spec validate_header_check(%Checks.StatusCheck{}, Finch.Response.t()) :: %Checks.CheckResult{}
+  @spec validate_header_check(%Checks.StatusCheck{}, Finch.Response.t()) :: Ecto.Changeset.t()
   def validate_status_check(%Checks.StatusCheck{} = check, %Finch.Response{} = response) do
     kind = to_string(Checks.StatusCheck)
 
@@ -50,17 +58,25 @@ defmodule HTTPizza.Service do
       end
 
     if match do
-      %Checks.CheckResult{
-        kind: kind,
-        status: :ok,
-        reason: "Received #{status}"
-      }
+      Checks.CheckResult.changeset(
+        %Checks.CheckResult{},
+        %{
+          kind: kind,
+          status: :ok,
+          reason: "Received #{status}",
+          status_check: Map.from_struct(check)
+        }
+      )
     else
-      %Checks.CheckResult{
-        kind: kind,
-        status: :failed,
-        reason: reason(check.comparator, check.code, status)
-      }
+      Checks.CheckResult.changeset(
+        %Checks.CheckResult{},
+        %{
+          kind: kind,
+          status: :failed,
+          reason: reason(check.comparator, check.code, status),
+          status_check: Map.from_struct(check)
+        }
+      )
     end
   end
 

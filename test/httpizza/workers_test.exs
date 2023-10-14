@@ -6,6 +6,7 @@ defmodule HTTPizza.WorkersTest do
   describe "HTTPObserverWorker" do
     import HTTPizza.ObserversFixtures
 
+    @tag :focus
     test "produces successful observation" do
       observer =
         http_observer_fixture(%{

@@ -64,9 +64,8 @@ defmodule HTTPizza.HTTPObserverWorker do
 
     status =
       check_results
-      |> Enum.all?(fn
-        %{status: :ok} -> true
-        _ -> false
+      |> Enum.all?(fn check_result_changeset ->
+        Ecto.Changeset.get_field(check_result_changeset, :status) == :ok
       end)
       |> case do
         true -> :ok
