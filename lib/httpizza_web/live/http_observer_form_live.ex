@@ -223,7 +223,13 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
   @impl true
   def handle_event("remove_header_check", %{"index" => index}, socket) do
-    existing = Map.get(socket.assigns.form.source.changes, :header_checks, [])
+    existing =
+      Map.get(
+        socket.assigns.form.source.changes,
+        :header_checks,
+        socket.assigns.http_observer.header_checks
+      )
+
     {left, [_drop | right]} = Enum.split(existing, String.to_integer(index))
     updated_header_checks = Enum.concat(left, right)
 
@@ -262,7 +268,13 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
   @impl true
   def handle_event("remove_status_check", %{"index" => index}, socket) do
-    existing = Map.get(socket.assigns.form.source.changes, :status_checks, [])
+    existing =
+      Map.get(
+        socket.assigns.form.source.changes,
+        :status_checks,
+        socket.assigns.http_observer.status_checks
+      )
+
     {left, [_drop | right]} = Enum.split(existing, String.to_integer(index))
     updated_status_checks = Enum.concat(left, right)
 
@@ -307,6 +319,11 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
         %{"http_observer" => http_observer_params},
         %{assigns: %{action: :edit}} = socket
       ) do
+    http_observer_params =
+      http_observer_params
+      |> Map.update("status_checks", [], & &1)
+      |> Map.update("header_checks", [], & &1)
+
     socket.assigns.http_observer
     |> Observers.update_http_observer(http_observer_params)
     |> case do
