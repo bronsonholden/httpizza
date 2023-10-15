@@ -63,7 +63,7 @@ defmodule HTTPizzaWeb.NewOrganizationLive do
   @impl true
   def handle_event("create", %{"organization" => organization_params}, socket) do
     organization_params
-    |> Map.put("users", [socket.assigns.current_user])
+    |> Map.put(:users, [socket.assigns.current_user])
     |> IAM.create_organization()
     |> case do
       {:ok, organization} ->
