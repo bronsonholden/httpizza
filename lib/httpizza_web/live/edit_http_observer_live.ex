@@ -38,6 +38,20 @@ defmodule HTTPizzaWeb.EditHTTPObserverLive do
       current_organization={@current_organization}
       slug={@current_organization_slug}
     >
+      <div class="flex justify-between">
+        <.link
+          navigate={~p"/dashboard/#{@current_organization_slug}"}
+          class="flex items-center font-medium text-sm text-zinc-500 hover:text-black rounded"
+        >
+          <.icon name="hero-chevron-left scale-[65%]" /> Back
+        </.link>
+        <button
+          phx-click="delete_http_observer"
+          class="font-medium text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded"
+        >
+          Delete
+        </button>
+      </div>
       <%= live_render(@socket, HTTPizzaWeb.HTTPObserverFormLive,
         id: "new-http-observer-form",
         session: %{
@@ -48,5 +62,17 @@ defmodule HTTPizzaWeb.EditHTTPObserverLive do
       ) %>
     </.dashboard>
     """
+  end
+
+  @impl true
+  def handle_event("delete_http_observer", _params, socket) do
+    HTTPizza.Observers.delete_http_observer(socket.assigns.http_observer)
+
+    socket =
+      socket
+      |> put_flash(:info, "HTTP observer deleted")
+      |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")
+
+    {:noreply, socket}
   end
 end
