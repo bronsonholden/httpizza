@@ -60,7 +60,8 @@ defmodule HTTPizza.Status do
       on: h.id == yellow.id,
       left_join: green in subquery(green),
       on: h.id == green.id,
-      group_by: [o.id, o.slug],
+      group_by: [o.id, o.slug, u.personal],
+      order_by: [desc_nulls_last: u.personal, asc: o.name],
       select: %{
         organization: o,
         red: fragment("count(?)", red.id),
