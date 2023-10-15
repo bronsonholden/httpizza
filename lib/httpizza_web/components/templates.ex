@@ -11,28 +11,17 @@ defmodule HTTPizzaWeb.Templates do
   attr(:organizations_with_status_counts, :list, required: true)
   attr(:slug, :string, required: true)
 
+  attr(:path, :string,
+    default: "",
+    doc:
+      "Appended to dashboard path so switching between organizations on e.g. the settings page keeps you on the settings page"
+  )
+
   slot(:org)
   slot(:nav)
   slot(:inner_block)
 
   def dashboard(assigns) do
-    path =
-      assigns.current_uri
-      |> URI.new!()
-      |> Map.get(:path)
-      |> String.split("/")
-      # ["", "dashboard", _slug, page]
-      # ^-- we want to append `page` to org selector links
-      |> Enum.at(3)
-      |> case do
-        "" -> ""
-        "http-observers" -> ""
-        nil -> ""
-        path -> "/#{path}"
-      end
-
-    assigns = assign(assigns, :path, path)
-
     ~H"""
     <div class="w-full bg-slate-100 relative min-h-[calc(100vh-64px)]">
       <div class="max-md:hidden absolute left-0 top-0 bottom-0 right-1/2 bg-white" />

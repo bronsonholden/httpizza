@@ -87,4 +87,41 @@ defmodule HTTPizzaWeb.HTTPObservationLiveTest do
 
     assert {:ok, _conn} = result
   end
+
+  test "selecting an organization takes you to home dashboard page", %{
+    conn: conn,
+    user: user,
+    organization: organization,
+    http_observer: http_observer
+  } do
+    organization_user_fixture(%{user_id: user.id, organization_id: organization.id})
+
+    http_observation =
+      http_observation_fixture(%{
+        http_observer_id: http_observer.id,
+        status: :ok,
+        reason: "All checks passed"
+      })
+
+    # check selecting a personal org sends you to correct page
+    {:ok, live_view, _html} =
+      live(conn, ~p"/dashboard/#{organization.slug}/http-observations/#{http_observation.id}")
+
+    assert live_view
+           |> element("#organization-select-list [href*=personal]")
+           |> render_click()
+           |> follow_redirect(conn, ~p"/dashboard/personal")
+
+    # check selecting a non-personal org sends you to correct page
+    globex = organization_fixture(%{slug: "globex"})
+    organization_user_fixture(%{user_id: user.id, organization_id: globex.id})
+
+    {:ok, live_view, _html} =
+      live(conn, ~p"/dashboard/#{organization.slug}/http-observations/#{http_observation.id}")
+
+    assert live_view
+           |> element("#organization-select-list [href*=#{globex.slug}]")
+           |> render_click()
+           |> follow_redirect(conn, ~p"/dashboard/#{globex.slug}")
+  end
 end
