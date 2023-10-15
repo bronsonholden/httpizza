@@ -17,14 +17,16 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
   def render(assigns) do
     ~H"""
     <.container size="sm">
-      <%= live_render(@socket, HTTPizzaWeb.HTTPObserverFormLive,
-        id: "new-http-observer-form",
-        session: %{
-          "slug" => @current_organization_slug,
-          "action" => :new,
-          "http_observer" => %Observers.HTTPObserver{port: 80, method: :get, schedule: "0 * * * *"}
-        }
-      ) %>
+      <div class="max-w-md mx-auto">
+        <%= live_render(@socket, HTTPizzaWeb.HTTPObserverFormLive,
+          id: "new-http-observer-form",
+          session: %{
+            "slug" => @current_organization_slug,
+            "action" => :new,
+            "http_observer" => %Observers.HTTPObserver{port: 80, method: :get, schedule: "0 * * * *"}
+          }
+        ) %>
+      </div>
     </.container>
     """
   end

@@ -38,28 +38,30 @@ defmodule HTTPizzaWeb.EditHTTPObserverLive do
       current_organization={@current_organization}
       slug={@current_organization_slug}
     >
-      <div class="flex justify-between">
-        <.link
-          navigate={~p"/dashboard/#{@current_organization_slug}"}
-          class="flex items-center font-medium text-sm text-zinc-500 hover:text-black rounded"
-        >
-          <.icon name="hero-chevron-left scale-[65%]" /> Back
-        </.link>
-        <button
-          phx-click="delete_http_observer"
-          class="font-medium text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded"
-        >
-          Delete
-        </button>
+      <div class="max-w-sm mx-auto">
+        <div class="flex justify-between">
+          <.link
+            navigate={~p"/dashboard/#{@current_organization_slug}"}
+            class="flex items-center font-medium text-sm text-zinc-500 hover:text-black rounded"
+          >
+            <.icon name="hero-chevron-left scale-[65%]" /> Back
+          </.link>
+          <button
+            phx-click="delete_http_observer"
+            class="font-medium text-sm px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded"
+          >
+            Delete
+          </button>
+        </div>
+        <%= live_render(@socket, HTTPizzaWeb.HTTPObserverFormLive,
+          id: "new-http-observer-form",
+          session: %{
+            "slug" => @current_organization_slug,
+            "action" => :edit,
+            "http_observer" => @http_observer
+          }
+        ) %>
       </div>
-      <%= live_render(@socket, HTTPizzaWeb.HTTPObserverFormLive,
-        id: "new-http-observer-form",
-        session: %{
-          "slug" => @current_organization_slug,
-          "action" => :edit,
-          "http_observer" => @http_observer
-        }
-      ) %>
     </.dashboard>
     """
   end

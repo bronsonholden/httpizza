@@ -52,7 +52,6 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
   def render(assigns) do
     ~H"""
     <div>
-      <%!-- <%= inspect(@form) %> --%>
       <.simple_form for={@form} id="http-observer-form" phx-submit="save" phx-change="validate">
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
@@ -61,18 +60,24 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
         <.input field={@form[:https]} type="checkbox" label="HTTPS" phx-debounce="200" />
         <.input field={@form[:hostname]} type="text" label="Hostname" required phx-debounce="200" />
         <.input field={@form[:path]} type="text" label="Path" phx-debounce="200" />
-        <.input field={@form[:port]} type="text" label="Port" required phx-debounce="200" />
 
-        <.input
-          field={@form[:method]}
-          type="select"
-          label="Method"
-          required
-          phx-debounce="200"
-          options={[
-            {"GET", "get"}
-          ]}
-        />
+        <div class="flex gap-4 w-full">
+          <div class="w-1/2">
+            <.input field={@form[:port]} type="text" label="Port" required phx-debounce="200" />
+          </div>
+          <div class="w-1/2">
+            <.input
+              field={@form[:method]}
+              type="select"
+              label="Method"
+              required
+              phx-debounce="200"
+              options={[
+                {"GET", "get"}
+              ]}
+            />
+          </div>
+        </div>
 
         <.input
           field={@form[:schedule]}
