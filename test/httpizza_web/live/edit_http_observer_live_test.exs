@@ -29,4 +29,20 @@ defmodule HTTPizzaWeb.EditHTTPObserverLiveTest do
 
     assert {:ok, _live_view, _html} = result
   end
+
+  test "deletes HTTP observer", %{conn: conn, user: user} do
+    http_observer = http_observer_fixture(%{organization: user.personal_organization})
+
+    {:ok, live_view, _html} =
+      live(conn, ~p"/dashboard/personal/http-observers/#{http_observer.id}/edit")
+
+    assert live_view
+           |> element("button[phx-click='delete_http_observer']")
+           |> render_click()
+           |> follow_redirect(conn, ~p"/dashboard/personal")
+
+    assert_raise(Ecto.NoResultsError, fn ->
+      HTTPizza.Observers.get_http_observer!(http_observer.id)
+    end)
+  end
 end
