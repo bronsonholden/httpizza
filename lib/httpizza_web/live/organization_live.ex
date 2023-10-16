@@ -38,9 +38,11 @@ defmodule HTTPizzaWeb.OrganizationLive do
         title="Settings"
       />
 
-      <div class="border rounded-lg border-red-300 bg-red-300/20 p-4 space-y-4 my-8">
+      <p class="text-2xl font-bold my-8"><%= @current_organization.name %> organization</p>
+
+      <div class="border rounded-lg border-red-300 bg-red-300/20 p-4 space-y-4 my-12">
         <p class="font-bold text-red-500">Danger Zone</p>
-        <div class="flex gap-4 text-sm w-full items-center">
+        <div class="flex flex-col items-start sm:flex-row sm:items-center gap-4 text-sm w-full">
           <p class="grow">Deletes the organization, all observers, and all data.</p>
 
           <.delete_button organization={@current_organization} current_user={@current_user} />
@@ -90,7 +92,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
       <:trigger>
         <.delete_button organization={@organization} current_user={@current_user} personal={false} />
       </:trigger>
-      <p class="whitespace-nowrap">You may not delete your personal organization</p>
+      <p class="whitespace-nowrap">Can't delete your personal organization</p>
     </.tooltip>
     """
   end
