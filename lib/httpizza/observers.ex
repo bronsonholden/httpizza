@@ -42,7 +42,11 @@ defmodule HTTPizza.Observers do
         select: %{id: v.id}
       )
 
-    observations = from(v in HTTPObservation, where: v.id in subquery(outer_observations))
+    observations =
+      from(v in HTTPObservation,
+        where: v.id in subquery(outer_observations),
+        order_by: [desc: v.inserted_at]
+      )
 
     from(o in HTTPObserver,
       where: o.organization_id == ^organization_id,
