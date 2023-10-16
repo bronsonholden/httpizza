@@ -25,7 +25,7 @@ defmodule HTTPizza.Repo.Migrations.RenameOrganizationUserTable do
 
     rename table(:organization_users), to: table(:organization_user)
 
-    alter table(:organization_user) do
+    alter table(:organization_users) do
       modify :id, :binary_id, primary_key: true
 
       modify :organization_id, references(:organizations, on_delete: :nothing, type: :binary_id),
