@@ -25,11 +25,27 @@ defmodule HTTPizza.Observers do
   Returns the list of HTTP Observers associated with the given organization by `id`.
   """
   def list_organization_http_observers(organization_id) do
-    observations = from(o in HTTPObservation, order_by: [desc: o.inserted_at])
+    inner_observations =
+      from(v in HTTPObservation,
+        where: parent_as(:observers).id == v.http_observer_id,
+        order_by: [desc: v.inserted_at],
+        limit: 60,
+        select: %{id: v.id}
+      )
+
+    outer_observations =
+      from(o in HTTPObserver,
+        as: :observers,
+        inner_lateral_join: v in subquery(inner_observations),
+        on: true,
+        where: o.organization_id == ^organization_id,
+        select: %{id: v.id}
+      )
+
+    observations = from(v in HTTPObservation, where: v.id in subquery(outer_observations))
 
     from(o in HTTPObserver,
       where: o.organization_id == ^organization_id,
-      order_by: [asc: o.inserted_at],
       preload: [http_observations: ^observations]
     )
     |> Repo.all()
