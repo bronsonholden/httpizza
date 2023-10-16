@@ -59,7 +59,17 @@ defmodule HTTPizzaWeb.DashboardLive do
         </.link>
       </div>
       <ObserverComponents.timeline_guide />
-      <div id="http-observers" class="border-collapse my-4 w-full flex flex-col gap-2">
+      <p
+        :if={Enum.empty?(@http_observers)}
+        class="font-bold text-lg text-zinc-300 mx-auto max-w-xs text-center mt-12 mb-24"
+      >
+        Create an observer to get started.
+      </p>
+      <div
+        :if={not Enum.empty?(@http_observers)}
+        id="http-observers"
+        class="border-collapse my-4 w-full flex flex-col gap-2"
+      >
         <div
           :for={{http_observer, index} <- Enum.with_index(@http_observers)}
           id={"observer-#{http_observer.id}"}
