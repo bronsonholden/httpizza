@@ -24,6 +24,35 @@ defmodule HTTPizza.StatusTest do
                Status.get_organizations_with_status_counts(user)
     end
 
+    test "returns green resolved failures", %{user: user} do
+      http_observer = http_observer_fixture(%{organization: user.personal_organization})
+
+      {:ok, _} =
+        time_travel(
+          http_observation_fixture(%{
+            http_observer_id: http_observer.id,
+            status: :failed,
+            resolved: true,
+            reason: "Resolved failure"
+          }),
+          DateTime.add(DateTime.utc_now(), -5, :minute)
+        )
+
+      {:ok, _} =
+        time_travel(
+          http_observation_fixture(%{
+            http_observer_id: http_observer.id,
+            status: :failed,
+            resolved: true,
+            reason: "Resolved failure"
+          }),
+          DateTime.add(DateTime.utc_now(), -2, :hour)
+        )
+
+      assert [%{green: 1, yellow: 0, red: 0}] =
+               Status.get_organizations_with_status_counts(user)
+    end
+
     test "returns green with failure > 1 day ago", %{user: user} do
       http_observer = http_observer_fixture(%{organization: user.personal_organization})
 

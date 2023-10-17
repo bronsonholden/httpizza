@@ -69,6 +69,7 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
         <.tooltip :if={@http_observation.status == :failed} id="mark-as-resolved-tooltip">
           <:trigger>
             <button
+              id="resolve_http_observation"
               disabled={@http_observation.resolved}
               phx-click="resolve"
               class="group/resolve border-2 rounded px-2 font-medium text-sm py-1 border-blue-500 text-blue-500 disabled:text-green-500/40 disabled:border-green-500/40"
