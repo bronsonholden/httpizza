@@ -23,15 +23,15 @@ defmodule HTTPizzaWeb.Templates do
 
   def dashboard(assigns) do
     ~H"""
-    <div class="w-full bg-slate-100 relative min-h-[calc(100vh-64px)]">
-      <div class="max-md:hidden absolute left-0 top-0 bottom-0 right-1/2 bg-white" />
+    <div class="z-0 w-full bg-slate-100 relative min-h-[calc(100vh-64px)]">
+      <div class="z-[-1] max-md:hidden absolute left-0 top-0 bottom-0 right-1/2 bg-white" />
       <div class="grow max-w-[96rem] mx-auto h-full flex flex-col md:flex-row bg-white min-h-[calc(100vh-64px)]">
         <div class={[
           "grow flex flex-col",
           "xl:flex-row"
         ]}>
           <div class={[
-            "bg-white z-50",
+            "bg-white",
             "flex flex-col gap-4",
             "xl:w-[20rem] xl:px-4 xl:min-w-[20rem] xl:max-w-[20rem]"
           ]}>
@@ -54,9 +54,9 @@ defmodule HTTPizzaWeb.Templates do
           </div>
 
           <div class={[
-            "bg-white z-40",
+            "bg-white",
             "max-xl:px-4",
-            "xl:grow xl:p-5 xl:border-l xl:shadow-md"
+            "xl:grow xl:p-5 xl:border-l"
           ]}>
             <%= render_slot(@inner_block) %>
           </div>

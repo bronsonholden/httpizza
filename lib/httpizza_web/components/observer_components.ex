@@ -50,17 +50,25 @@ defmodule HTTPizzaWeb.ObserverComponents do
         >
           <div class={[
             "h-full w-full rounded-full group-hover/pill:scale-[110%]",
-            case http_observation.status do
-              :ok -> "bg-green-500 group-hover/pill:bg-green-400"
-              :failed -> "bg-red-500 group-hover/pill:bg-red-400"
-              _ -> "bg-zinc-500 group-hover/pill:bg-zinc-400"
-            end
+            status_classes(http_observation)
           ]}>
           </div>
         </.link>
       </div>
     </div>
     """
+  end
+
+  defp status_classes(%{resolved: true}) do
+    "bg-amber-400 group-hover/pill:bg-amber-300"
+  end
+
+  defp status_classes(http_observation) do
+    case http_observation.status do
+      :ok -> "bg-green-500 group-hover/pill:bg-green-400"
+      :failed -> "bg-red-500 group-hover/pill:bg-red-400"
+      _ -> "bg-zinc-500 group-hover/pill:bg-zinc-400"
+    end
   end
 
   def timeline_guide(assigns) do

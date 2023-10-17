@@ -124,4 +124,61 @@ defmodule HTTPizzaWeb.HTTPObservationLiveTest do
            |> render_click()
            |> follow_redirect(conn, ~p"/dashboard/#{globex.slug}")
   end
+
+  test "renders a resolved HTTP observation", %{
+    conn: conn,
+    user: user,
+    organization: organization,
+    http_observer: http_observer
+  } do
+    http_observation =
+      http_observation_fixture(%{
+        http_observer_id: http_observer.id,
+        status: :failed,
+        resolved: true,
+        reason: "Something expected"
+      })
+
+    organization_user_fixture(%{organization_id: organization.id, user_id: user.id})
+
+    {:ok, live_view, _html} =
+      live(
+        conn,
+        ~p"/dashboard/#{organization.slug}/http-observations/#{http_observation.id}"
+      )
+
+    assert has_element?(live_view, "#resolve_http_observation[disabled]")
+  end
+
+  test "resolves a failed HTTP observation", %{
+    conn: conn,
+    user: user,
+    organization: organization,
+    http_observer: http_observer
+  } do
+    http_observation =
+      http_observation_fixture(%{
+        http_observer_id: http_observer.id,
+        status: :failed,
+        reason: "Something expected"
+      })
+
+    organization_user_fixture(%{organization_id: organization.id, user_id: user.id})
+
+    {:ok, live_view, _html} =
+      live(
+        conn,
+        ~p"/dashboard/#{organization.slug}/http-observations/#{http_observation.id}"
+      )
+
+    result =
+      live_view
+      |> element("#resolve_http_observation")
+      |> render_click()
+      |> follow_redirect(conn, ~p"/dashboard/#{organization.slug}")
+
+    {:ok, _live_view, html} = result
+
+    assert html
+  end
 end

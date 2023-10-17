@@ -65,6 +65,25 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
         </.link>
       </div>
 
+      <div class="flex my-4">
+        <.tooltip :if={@http_observation.status == :failed} id="mark-as-resolved-tooltip">
+          <:trigger>
+            <button
+              id="resolve_http_observation"
+              disabled={@http_observation.resolved}
+              phx-click="resolve"
+              class="group/resolve border-2 rounded px-2 font-medium text-sm py-1 border-blue-500 text-blue-500 disabled:text-green-500/40 disabled:border-green-500/40"
+            >
+              <span class="group-disabled/resolve:hidden">Mark as resolved</span>
+              <span class="hidden group-disabled/resolve:block">
+                <.icon name="hero-check-mini" class="scale-75" /> Resolved
+              </span>
+            </button>
+          </:trigger>
+          <p class="min-w-[14rem]">Resolved failures don't affect observer status.</p>
+        </.tooltip>
+      </div>
+
       <div :for={check_result <- @http_observation.check_results}>
         <div class="flex gap-2 items-start">
           <.icon
@@ -100,6 +119,22 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
       </div>
     </.dashboard>
     """
+  end
+
+  @impl true
+  def handle_event("resolve", _params, socket) do
+    with {:ok, _} <-
+           socket.assigns.http_observation
+           |> Observers.update_http_observation(%{resolved: true}) do
+      socket =
+        socket
+        |> put_flash(:info, "Marked as resolved")
+        |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")
+
+      {:noreply, socket}
+    else
+      _ -> {:noreply, put_flash(socket, :error, "Unable to mark as resolved")}
+    end
   end
 
   defp get_check(%{kind: "Elixir.HTTPizza.Checks.HeaderCheck"} = check_result) do

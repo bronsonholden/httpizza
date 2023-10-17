@@ -11,6 +11,7 @@ defmodule HTTPizza.Observers.HTTPObservation do
     field :started_at, :utc_datetime
     field :duration, :integer
     field :reason, :string
+    field :resolved, :boolean, default: false
 
     belongs_to :http_observer, HTTPizza.Observers.HTTPObserver
 
@@ -29,7 +30,7 @@ defmodule HTTPizza.Observers.HTTPObservation do
   @doc false
   def changeset(http_observation, attrs) do
     http_observation
-    |> cast(attrs, [:status, :reason, :started_at, :duration, :http_observer_id])
+    |> cast(attrs, [:status, :resolved, :reason, :started_at, :duration, :http_observer_id])
     |> validate_required(:http_observer_id)
     |> assoc_constraint(:http_observer)
   end
