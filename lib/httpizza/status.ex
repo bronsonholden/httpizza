@@ -27,7 +27,7 @@ defmodule HTTPizza.Status do
       from(h in HTTPObserver,
         left_join: o in HTTPObservation,
         on: h.id == o.http_observer_id,
-        where: o.status == :failed and o.inserted_at > ^one_hour_ago,
+        where: o.status == :failed and o.inserted_at > ^one_hour_ago and not o.resolved,
         distinct: h.id,
         select: h.id
       )
@@ -36,7 +36,9 @@ defmodule HTTPizza.Status do
       from(h in HTTPObserver,
         left_join: o in HTTPObservation,
         on: h.id == o.http_observer_id,
-        where: o.status == :failed and o.inserted_at > ^one_day_ago and h.id not in subquery(red),
+        where:
+          o.status == :failed and o.inserted_at > ^one_day_ago and h.id not in subquery(red) and
+            not o.resolved,
         distinct: h.id,
         select: h.id
       )
