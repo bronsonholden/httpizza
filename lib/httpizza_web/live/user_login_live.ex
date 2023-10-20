@@ -5,7 +5,7 @@ defmodule HTTPizzaWeb.UserLoginLive do
 
   def render(assigns) do
     ~H"""
-    <.container size="sm">
+    <.container size="md">
       <.header class="text-center">
         Sign in to account
         <:subtitle>

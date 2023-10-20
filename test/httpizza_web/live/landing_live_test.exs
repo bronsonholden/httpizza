@@ -9,7 +9,7 @@ defmodule HTTPizzaWeb.LandingLiveTest do
   end
 
   test "renders landing page", %{conn: conn} do
-    {:ok, _live_view, html} = live(conn, ~p"/")
+    {:ok, _live_view, html} = live(conn, ~p"/") |> follow_redirect(conn, ~p"/users/log_in")
 
     assert html
   end

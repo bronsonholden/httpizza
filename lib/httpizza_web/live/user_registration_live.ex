@@ -8,7 +8,7 @@ defmodule HTTPizzaWeb.UserRegistrationLive do
 
   def render(assigns) do
     ~H"""
-    <.container size="sm">
+    <.container size="md">
       <.header class="text-center">
         Register for an account
         <:subtitle>
