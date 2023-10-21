@@ -21,7 +21,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
     belongs_to :organization, HTTPizza.IAM.Organization
     has_many :http_observations, HTTPizza.Observers.HTTPObservation
 
-    embeds_many :email_recipients, HTTPizza.Notifications.EmailRecipient
+    embeds_many :email_recipients, HTTPizza.Notifications.EmailRecipient, on_replace: :delete
     embeds_many :header_checks, HTTPizza.Checks.HeaderCheck, on_replace: :delete
     embeds_many :status_checks, HTTPizza.Checks.StatusCheck, on_replace: :delete
 
