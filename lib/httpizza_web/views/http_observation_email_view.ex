@@ -8,11 +8,15 @@ defmodule HTTPizzaWeb.HTTPObservationEmailView do
       assigns
       |> assign(
         :observation_url,
-        ~p"/dashboard/#{assigns.http_observation.http_observer.organization.slug}/http-observations/#{assigns.http_observation.id}"
+        url(
+          ~p"/dashboard/#{assigns.http_observation.http_observer.organization.slug}/http-observations/#{assigns.http_observation.id}"
+        )
       )
       |> assign(
         :observer_url,
-        ~p"/dashboard/#{assigns.http_observation.http_observer.organization.slug}/http-observers/#{assigns.http_observation.http_observer.id}/edit"
+        url(
+          ~p"/dashboard/#{assigns.http_observation.http_observer.organization.slug}/http-observers/#{assigns.http_observation.http_observer.id}/edit"
+        )
       )
 
     ~H"""
