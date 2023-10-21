@@ -24,19 +24,45 @@ defmodule HTTPizza.HTTPObserverWorker do
       {:error, error} ->
         reason = "Error: #{Exception.message(error)}"
 
-        {:ok, observation} =
+        changeset =
           observation_changeset(observer, %{
-            status: :failed,
+            status: :error,
             reason: reason
           })
-          |> HTTPizza.Repo.insert()
+          |> Ecto.Changeset.put_change(:id, Ecto.UUID.generate())
+
+        multi =
+          Ecto.Multi.new()
+          |> Ecto.Multi.insert(
+            :observation,
+            changeset
+          )
+
+        observation_id = Ecto.Changeset.get_change(changeset, :id)
+
+        multi =
+          Enum.filter(observer.email_recipients, fn email_recipient ->
+            email_recipient.error
+          end)
+          |> Enum.reduce(multi, fn email_recipient, multi ->
+            Oban.insert(
+              multi,
+              :job,
+              HTTPizza.Notifications.EmailNotification.Job.new(%{
+                "recipient" => email_recipient.email,
+                "http_observation_id" => observation_id
+              })
+            )
+          end)
+
+        {:ok, %{observation: observation}} =
+          HTTPizza.Repo.transaction(multi)
 
         observation
     end
   end
 
-  # Process the observer and return an `Ecto.Changeset` for inserting the
-  # resulting `HTTPObservation`
+  # Create an `Ecto.Changeset` for inserting an HTTP observation
   @spec observation_changeset(%HTTPObserver{}, map()) :: Ecto.Changeset.t()
   defp observation_changeset(%HTTPObserver{} = observer, attrs) do
     %HTTPObservation{http_observer_id: observer.id}
@@ -86,18 +112,34 @@ defmodule HTTPizza.HTTPObserverWorker do
         check_results: check_results
       })
 
-    {:ok, %{observation: observation}} =
+    multi =
       Ecto.Multi.new()
       |> Ecto.Multi.insert(
         :observation,
         changeset
       )
-      |> Oban.insert(
-        :job,
-        HTTPizza.Notifications.EmailNotification.new(%{
-          "http_observation_id" => Ecto.Changeset.get_change(changeset, :id)
-        })
-      )
+
+    observation_id = Ecto.Changeset.get_change(changeset, :id)
+
+    multi =
+      Enum.reduce(observer.email_recipients, multi, fn email_recipient, multi ->
+        if (email_recipient.ok and status == :ok) or
+             (email_recipient.failed and status == :failed) do
+          Oban.insert(
+            multi,
+            :job,
+            HTTPizza.Notifications.EmailNotification.Job.new(%{
+              "recipient" => email_recipient.email,
+              "http_observation_id" => observation_id
+            })
+          )
+        else
+          multi
+        end
+      end)
+
+    {:ok, %{observation: observation}} =
+      multi
       |> HTTPizza.Repo.transaction()
 
     observation

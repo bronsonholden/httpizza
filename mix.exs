@@ -61,7 +61,8 @@ defmodule HTTPizza.MixProject do
       {:excoveralls, "~> 0.13", only: :test},
       {:oban, "~> 2.16"},
       {:crontab, "~> 1.1"},
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:phoenix_swoosh, "~> 1.0"}
     ]
   end
 

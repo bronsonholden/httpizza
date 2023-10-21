@@ -1,23 +1,21 @@
 defmodule HTTPizza.Notifications.EmailNotification.Job do
   require Logger
 
-  use Oban.Worker, queue: :notifiers, unique: [period: 60, fields: [:worker]]
+  use Oban.Worker, queue: :notifiers, unique: [period: 60, fields: [:args]]
   use HTTPizzaWeb, :verified_routes
 
   alias HTTPizza.Mailer
 
-  import Swoosh.Email
-
   @impl Oban.Worker
   def perform(%Oban.Job{
-        args: %{"recipient" => recipient, "subject" => subject, "body" => body}
+        args: %{"recipient" => recipient, "http_observation_id" => http_observation_id}
       }) do
-    email =
-      new()
-      |> to(recipient)
-      |> from({"HTTPizza", "noreply@htt.pizza"})
-      |> subject(subject)
-      |> text_body(body)
+    http_observation =
+      http_observation_id
+      |> HTTPizza.Observers.get_http_observation!()
+      |> HTTPizza.Repo.preload(http_observer: :organization)
+
+    email = HTTPizzaWeb.HTTPObservationEmail.report(recipient, http_observation)
 
     with {:ok, _metadata} <- Mailer.deliver(email) do
       :ok
