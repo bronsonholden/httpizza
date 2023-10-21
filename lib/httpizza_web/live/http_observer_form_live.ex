@@ -411,6 +411,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
       http_observer_params
       |> Map.update("status_checks", [], & &1)
       |> Map.update("header_checks", [], & &1)
+      |> Map.update("email_recipients", [], & &1)
 
     socket.assigns.http_observer
     |> Observers.update_http_observer(http_observer_params)
