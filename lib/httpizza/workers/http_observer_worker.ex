@@ -41,6 +41,7 @@ defmodule HTTPizza.HTTPObserverWorker do
   defp observation_changeset(%HTTPObserver{} = observer, attrs) do
     %HTTPObservation{http_observer_id: observer.id}
     |> Observers.change_http_observation(attrs)
+    |> Ecto.Changeset.put_change(:id, Ecto.UUID.generate())
   end
 
   @spec build_uri(%HTTPObserver{}) :: String.t()
@@ -78,17 +79,25 @@ defmodule HTTPizza.HTTPObserverWorker do
         :failed -> "One or more checks failed"
       end
 
+    changeset =
+      observation_changeset(observer, %{
+        reason: reason,
+        status: status,
+        check_results: check_results
+      })
+
     {:ok, %{observation: observation}} =
       Ecto.Multi.new()
       |> Ecto.Multi.insert(
         :observation,
-        observation_changeset(observer, %{
-          reason: reason,
-          status: status,
-          check_results: check_results
+        changeset
+      )
+      |> Oban.insert(
+        :job,
+        HTTPizza.Notifications.EmailNotification.new(%{
+          "http_observation_id" => Ecto.Changeset.get_change(changeset, :id)
         })
       )
-      # |> Oban.insert() # notification job(s)
       |> HTTPizza.Repo.transaction()
 
     observation

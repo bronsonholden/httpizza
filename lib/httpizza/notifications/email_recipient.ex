@@ -13,7 +13,7 @@ defmodule HTTPizza.Notifications.EmailRecipient do
   @doc false
   def changeset(check_result, attrs) do
     check_result
-    |> cast(attrs, [:status, :ok, :failed, :error])
-    |> validate_required([:status, :ok, :failed, :error])
+    |> cast(attrs, [:email, :ok, :failed, :error])
+    |> validate_required([:email, :ok, :failed, :error])
   end
 end
