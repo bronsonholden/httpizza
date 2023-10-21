@@ -53,6 +53,7 @@ defmodule HTTPizza.Observers.HTTPObserver do
     ])
     |> cast_embed(:header_checks)
     |> cast_embed(:status_checks)
+    |> cast_embed(:email_recipients)
     |> validate_required([
       :schedule,
       :https,

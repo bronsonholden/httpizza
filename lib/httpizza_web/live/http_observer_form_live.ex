@@ -25,8 +25,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
   """
   use HTTPizzaWeb, :live_view
 
-  alias HTTPizza.Checks
-  alias HTTPizza.Observers
+  alias HTTPizza.{Checks, Notifications, Observers}
 
   on_mount {HTTPizzaWeb.UserAuth, :ensure_authenticated}
   on_mount {HTTPizzaWeb.Organization, :ensure_organization_selected}
@@ -86,6 +85,50 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
             {"Every day", "0 0 * * *"}
           ]}
         />
+
+        <div class="flex items-center gap-4">
+          <p>Email recipients</p>
+          <button
+            type="button"
+            class="rounded-full border p-1 rounded-full h-full aspect-square block flex items-center justify-center"
+            phx-click="add_email_recipient"
+          >
+            <.icon name="hero-plus-mini" />
+          </button>
+        </div>
+
+        <div id="http-observer-email-recipients">
+          <.inputs_for :let={recipient} field={@form[:email_recipients]}>
+            <fieldset class="pl-8 border-l-[4px] border-zinc-200 flex flex-col gap-2 my-4">
+              <.input
+                field={recipient[:email]}
+                type="text"
+                label="Email address"
+                required
+                phx-debounce="200"
+              />
+              <.input field={recipient[:ok]} type="checkbox" label="On success" phx-debounce="200" />
+              <.input
+                field={recipient[:failed]}
+                type="checkbox"
+                label="On failure"
+                phx-debounce="200"
+              />
+              <.input field={recipient[:error]} type="checkbox" label="On error" phx-debounce="200" />
+
+              <div>
+                <button
+                  class="text-zinc-500 hover:text-red-600 text-sm font-medium"
+                  type="button"
+                  phx-click="remove_email_recipient"
+                  phx-value-index={recipient.index}
+                >
+                  <.icon name="hero-minus" class="scale-[60%]" /> Remove
+                </button>
+              </div>
+            </fieldset>
+          </.inputs_for>
+        </div>
 
         <div class="flex items-center gap-4">
           <p>Header checks</p>
@@ -195,6 +238,51 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
       </.simple_form>
     </div>
     """
+  end
+
+  @impl true
+  def handle_event("add_email_recipient", _params, socket) do
+    existing =
+      Map.get(
+        socket.assigns.form.source.changes,
+        :email_recipients,
+        socket.assigns.http_observer.email_recipients
+      )
+
+    email_recipients =
+      existing
+      |> Enum.concat([
+        Notifications.EmailRecipient.changeset(%Notifications.EmailRecipient{}, %{})
+      ])
+
+    changeset =
+      socket.assigns.form.source
+      |> Ecto.Changeset.put_change(:email_recipients, email_recipients)
+
+    form = to_form(changeset, as: "http_observer")
+
+    {:noreply, assign(socket, :form, form)}
+  end
+
+  @impl true
+  def handle_event("remove_email_recipient", %{"index" => index}, socket) do
+    existing =
+      Map.get(
+        socket.assigns.form.source.changes,
+        :email_recipients,
+        socket.assigns.http_observer.email_recipients
+      )
+
+    {left, [_drop | right]} = Enum.split(existing, String.to_integer(index))
+    updated_email_recipients = Enum.concat(left, right)
+
+    changeset =
+      socket.assigns.form.source
+      |> Ecto.Changeset.put_change(:email_recipients, updated_email_recipients)
+
+    form = to_form(changeset, as: "http_observer")
+
+    {:noreply, assign(socket, :form, form)}
   end
 
   @impl true
