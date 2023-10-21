@@ -129,6 +129,36 @@ defmodule HTTPizzaWeb.DashboardLive do
               <ObserverComponents.check_list_icon />
               <ObserverComponents.check_list_item check={status_check} />
             </div>
+
+            <div class="mb-2" />
+
+            <div
+              :for={{email_recipient, index} <- Enum.with_index(http_observer.email_recipients)}
+              class="flex items-center gap-1"
+            >
+              <.dot
+                :if={email_recipient.ok}
+                color="bg-green-500"
+                id={"#{http_observer.id}-#{index}-ok"}
+              >
+                Will be notified of successful observations
+              </.dot>
+              <.dot
+                :if={email_recipient.failed}
+                color="bg-red-500"
+                id={"#{http_observer.id}-#{index}-failed"}
+              >
+                Will be notified of failed observations
+              </.dot>
+              <.dot
+                :if={email_recipient.error}
+                color="bg-zinc-400"
+                id={"#{http_observer.id}-#{index}-error"}
+              >
+                Will be notified of errors
+              </.dot>
+              <p class="font-mono text-xs"><%= email_recipient.email %></p>
+            </div>
           </div>
 
           <div class="py-2">
@@ -140,6 +170,19 @@ defmodule HTTPizzaWeb.DashboardLive do
         </div>
       </div>
     </.dashboard>
+    """
+  end
+
+  attr(:id, :string, required: true)
+  attr(:color, :string, required: true)
+  slot(:inner_block, required: true)
+
+  defp dot(assigns) do
+    ~H"""
+    <.tooltip id={@id}>
+      <:trigger><div class={"w-2 h-2 rounded-full #{@color}"} /></:trigger>
+      <p class="whitespace-nowrap"><%= render_slot(@inner_block) %></p>
+    </.tooltip>
     """
   end
 
