@@ -223,7 +223,14 @@ defmodule HTTPizza.IAM do
   """
   def generate_user_session_token(user) do
     {token, user_token} = UserToken.build_session_token(user)
-    Repo.insert!(user_token)
+
+    multi =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:user_token, user_token)
+      |> Ecto.Multi.update(user, User.last_logged_in_changeset(user))
+
+    {:ok, _} = Repo.transaction(multi)
+
     token
   end
 

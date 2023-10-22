@@ -14,6 +14,7 @@ defmodule HTTPizza.IAM.User do
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
+    field :last_logged_in_at, :utc_datetime
 
     has_many :organization_users, OrganizationUser
     has_many :organizations, through: [:organization_users, :organization]
@@ -146,6 +147,14 @@ defmodule HTTPizza.IAM.User do
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)
+  end
+
+  @doc """
+  Sets `last_logged_in_at` to current time.
+  """
+  def last_logged_in_changeset(user) do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+    change(user, last_logged_in_at: now)
   end
 
   @doc """
