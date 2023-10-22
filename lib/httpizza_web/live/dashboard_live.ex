@@ -71,15 +71,11 @@ defmodule HTTPizzaWeb.DashboardLive do
         class="border-collapse my-4 w-full flex flex-col gap-2"
       >
         <div
-          :for={{http_observer, index} <- Enum.with_index(@http_observers)}
+          :for={http_observer <- @http_observers}
           id={"observer-#{http_observer.id}"}
           class="open border-b group/observer"
         >
           <div class="flex gap-2 items-center">
-            <div class="text-xs text-zinc-400 pr-1">
-              <%= index + 1 %>
-            </div>
-
             <button
               type="button"
               phx-click={expand_js(http_observer.id)}
