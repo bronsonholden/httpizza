@@ -9,6 +9,8 @@ defmodule HTTPizza.HTTPObserverWorker do
     id
     |> Observers.get_http_observer!()
     |> observe()
+
+    :ok
   end
 
   def observe(%HTTPObserver{} = observer) do
