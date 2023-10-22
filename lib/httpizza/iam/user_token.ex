@@ -13,6 +13,7 @@ defmodule HTTPizza.IAM.UserToken do
   @confirm_validity_in_days 7
   @change_email_validity_in_days 7
   @session_validity_in_days 60
+  @join_organization_validity_in_days 1
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -154,6 +155,24 @@ defmodule HTTPizza.IAM.UserToken do
         query =
           from token in token_and_context_query(hashed_token, context),
             where: token.inserted_at > ago(@change_email_validity_in_days, "day")
+
+        {:ok, query}
+
+      :error ->
+        :error
+    end
+  end
+
+  def verify_join_organization_token_query(token, "join:" <> _ = context) do
+    case Base.url_decode64(token, padding: false) do
+      {:ok, decoded_token} ->
+        hashed_token = :crypto.hash(@hash_algorithm, decoded_token)
+
+        query =
+          from token in token_and_context_query(hashed_token, context),
+            join: user in assoc(token, :user),
+            where: token.inserted_at > ago(@join_organization_validity_in_days, "day"),
+            select: user
 
         {:ok, query}
 

@@ -43,6 +43,12 @@ defmodule HTTPizzaWeb.DashboardComponents do
       />
       <.navigation_link
         current_path={@current_path}
+        path={~p"/dashboard/#{@slug}/team"}
+        icon="hero-users"
+        label="Team"
+      />
+      <.navigation_link
+        current_path={@current_path}
         path={~p"/dashboard/#{@slug}/settings"}
         icon="hero-adjustments-horizontal"
         label="Settings"

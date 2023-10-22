@@ -61,6 +61,12 @@ defmodule HTTPizzaWeb.Router do
   end
 
   scope "/", HTTPizzaWeb do
+    pipe_through [:browser]
+
+    live "/dashboard/:organization/team/join/:token", JoinTeamLive, :edit
+  end
+
+  scope "/", HTTPizzaWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
@@ -71,6 +77,11 @@ defmodule HTTPizzaWeb.Router do
         scope "/:organization" do
           live "/", DashboardLive, :show
           live "/settings", OrganizationLive, :show
+
+          scope "/team" do
+            live "/", TeamLive, :index
+            live "/invite", InviteToTeamLive, :new
+          end
 
           scope "/http-observers" do
             live "/new", NewHTTPObserverLive, :new
