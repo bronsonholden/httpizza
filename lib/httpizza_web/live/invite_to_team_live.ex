@@ -45,7 +45,7 @@ defmodule HTTPizzaWeb.InviteToTeamLive do
 
       <div class="my-8">
         <.simple_form for={@form} id="invite-form" phx-submit="invite">
-          <.input field={@form[:email]} type="email" label="HTTPS" phx-debounce="200" />
+          <.input required field={@form[:email]} type="email" label="Email" phx-debounce="200" />
 
           <:actions>
             <button
