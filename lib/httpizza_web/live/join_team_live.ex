@@ -49,7 +49,7 @@ defmodule HTTPizzaWeb.JoinTeamLive do
           />
         </div>
         <:actions>
-          <.button id="join-button" phx-disable-with="Confirming..." class="w-full">
+          <.button id="join-button" phx-disable-with="Joining team..." class="w-full">
             Join <%= @organization.name %>
           </.button>
         </:actions>
