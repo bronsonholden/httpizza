@@ -11,10 +11,10 @@ defmodule HTTPizzaWeb.TeamLiveTest do
     %{conn: log_in_user(conn, user), user: user, organization: organization}
   end
 
-  test "renders team page", %{conn: conn, organization: organization} do
+  test "renders team page", %{conn: conn, user: user, organization: organization} do
     {:ok, _live_view, html} = live(conn, ~p"/dashboard/#{organization.slug}/team")
 
-    assert html
+    assert html =~ user.email
   end
 
   test "renders personal team page", %{conn: conn} do
