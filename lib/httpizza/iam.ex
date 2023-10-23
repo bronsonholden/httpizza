@@ -81,6 +81,69 @@ defmodule HTTPizza.IAM do
     |> Repo.insert()
   end
 
+  @doc ~S"""
+  Invite a registered user to the given organization
+
+  ## Examples
+
+      iex> deliver_user_invite_to_organization(user, organization, &url(~p"/dashboard/acme/team/join/#{&1})")
+      {:ok, %{to: ..., body: ...}}
+
+  """
+  def deliver_user_invite_to_organization(%User{} = user, organization, accept_invite_url_fun) do
+    {encoded_token, user_token} = UserToken.build_email_token(user, "join:#{organization.id}")
+
+    Repo.insert!(user_token)
+
+    UserNotifier.deliver_join_organization_instructions(
+      user,
+      organization,
+      accept_invite_url_fun.(encoded_token)
+    )
+  end
+
+  def join_organization_multi(organization_id, token) do
+    with {:ok, query} <-
+           UserToken.verify_join_organization_token_query(token, "join:#{organization_id}"),
+         %User{} = user <- Repo.one(query) do
+      changeset =
+        OrganizationUser.changeset(%OrganizationUser{}, %{
+          user_id: user.id,
+          organization_id: organization_id
+        })
+
+      multi =
+        Ecto.Multi.new()
+        |> Ecto.Multi.insert(:organization_user, changeset)
+
+      {:ok, multi}
+    else
+      _ -> :error
+    end
+  end
+
+  @doc """
+  Gets the user by join organization token.
+
+  ## Examples
+
+      iex> get_user_by_join_organization_token("validtoken", org)
+      %User{}
+
+      iex> get_user_by_join_organization_token("invalidtoken", org)
+      nil
+
+  """
+  def get_user_by_join_organization_token(token, organization) do
+    with {:ok, query} <-
+           UserToken.verify_join_organization_token_query(token, "join:#{organization.id}"),
+         %User{} = user <- Repo.one(query) do
+      user
+    else
+      _ -> nil
+    end
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking user changes.
 
@@ -223,7 +286,14 @@ defmodule HTTPizza.IAM do
   """
   def generate_user_session_token(user) do
     {token, user_token} = UserToken.build_session_token(user)
-    Repo.insert!(user_token)
+
+    multi =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:user_token, user_token)
+      |> Ecto.Multi.update(user, User.last_logged_in_changeset(user))
+
+    {:ok, _} = Repo.transaction(multi)
+
     token
   end
 
@@ -354,6 +424,32 @@ defmodule HTTPizza.IAM do
     end
   end
 
+  def delete_user(user) do
+    user_id = user.id
+
+    personal_organization =
+      from(ou in OrganizationUser,
+        where: ou.personal and ou.user_id == ^user_id,
+        join: o in Organization,
+        on: o.id == ou.organization_id,
+        select: o
+      )
+
+    organization_users =
+      from(ou in OrganizationUser, where: ou.user_id == ^user_id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete_all(:organization_users, organization_users)
+    |> Ecto.Multi.delete_all(:personal_organization, personal_organization)
+    |> Ecto.Multi.delete(:user, user)
+    |> Repo.transaction()
+  end
+
+  def list_user_tokens_for_context(context) do
+    from(t in UserToken, where: t.context == ^context)
+    |> Repo.all()
+  end
+
   @doc """
   Returns the list of organizations.
 
@@ -404,6 +500,37 @@ defmodule HTTPizza.IAM do
       on: ou.organization_id == o.id,
       where: ou.user_id == ^user.id and o.slug == ^slug,
       select: o
+    )
+    |> Repo.one()
+  end
+
+  @doc """
+  Get an organization by its slug.
+
+  Raises `Ecto.NoResultsError` if the Organization does not exist.
+
+  ## Examples
+
+      iex> get_organization_by_slug!("acme-inc")
+      %Organization{}
+
+      iex> get_organization_by_slug!("pseudo-co")
+      ** (Ecto.NoResultsError)
+  """
+  def get_organization_by_slug!(slug) do
+    from(o in Organization, where: o.slug == ^slug)
+    |> Repo.one()
+  end
+
+  def organization_has_user_by_email?(organization, email) do
+    from(
+      o in Organization,
+      join: ou in OrganizationUser,
+      on: ou.organization_id == o.id,
+      join: u in User,
+      on: ou.user_id == u.id,
+      where: o.id == ^organization.id and u.email == ^email,
+      select: true
     )
     |> Repo.one()
   end

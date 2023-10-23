@@ -52,10 +52,10 @@ defmodule HTTPizzaWeb.DashboardLive do
           title="HTTP Observers"
         />
         <.link
-          class="h-full py-1 pl-1 pr-2 text-sm font-bold hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
+          class="h-full py-1 pl-1 pr-2 text-xs font-bold hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
           navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
         >
-          <.icon name="hero-plus-mini" /> New
+          <.icon name="hero-plus-mini" class="scale-75" /> New
         </.link>
       </div>
       <ObserverComponents.timeline_guide />

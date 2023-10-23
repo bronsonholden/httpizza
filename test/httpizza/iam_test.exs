@@ -332,6 +332,15 @@ defmodule HTTPizza.IAMTest do
         })
       end
     end
+
+    test "sets last logged in timestamp", %{user: user} do
+      refute user.last_logged_in_at
+
+      IAM.generate_user_session_token(user)
+
+      assert user = IAM.get_user_by_email(user.email)
+      assert user.last_logged_in_at
+    end
   end
 
   describe "get_user_by_session_token/1" do

@@ -65,4 +65,18 @@ defmodule HTTPizza.IAM.UserNotifier do
     If you didn't request this change, please ignore this.
     """)
   end
+
+  @doc """
+  Deliver instructions to update a user email.
+  """
+  def deliver_join_organization_instructions(user, organization, url) do
+    deliver(user.email, "Join #{organization.name} on HTTPizza", """
+    Hi #{user.email},
+
+    You have been invited to the #{organization.name} organization on HTTPizza. You can
+    join the organization by visiting the URL below:
+
+    #{url}
+    """)
+  end
 end
