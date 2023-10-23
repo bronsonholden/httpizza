@@ -1,6 +1,7 @@
 defmodule HTTPizzaWeb.TeamLive do
   use HTTPizzaWeb, :live_view
 
+  alias HTTPizza.IAM
   alias HTTPizzaWeb.DashboardComponents
 
   import HTTPizzaWeb.Templates
@@ -10,11 +11,15 @@ defmodule HTTPizzaWeb.TeamLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok,
+     assign(
+       socket,
+       :organization_users,
+       IAM.list_organization_team(socket.assigns.current_organization)
+     )}
   end
 
   @impl true
-  @spec handle_params(any(), any(), map()) :: {:noreply, map()}
   def handle_params(_params, uri, socket) do
     {:noreply, assign(socket, :current_uri, uri)}
   end
@@ -44,6 +49,19 @@ defmodule HTTPizzaWeb.TeamLive do
           current_user={@current_user}
         />
       </div>
+
+      <table class="my-8 border w-full">
+        <thead class="text-sm">
+          <tr>
+            <th class="text-left text-zinc-500 border p-2">Email</th>
+            <th class="text-left text-zinc-500 border p-2">Joined</th>
+          </tr>
+        </thead>
+        <tr :for={%{inserted_at: inserted_at, user: user} <- @organization_users} class="border">
+          <td class="border p-2"><%= user.email %></td>
+          <td class="border p-2"><%= Timex.format!(inserted_at, "{Mshort} {0D}, {YYYY}") %></td>
+        </tr>
+      </table>
     </.dashboard>
     """
   end

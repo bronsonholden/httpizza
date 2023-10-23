@@ -495,13 +495,24 @@ defmodule HTTPizza.IAM do
   """
   def get_user_organization_by_slug(user, slug) do
     from(
-      ou in OrganizationUser,
-      join: o in Organization,
+      o in Organization,
+      join: ou in OrganizationUser,
       on: ou.organization_id == o.id,
-      where: ou.user_id == ^user.id and o.slug == ^slug,
-      select: o
+      where: ou.user_id == ^user.id and o.slug == ^slug
     )
     |> Repo.one()
+  end
+
+  def list_organization_team(organization) do
+    from(
+      ou in OrganizationUser,
+      join: u in User,
+      on: ou.user_id == u.id,
+      where: ou.organization_id == ^organization.id,
+      order_by: [asc: u.email],
+      preload: :user
+    )
+    |> Repo.all()
   end
 
   @doc """
