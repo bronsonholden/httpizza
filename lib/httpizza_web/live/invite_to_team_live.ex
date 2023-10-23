@@ -14,7 +14,7 @@ defmodule HTTPizzaWeb.InviteToTeamLive do
     if socket.assigns.current_organization == socket.assigns.current_user.personal_organization do
       {:ok, push_navigate(socket, to: ~p"/dashboard/personal")}
     else
-      {:ok, assign(socket, :form, to_form(%{"email" => "senates_liberty1t@icloud.com"}))}
+      {:ok, assign(socket, :form, to_form(%{}))}
     end
   end
 
