@@ -27,18 +27,37 @@ defmodule HTTPizzaWeb.InviteToTeamLiveTest do
     assert html
   end
 
-  test "invites a new team member", %{conn: conn, organization: organization} do
+  test "invites an existing user as team member", %{conn: conn, organization: organization} do
+    user = user_fixture(%{email: "johndoe@example.com"})
+
     {:ok, live_view, _html} = live(conn, ~p"/dashboard/#{organization.slug}/team/invite")
 
     assert IAM.list_user_tokens_for_context("join:#{organization.id}") == []
 
     {:ok, _live_view, html} =
       live_view
-      |> render_submit("invite", %{"email" => "johndoe@example.com"})
+      |> render_submit("invite", %{"email" => user.email})
       |> follow_redirect(conn, ~p"/dashboard/#{organization.slug}/team")
 
-    assert html =~ "Invitation sent to johndoe@example.com"
-    assert %{id: user_id} = IAM.get_user_by_email("johndoe@example.com")
+    assert html =~ "Invitation sent to #{user.email}"
+    assert %{id: user_id} = IAM.get_user_by_email(user.email)
+    assert [%{user_id: ^user_id}] = IAM.list_user_tokens_for_context("join:#{organization.id}")
+  end
+
+  test "invites a new user as team member", %{conn: conn, organization: organization} do
+    user_email = "johndoe@example.com"
+
+    {:ok, live_view, _html} = live(conn, ~p"/dashboard/#{organization.slug}/team/invite")
+
+    assert IAM.list_user_tokens_for_context("join:#{organization.id}") == []
+
+    {:ok, _live_view, html} =
+      live_view
+      |> render_submit("invite", %{"email" => user_email})
+      |> follow_redirect(conn, ~p"/dashboard/#{organization.slug}/team")
+
+    assert html =~ "Invitation sent to #{user_email}"
+    assert %{id: user_id} = IAM.get_user_by_email(user_email)
     assert [%{user_id: ^user_id}] = IAM.list_user_tokens_for_context("join:#{organization.id}")
   end
 
