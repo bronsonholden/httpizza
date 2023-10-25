@@ -18,6 +18,8 @@ defmodule HTTPizza.DataCase do
 
   using do
     quote do
+      use Oban.Testing, repo: HTTPizza.Repo
+
       alias HTTPizza.Repo
 
       import Ecto

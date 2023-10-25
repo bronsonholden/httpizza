@@ -40,6 +40,22 @@ defmodule HTTPizzaWeb.OrganizationLive do
 
       <p class="text-2xl font-bold my-8"><%= @current_organization.name %> organization</p>
 
+      <div :if={@current_organization.customer_id} class="flex gap-1 items-center">
+        <p>Customer ID:</p>
+        <.tooltip id="customer-id-tooltip">
+          <:trigger>
+            <span class="text-sm p-1 border rounded bg-zinc-100 border-zinc-200 font-mono cursor-help">
+              <%= @current_organization.customer_id %>
+            </span>
+          </:trigger>
+
+          <p class="min-w-[24rem] text-sm cursor-default select-none">
+            Your customer ID is used to identify your account in our billing system. You may need
+            to provide this when asking for support.
+          </p>
+        </.tooltip>
+      </div>
+
       <div class="border rounded-lg border-red-300 bg-red-300/20 p-4 space-y-4 my-12">
         <p class="font-bold text-red-500">Danger Zone</p>
         <div class="flex flex-col items-start sm:flex-row sm:items-center gap-4 text-sm w-full">

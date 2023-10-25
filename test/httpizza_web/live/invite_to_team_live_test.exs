@@ -8,7 +8,7 @@ defmodule HTTPizzaWeb.InviteToTeamLiveTest do
 
   setup %{conn: conn} do
     user = user_fixture()
-    organization = organization_fixture(%{users: [user]})
+    organization = organization_fixture(%{"users" => [user]})
 
     %{conn: log_in_user(conn, user), user: user, organization: organization}
   end

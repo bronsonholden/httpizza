@@ -21,7 +21,7 @@ defmodule HTTPizzaWeb.EditHTTPObserverLiveTest do
 
   test "redirects if editing an HTTP observer for a different account", %{conn: conn, user: user} do
     http_observer = http_observer_fixture(%{organization: user.personal_organization})
-    organization = organization_fixture(%{users: [user]})
+    organization = organization_fixture(%{"users" => [user]})
 
     result =
       live(conn, ~p"/dashboard/#{organization.slug}/http-observers/#{http_observer.id}/edit")
