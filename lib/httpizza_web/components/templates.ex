@@ -96,7 +96,7 @@ defmodule HTTPizzaWeb.Templates do
                   <.icon name="hero-chevron-right" class="shrink-0 scale-[65%] text-zinc-500" />
                   <p>Security probing—ensure unauthenticated requests receive appropriate errors.</p>
                 </li>
-                <li class="flex items-start gap-2">
+                <li :if={false} class="flex items-start gap-2">
                   <.icon name="hero-chevron-right" class="shrink-0 scale-[65%] text-zinc-500" />
                   <p>Performance monitoring—be alerted when endpoints take too long to respond.</p>
                 </li>
