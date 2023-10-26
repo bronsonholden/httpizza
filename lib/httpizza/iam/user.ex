@@ -15,6 +15,7 @@ defmodule HTTPizza.IAM.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :last_logged_in_at, :utc_datetime
+    field :admin, :boolean, default: false
 
     has_many :organization_users, OrganizationUser
     has_many :organizations, through: [:organization_users, :organization]
