@@ -1,6 +1,7 @@
 defmodule HTTPizzaWeb.OrganizationLive do
   use HTTPizzaWeb, :live_view
 
+  alias HTTPizza.IAM.{Organization, User}
   alias HTTPizzaWeb.DashboardComponents
 
   import HTTPizzaWeb.Templates
@@ -43,9 +44,27 @@ defmodule HTTPizzaWeb.OrganizationLive do
       <div class="border rounded-lg border-red-300 bg-red-300/20 p-4 space-y-4 my-12">
         <p class="font-bold text-red-500">Danger Zone</p>
         <div class="flex flex-col items-start sm:flex-row sm:items-center gap-4 text-sm w-full">
-          <p class="grow">Deletes the organization, all observers, and all data.</p>
+          <p class="grow text-red-500">Deletes the organization, all observers, and all data.</p>
 
-          <.delete_button organization={@current_organization} current_user={@current_user} />
+          <.danger_button
+            organization={@current_organization}
+            current_user={@current_user}
+            on_click={show_modal("delete-organization-confirm")}
+            label="Delete Organization"
+            reason="Can't delete your personal organization"
+          />
+        </div>
+
+        <div class="flex flex-col items-start sm:flex-row sm:items-center gap-4 text-sm w-full">
+          <p class="grow text-red-500">Leave the organization.</p>
+
+          <.danger_button
+            organization={@current_organization}
+            current_user={@current_user}
+            on_click={show_modal("leave-organization-confirm")}
+            label="Leave Organization"
+            reason="Can't leave your personal organization"
+          />
         </div>
       </div>
     </.dashboard>
@@ -63,6 +82,20 @@ defmodule HTTPizzaWeb.OrganizationLive do
         </button>
       </div>
     </.modal>
+
+    <.modal id="leave-organization-confirm">
+      <div class="space-y-4">
+        <p>
+          Really leave <%= @current_organization.name %>? This is <span class="font-bold text-red-500">irreversible</span>.
+        </p>
+        <button
+          phx-click="leave_organization"
+          class="whitespace-nowrap bg-red-500 text-white rounded p-2 font-medium"
+        >
+          Yes, leave <%= @current_organization.name %>.
+        </button>
+      </div>
+    </.modal>
     """
   end
 
@@ -74,30 +107,62 @@ defmodule HTTPizzaWeb.OrganizationLive do
     {:noreply, push_navigate(socket, to: ~p"/dashboard")}
   end
 
-  defp delete_button(%{personal: false} = assigns) do
+  @impl true
+  def handle_event("leave_organization", _params, socket) do
+    # TODO: If org is personal organization, disallow
+    {:ok, _} =
+      HTTPizza.IAM.get_organization_user_by_ids(
+        socket.assigns.current_organization.id,
+        socket.assigns.current_user.id
+      )
+      |> IO.inspect()
+      |> HTTPizza.Repo.delete()
+
+    {:noreply,
+     socket
+     |> push_navigate(to: ~p"/dashboard")
+     |> put_flash(:info, "You have left #{socket.assigns.current_organization.name}")}
+  end
+
+  attr(:organization, Organization)
+  attr(:current_user, User)
+  attr(:personal, :boolean)
+  attr(:label, :string)
+
+  attr(:reason, :string,
+    doc: "Reason to display in tooltip if disallowed (personal organization)"
+  )
+
+  attr(:on_click, :any)
+
+  defp danger_button(%{personal: false} = assigns) do
     ~H"""
     <button
-      phx-click={show_modal("delete-organization-confirm")}
+      phx-click={@on_click}
       disabled={@organization == @current_user.personal_organization}
       class="whitespace-nowrap bg-red-500 text-white rounded p-2 font-medium disabled:bg-red-500/40"
     >
-      Delete Organization
+      <%= @label %>
     </button>
     """
   end
 
-  defp delete_button(%{personal: true} = assigns) do
+  defp danger_button(%{personal: true} = assigns) do
+    assigns =
+      assigns
+      |> assign(:assigns, Map.put(assigns, :personal, false))
+
     ~H"""
     <.tooltip id="delete-button-tooltip">
       <:trigger>
-        <.delete_button organization={@organization} current_user={@current_user} personal={false} />
+        <%= danger_button(@assigns) %>
       </:trigger>
-      <p class="whitespace-nowrap">Can't delete your personal organization</p>
+      <p class="whitespace-nowrap"><%= @reason %></p>
     </.tooltip>
     """
   end
 
-  defp delete_button(assigns) do
+  defp danger_button(assigns) do
     assigns =
       assign(
         assigns,
@@ -105,6 +170,6 @@ defmodule HTTPizzaWeb.OrganizationLive do
         assigns.current_user.personal_organization == assigns.organization
       )
 
-    delete_button(assigns)
+    danger_button(assigns)
   end
 end
