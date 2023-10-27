@@ -592,7 +592,7 @@ defmodule HTTPizzaWeb.CoreComponents do
         <%= render_slot(@trigger) %>
       </div>
       <div class={[
-        "hidden hover:block peer-hover/trigger:block relative z-[1000]"
+        "group/tooltip hidden hover:block peer-hover/trigger:block relative z-[1000]"
       ]}>
         <div class={[
           "absolute border border-[12px] pointer-events-none",
@@ -614,7 +614,12 @@ defmodule HTTPizzaWeb.CoreComponents do
               "group-[.tooltip-left]/tooltip:tooltip-bubble-left"
             ]}
           >
-            <div class="p-2">
+            <div class={[
+              "group-[.tooltip-top]/tooltip:pb-2",
+              "group-[.tooltip-right]/tooltip:pl-2",
+              "group-[.tooltip-bottom]/tooltip:pt-2",
+              "group-[.tooltip-left]/tooltip:pr-2"
+            ]}>
               <div class="bg-slate-800 text-white max-w-[80vw] overflow-hidden w-full h-full p-2 rounded">
                 <%= render_slot(@inner_block) %>
               </div>
