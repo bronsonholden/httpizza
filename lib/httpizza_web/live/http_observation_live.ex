@@ -59,7 +59,7 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
         </div>
         <.link
           navigate={~p"/dashboard/#{@current_organization_slug}"}
-          class="mb-4 text-sm flex items-center text-stone-500 hover:text-stone-800 font-medium"
+          class="mb-4 text-sm flex items-center text-stone-500 hover:text-stone-800 dark:hover:text-stone-100 font-medium"
         >
           <.icon name="hero-arrow-uturn-left" />
         </.link>
