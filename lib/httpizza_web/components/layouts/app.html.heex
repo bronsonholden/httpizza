@@ -9,6 +9,14 @@
       <%= if @current_user do %>
         <li>
           <.link
+            href={~p"/dashboard"}
+            class="text-[0.8125rem] leading-6 text-stone-900 dark:text-stone-200 font-semibold hover:text-stone-700 dark:hover:text-stone-50"
+          >
+            Dashboard
+          </.link>
+        </li>
+        <li>
+          <.link
             href={~p"/users/settings"}
             class="text-[0.8125rem] leading-6 text-stone-900 dark:text-stone-200 font-semibold hover:text-stone-700 dark:hover:text-stone-50"
           >
