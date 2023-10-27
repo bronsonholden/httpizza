@@ -565,6 +565,24 @@ defmodule HTTPizza.IAM do
   end
 
   @doc """
+  Retrieve an organization user by the organization and user IDs.
+
+  ## Examples
+
+      iex> get_organization_user_by_ids("...", "...")
+      %OrganizationUser{}
+
+      iex> get_organization_user_by_ids("...", "...")
+      nil
+  """
+  def get_organization_user_by_ids(organization_id, user_id) do
+    from(ou in OrganizationUser,
+      where: ou.organization_id == ^organization_id and ou.user_id == ^user_id
+    )
+    |> Repo.one()
+  end
+
+  @doc """
   Creates a organization.
 
   ## Examples
