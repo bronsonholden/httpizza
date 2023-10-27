@@ -53,13 +53,19 @@ defmodule HTTPizzaWeb.TeamLive do
       <table class="my-8 border w-full">
         <thead class="text-sm">
           <tr>
-            <th class="text-left text-zinc-500 border p-2">Email</th>
-            <th class="text-left text-zinc-500 border p-2">Joined</th>
+            <th class="text-left text-stone-500 dark:text-stone-400 border border-stone-200 dark:border-stone-700 p-2">
+              Email
+            </th>
+            <th class="text-left text-stone-500 dark:text-stone-400 border border-stone-200 dark:border-stone-700 p-2">
+              Joined
+            </th>
           </tr>
         </thead>
         <tr :for={%{inserted_at: inserted_at, user: user} <- @organization_users} class="border">
-          <td class="border p-2"><%= user.email %></td>
-          <td class="border p-2"><%= Timex.format!(inserted_at, "{Mshort} {0D}, {YYYY}") %></td>
+          <td class="border border-stone-200 dark:border-stone-700 p-2"><%= user.email %></td>
+          <td class="border border-stone-200 dark:border-stone-700 p-2">
+            <%= Timex.format!(inserted_at, "{Mshort} {0D}, {YYYY}") %>
+          </td>
         </tr>
       </table>
     </.dashboard>
@@ -69,7 +75,7 @@ defmodule HTTPizzaWeb.TeamLive do
   defp invite_link(%{personal: false} = assigns) do
     ~H"""
     <.link
-      class="h-full py-1 pl-1 pr-2 text-xs font-bold hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
+      class="h-full py-1 pl-1 pr-2 text-xs font-bold hover:bg-orange-400 rounded text-white bg-orange-500 flex items-center gap-1"
       navigate={~p"/dashboard/#{@current_organization_slug}/team/invite"}
     >
       <.icon name="hero-user-plus-mini" class="scale-75" /> Invite
@@ -84,7 +90,7 @@ defmodule HTTPizzaWeb.TeamLive do
         <button
           type="button"
           disabled
-          class="h-full py-1 pl-1 pr-2 text-xs font-bold bg-orange-500/40 rounded-lg text-white bg-orange-500 flex items-center gap-1"
+          class="h-full py-1 pl-1 pr-2 text-xs font-bold bg-orange-400/80 rounded text-stone-100 dark:text-stone-300/70 flex items-center gap-1"
         >
           <.icon name="hero-user-plus-mini" class="scale-75" /> Invite
         </button>

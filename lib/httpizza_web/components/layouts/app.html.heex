@@ -1,16 +1,16 @@
-<header class="px-4 md:border-b border-zinc-100">
+<header class="px-4 md:border-b border-stone-100 dark:border-stone-700">
   <div class="flex items-center justify-between py-3 text-sm">
     <div class="flex items-center gap-4">
       <a href="/">
         <img src={~p"/images/logo.svg"} width="36" />
       </a>
     </div>
-    <ul class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
+    <ul class="flex items-center gap-4 font-semibold leading-6 text-stone-900">
       <%= if @current_user do %>
         <li>
           <.link
             href={~p"/users/settings"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            class="text-[0.8125rem] leading-6 text-stone-900 dark:text-stone-200 font-semibold hover:text-stone-700 dark:hover:text-stone-50"
           >
             Settings
           </.link>
@@ -19,7 +19,7 @@
           <.link
             href={~p"/users/log_out"}
             method="delete"
-            class="font-semibold rounded bg-red-500 hover:bg-red-400 text-white p-2 flex items-center gap-1"
+            class="font-semibold rounded bg-orange-500 hover:bg-orange-400 text-white p-2 flex items-center gap-1"
           >
             Sign out <.icon name="hero-arrow-right-on-rectangle" />
           </.link>
@@ -28,7 +28,7 @@
         <li>
           <.link
             href={~p"/users/log_in"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            class="text-[0.8125rem] leading-6 text-stone-900 dark:text-stone-200 font-semibold hover:text-stone-700 dark:hover:text-stone-50"
           >
             Log in
           </.link>

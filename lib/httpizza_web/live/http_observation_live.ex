@@ -53,13 +53,13 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
             <%= @http_observation.reason %>
           </p>
 
-          <p class="text-zinc-400 text-xs">
+          <p class="text-stone-400 text-xs">
             <%= Timex.format!(@http_observation.inserted_at, "{relative}", :relative) %>
           </p>
         </div>
         <.link
           navigate={~p"/dashboard/#{@current_organization_slug}"}
-          class="mb-4 text-sm flex items-center text-zinc-500 hover:text-zinc-800 font-medium"
+          class="mb-4 text-sm flex items-center text-stone-500 hover:text-stone-800 font-medium"
         >
           <.icon name="hero-arrow-uturn-left" />
         </.link>
@@ -100,7 +100,7 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
                 case check_result.status do
                   :ok -> "text-green-500"
                   :failed -> "text-red-500"
-                  :error -> "text-zinc-500"
+                  :error -> "text-stone-500"
                 end
               ]
               |> Enum.join(" ")
@@ -108,7 +108,7 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
           />
           <div class="w-2/3 pr-4 pt-2 font-medium">
             <ObserverComponents.check_list_item check={get_check(check_result)} />
-            <div class="text-xs font-mono text-zinc-500 flex">
+            <div class="text-xs font-mono text-stone-500 flex">
               <ObserverComponents.check_list_icon />
               <p class="mt-2">
                 <%= check_result.reason %>

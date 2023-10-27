@@ -9,9 +9,9 @@ defmodule HTTPizzaWeb.ObserverComponents do
   def check_list_item(%{check: %HTTPizza.Checks.HeaderCheck{}} = assigns) do
     ~H"""
     <p class="font-mono font-medium text-xs">
-      <span class="text-zinc-500"><%= @check.header %></span>
-      <span class="rounded px-1 py-[2px] bg-zinc-200"><%= @check.comparator %></span>
-      <span class="text-zinc-500"><%= @check.value %></span>
+      <span class="text-stone-500"><%= @check.header %></span>
+      <span class="rounded px-1 py-[2px] bg-stone-200"><%= @check.comparator %></span>
+      <span class="text-stone-500"><%= @check.value %></span>
     </p>
     """
   end
@@ -19,16 +19,16 @@ defmodule HTTPizzaWeb.ObserverComponents do
   def check_list_item(%{check: %HTTPizza.Checks.StatusCheck{}} = assigns) do
     ~H"""
     <p class="font-mono font-medium text-xs">
-      <span class="text-zinc-500">Status</span>
-      <span class="rounded px-1 py-[2px] bg-zinc-200"><%= @check.comparator %></span>
-      <span :if={@check.comparator == :equal_to} class="text-zinc-500"><%= @check.code %></span>
+      <span class="text-stone-500">Status</span>
+      <span class="rounded px-1 py-[2px] bg-stone-200"><%= @check.comparator %></span>
+      <span :if={@check.comparator == :equal_to} class="text-stone-500"><%= @check.code %></span>
     </p>
     """
   end
 
   def check_list_icon(assigns) do
     ~H"""
-    <p class="inline-block text-zinc-500 font-bold pb-2 align-text-top mr-2 text-base font-serif">
+    <p class="inline-block text-stone-500 font-bold pb-2 align-text-top mr-2 text-base font-serif">
       ↳
     </p>
     """
@@ -67,17 +67,17 @@ defmodule HTTPizzaWeb.ObserverComponents do
     case http_observation.status do
       :ok -> "bg-green-500 group-hover/pill:bg-green-400"
       :failed -> "bg-red-500 group-hover/pill:bg-red-400"
-      _ -> "bg-zinc-500 group-hover/pill:bg-zinc-400"
+      _ -> "bg-stone-500 group-hover/pill:bg-stone-400"
     end
   end
 
   def timeline_guide(assigns) do
     ~H"""
-    <div class="w-full flex justify-between items-center text-zinc-400 text-xs my-4 gap-2">
+    <div class="w-full flex justify-between items-center text-stone-400 dark:text-stone-100 text-xs my-4 gap-2">
       <p class="flex items-center italic">
         <.icon name="hero-arrow-left-mini" class="scale-50" /> older
       </p>
-      <hr class="grow border-t-[1px] border-zinc-200" />
+      <hr class="grow border-t-[1px] border-stone-200" />
       <p class="flex items-center italic">
         newer <.icon name="hero-arrow-right-mini" class="scale-50" />
       </p>

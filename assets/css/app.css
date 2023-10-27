@@ -22,18 +22,18 @@
   }
 
   .tooltip-arrow-top {
-    @apply border-t-slate-800 pb-[5px];
+    @apply border-t-stone-800 dark:border-t-stone-600 pb-[5px];
   }
 
   .tooltip-arrow-right {
-    @apply border-r-slate-800 pl-[5px];
+    @apply border-r-stone-800 dark:border-r-stone-600 pl-[5px];
   }
 
   .tooltip-arrow-bottom {
-    @apply border-b-slate-800 pt-[5px];
+    @apply border-b-stone-800 dark:border-b-stone-600 pt-[5px];
   }
 
   .tooltip-arrow-left {
-    @apply border-l-slate-800 pr-[5px];
+    @apply border-l-stone-800 dark:border-l-stone-600 pr-[5px];
   }
 }

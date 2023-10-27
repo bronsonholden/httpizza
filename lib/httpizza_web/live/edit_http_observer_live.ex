@@ -41,7 +41,7 @@ defmodule HTTPizzaWeb.EditHTTPObserverLive do
       <div class="flex justify-between">
         <.link
           navigate={~p"/dashboard/#{@current_organization_slug}"}
-          class="flex items-center font-medium text-sm text-zinc-500 hover:text-black rounded"
+          class="flex items-center font-medium text-sm text-stone-500 hover:text-black rounded"
         >
           <.icon name="hero-chevron-left scale-[65%]" /> Back
         </.link>

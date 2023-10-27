@@ -15,13 +15,16 @@ defmodule HTTPizzaWeb.DashboardComponents do
     ~H"""
     <div class="flex gap-2 items-center">
       <.link
-        class="font-mono font-bold text-sm text-zinc-500 hover:text-zinc-900"
+        class="font-mono font-bold text-sm text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
         navigate={~p"/dashboard/#{@slug}"}
       >
         <%= @slug %>
       </.link>
-      <.icon name="hero-chevron-right-solid" class="shrink-0 font-bold text-zinc-400 scale-75" />
-      <p class="font-bold text-zinc-600"><%= @title %></p>
+      <.icon
+        name="hero-chevron-right-solid"
+        class="shrink-0 font-bold text-stone-500 dark:text-stone-400 scale-75"
+      />
+      <p class="font-bold text-stone-600 dark:text-stone-300"><%= @title %></p>
     </div>
     """
   end
@@ -66,15 +69,15 @@ defmodule HTTPizzaWeb.DashboardComponents do
     ~H"""
     <ul>
       <li class={[
-        "hover:bg-zinc-100 rounded",
+        "hover:bg-stone-100 dark:hover:bg-stone-700 rounded",
         if(is_active?(@current_path, @path),
-          do: "bg-zinc-100/75 text-zinc-900",
-          else: "text-zinc-500"
+          do: "bg-stone-100/75 dark:bg-stone-700/70 text-stone-900 dark:text-stone-50",
+          else: "text-stone-500 dark:text-stone-400"
         )
       ]}>
         <.link
           class={[
-            "block p-2 w-full h-full flex gap-2 items-center text-sm font-medium hover:text-zinc-700"
+            "block p-2 w-full h-full flex gap-2 items-center text-sm font-medium hover:text-stone-700 dark:hover:text-stone-100"
           ]}
           navigate={@path}
         >
@@ -99,7 +102,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
         <button
           id={"#{@id}-toggle"}
           type="button"
-          class="flex items-center font-medium border rounded text-sm py-1 px-2 w-full text-left group/button"
+          class="flex items-center font-medium border border-stone-200 dark:border-stone-700 rounded text-sm py-1 px-2 w-full text-left group/button"
           phx-click={JS.toggle(to: "##{@id}-list")}
         >
           <p class="truncate grow">
@@ -107,7 +110,10 @@ defmodule HTTPizzaWeb.DashboardComponents do
           </p>
 
           <p>
-            <.icon class="text-zinc-400 group-hover/button:text-zinc-700" name="hero-chevron-up-down" />
+            <.icon
+              class="text-stone-400 group-hover/button:text-stone-700 dark:group-hover/button:text-stone-100"
+              name="hero-chevron-up-down"
+            />
           </p>
         </button>
 
@@ -115,14 +121,14 @@ defmodule HTTPizzaWeb.DashboardComponents do
           <div
             id={"#{@id}-list"}
             phx-click-away={JS.hide()}
-            class="bg-white absolute top-0 left-0 right-0 rounded border py-1 hidden"
+            class="bg-white dark:bg-stone-800 absolute top-0 left-0 right-0 rounded border border-stone-200 dark:border-stone-700 py-1 hidden"
           >
             <.link
               :for={%{organization: organization} = item <- @organizations_with_status_counts}
               navigate={
                 "/dashboard/#{proper_slug(organization, @personal_organization_id)}#{@path}"
               }
-              class="text-sm block p-2 hover:bg-zinc-100 font-medium"
+              class="text-sm block p-2 hover:bg-stone-100 dark:hover:bg-stone-700 font-medium"
             >
               <div class="flex items-center gap-1">
                 <p class="grow truncate">
@@ -140,7 +146,7 @@ defmodule HTTPizzaWeb.DashboardComponents do
                   <:trigger>
                     <p
                       :if={item.yellow > 0}
-                      class="text-xs rounded-full px-2 text-zinc-700 bg-yellow-300"
+                      class="text-xs rounded-full px-2 text-stone-700 bg-yellow-300"
                     >
                       <%= item.yellow %>
                     </p>
@@ -158,11 +164,11 @@ defmodule HTTPizzaWeb.DashboardComponents do
               </div>
             </.link>
 
-            <hr class="my-2" />
+            <hr class="my-2 border-stone-200 dark:border-stone-700" />
 
             <.link
               navigate={~p"/organizations/new"}
-              class="text-sm block flex items-center p-1 font-medium truncate text-zinc-400 hover:text-black"
+              class="text-sm block flex items-center p-1 font-medium truncate text-stone-400 hover:text-stone-800 dark:hover:text-stone-100"
             >
               <.icon name="hero-plus-mini" /> New
             </.link>

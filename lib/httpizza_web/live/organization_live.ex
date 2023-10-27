@@ -41,7 +41,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
 
       <p class="text-2xl font-bold my-8"><%= @current_organization.name %> organization</p>
 
-      <div class="border rounded-lg border-red-300 bg-red-300/20 p-4 space-y-4 my-12">
+      <div class="border rounded-lg border-red-300 dark:border-red-800 bg-red-300/20 dark:bg-red-800/10 p-4 space-y-4 my-12">
         <p class="font-bold text-red-500">Danger Zone</p>
         <div class="flex flex-col items-start sm:flex-row sm:items-center gap-4 text-sm w-full">
           <p class="grow text-red-500">Deletes the organization, all observers, and all data.</p>
