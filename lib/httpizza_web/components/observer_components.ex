@@ -9,8 +9,8 @@ defmodule HTTPizzaWeb.ObserverComponents do
   def check_list_item(%{check: %HTTPizza.Checks.HeaderCheck{}} = assigns) do
     ~H"""
     <p class="font-mono font-medium text-xs">
-      <span class="text-stone-500"><%= @check.header %></span>
-      <span class="rounded px-1 py-[2px] bg-stone-200"><%= @check.comparator %></span>
+      <span class="text-stone-500 dark:text-stone-300"><%= @check.header %></span>
+      <span class="rounded px-1 py-[2px] bg-stone-200 dark:bg-stone-600" phx-no-format><%= @check.comparator %></span>
       <span class="text-stone-500"><%= @check.value %></span>
     </p>
     """
@@ -19,8 +19,8 @@ defmodule HTTPizzaWeb.ObserverComponents do
   def check_list_item(%{check: %HTTPizza.Checks.StatusCheck{}} = assigns) do
     ~H"""
     <p class="font-mono font-medium text-xs">
-      <span class="text-stone-500">Status</span>
-      <span class="rounded px-1 py-[2px] bg-stone-200"><%= @check.comparator %></span>
+      <span class="text-stone-500 dark:text-stone-300">Status</span>
+      <span class="rounded px-1 py-[2px] bg-stone-200 dark:bg-stone-600" phx-no-format><%= @check.comparator %></span>
       <span :if={@check.comparator == :equal_to} class="text-stone-500"><%= @check.code %></span>
     </p>
     """
