@@ -136,8 +136,10 @@ defmodule HTTPizzaWeb.JoinTeamLiveTest do
 
     assert live_view
            |> render_submit("join", %{
-             "password" => "HeyThereItsMe",
-             "password_confirmation" => "HeyThereItsMe"
+             "user" => %{
+               "password" => "HeyThereItsMe",
+               "password_confirmation" => "HeyThereItsMe"
+             }
            })
            |> follow_redirect(conn, ~p"/users/log_in")
 

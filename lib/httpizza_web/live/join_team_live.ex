@@ -63,13 +63,15 @@ defmodule HTTPizzaWeb.JoinTeamLive do
     case IAM.join_organization_multi(socket.assigns.organization.id, socket.assigns.token) do
       {:ok, multi} ->
         multi =
-          if params["password"] do
+          if params["user"] do
+            user_params = params["user"]
+
             Ecto.Multi.update(
               multi,
               :user,
               IAM.User.password_changeset(socket.assigns.user, %{
-                "password" => params["password"],
-                "password_confirmation" => params["password_confirmation"]
+                "password" => user_params["password"],
+                "password_confirmation" => user_params["password_confirmation"]
               })
             )
           else
