@@ -46,7 +46,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
         <div class="flex flex-col items-start sm:flex-row sm:items-center gap-4 text-sm w-full">
           <p class="grow text-red-500">Deletes the organization, all observers, and all data.</p>
 
-          <.delete_button
+          <.danger_button
             organization={@current_organization}
             current_user={@current_user}
             on_click={show_modal("delete-organization-confirm")}
@@ -58,7 +58,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
         <div class="flex flex-col items-start sm:flex-row sm:items-center gap-4 text-sm w-full">
           <p class="grow text-red-500">Leave the organization.</p>
 
-          <.delete_button
+          <.danger_button
             organization={@current_organization}
             current_user={@current_user}
             on_click={show_modal("leave-organization-confirm")}
@@ -135,7 +135,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
 
   attr(:on_click, :any)
 
-  defp delete_button(%{personal: false} = assigns) do
+  defp danger_button(%{personal: false} = assigns) do
     ~H"""
     <button
       phx-click={@on_click}
@@ -147,7 +147,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
     """
   end
 
-  defp delete_button(%{personal: true} = assigns) do
+  defp danger_button(%{personal: true} = assigns) do
     assigns =
       assigns
       |> assign(:assigns, Map.put(assigns, :personal, false))
@@ -155,14 +155,14 @@ defmodule HTTPizzaWeb.OrganizationLive do
     ~H"""
     <.tooltip id="delete-button-tooltip">
       <:trigger>
-        <%= delete_button(@assigns) %>
+        <%= danger_button(@assigns) %>
       </:trigger>
       <p class="whitespace-nowrap"><%= @reason %></p>
     </.tooltip>
     """
   end
 
-  defp delete_button(assigns) do
+  defp danger_button(assigns) do
     assigns =
       assign(
         assigns,
@@ -170,6 +170,6 @@ defmodule HTTPizzaWeb.OrganizationLive do
         assigns.current_user.personal_organization == assigns.organization
       )
 
-    delete_button(assigns)
+    danger_button(assigns)
   end
 end
