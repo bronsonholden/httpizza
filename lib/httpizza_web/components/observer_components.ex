@@ -41,7 +41,7 @@ defmodule HTTPizzaWeb.ObserverComponents do
     ~H"""
     <div class="overflow-hidden w-full relative h-[1.5rem] z-0">
       <div class="pointer-events-none absolute top-0 left-0 right-1/3 bottom-0 bg-gradient-to-r from-white/20 dark:from-stone-800/20 z-50" />
-      <div class="pointer-events-none absolute top-0 left-0 right-[90%] bottom-0 bg-gradient-to-r from-white/90 dark:from-stone-800/20 z-50" />
+      <div class="pointer-events-none absolute top-0 left-0 right-[90%] bottom-0 bg-gradient-to-r from-white/90 dark:from-stone-800/90 z-50" />
       <div class="absolute top-0 bottom-0 right-0 flex flex-row-reverse z-40">
         <.link
           :for={http_observation <- Enum.take(@http_observations, 60)}
