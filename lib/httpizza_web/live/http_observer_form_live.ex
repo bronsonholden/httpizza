@@ -51,7 +51,6 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
   def render(assigns) do
     ~H"""
     <div>
-      <%!-- <%= inspect(@form) %> --%>
       <.simple_form for={@form} id="http-observer-form" phx-submit="save" phx-change="validate">
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
@@ -99,7 +98,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
         <div id="http-observer-email-recipients">
           <.inputs_for :let={recipient} field={@form[:email_recipients]}>
-            <fieldset class="pl-8 border-l-[4px] border-zinc-200 flex flex-col gap-2 my-4">
+            <fieldset class="pl-8 border-l-[4px] border-stone-200 flex flex-col gap-2 my-4">
               <.input
                 field={recipient[:email]}
                 type="text"
@@ -118,7 +117,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
               <div>
                 <button
-                  class="text-zinc-500 hover:text-red-600 text-sm font-medium"
+                  class="text-stone-500 dark:text-stone-400 hover:text-red-600 dark:hover:text-red-400 text-sm font-medium"
                   type="button"
                   phx-click="remove_email_recipient"
                   phx-value-index={recipient.index}
@@ -143,7 +142,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
         <div id="http-observer-header-checks">
           <.inputs_for :let={check} field={@form[:header_checks]}>
-            <fieldset class="pl-8 border-l-[4px] border-zinc-200 flex flex-col gap-2 my-4">
+            <fieldset class="pl-8 border-l-[4px] border-stone-200 flex flex-col gap-2 my-4">
               <.input field={check[:header]} type="text" label="Header" required phx-debounce="200" />
               <.input
                 field={check[:comparator]}
@@ -165,7 +164,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
               <div>
                 <button
-                  class="text-zinc-500 hover:text-red-600 text-sm font-medium"
+                  class="text-stone-500 dark:text-stone-400 hover:text-red-600 dark:hover:text-red-400 text-sm font-medium"
                   type="button"
                   phx-click="remove_header_check"
                   phx-value-index={check.index}
@@ -190,7 +189,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
         <div id="http-observer-status-checks">
           <.inputs_for :let={check} field={@form[:status_checks]}>
-            <fieldset class="pl-8 border-l-[4px] border-zinc-200 flex flex-col gap-2 my-4">
+            <fieldset class="pl-8 border-l-[4px] border-stone-200 flex flex-col gap-2 my-4">
               <.input
                 field={check[:comparator]}
                 type="select"
@@ -214,7 +213,7 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
               <div>
                 <button
-                  class="text-zinc-500 hover:text-red-600 text-sm font-medium"
+                  class="text-stone-500 dark:text-stone-400 hover:text-red-600 dark:hover:text-red-400 text-sm font-medium"
                   type="button"
                   phx-click="remove_status_check"
                   phx-value-index={check.index}

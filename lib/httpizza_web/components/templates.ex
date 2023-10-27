@@ -23,15 +23,15 @@ defmodule HTTPizzaWeb.Templates do
 
   def dashboard(assigns) do
     ~H"""
-    <div class="z-0 w-full bg-slate-100 relative min-h-[calc(100vh-64px)]">
-      <div class="z-[-1] max-md:hidden absolute left-0 top-0 bottom-0 right-1/2 bg-white" />
-      <div class="grow max-w-[96rem] mx-auto h-full flex flex-col md:flex-row bg-white min-h-[calc(100vh-64px)]">
+    <div class="z-0 w-full bg-stone-100 dark:bg-stone-800 relative min-h-[calc(100vh-64px)]">
+      <div class="z-[-1] max-md:hidden absolute left-0 top-0 bottom-0 right-1/2 bg-white dark:bg-stone-800" />
+      <div class="grow max-w-[96rem] mx-auto h-full flex flex-col md:flex-row bg-white dark:bg-stone-800 min-h-[calc(100vh-64px)]">
         <div class={[
           "grow flex flex-col",
           "xl:flex-row"
         ]}>
           <div class={[
-            "bg-white",
+            "bg-white dark:bg-stone-800",
             "flex flex-col gap-4",
             "xl:w-[20rem] xl:px-4 xl:min-w-[20rem] xl:max-w-[20rem]"
           ]}>
@@ -54,50 +54,54 @@ defmodule HTTPizzaWeb.Templates do
           </div>
 
           <div class={[
-            "bg-white",
+            "bg-white dark:bg-stone-800",
             "max-xl:px-4",
-            "xl:grow xl:p-5 xl:border-l"
+            "xl:grow xl:p-5 xl:border-l border-stone-100 dark:border-stone-700"
           ]}>
             <%= render_slot(@inner_block) %>
           </div>
         </div>
         <div class={[
-          "bg-slate-100 p-4"
+          "bg-stone-100 dark:bg-stone-700 p-4"
         ]}>
           <div class={[
             "md:min-w-[22rem] md:w-[22rem] md:max-w-[22rem] flex flex-col gap-4"
           ]}>
-            <div class="p-4 rounded-lg bg-white shadow">
-              <h2 class="text-xl font-bold text-zinc-800">Getting Started</h2>
-              <p class="text-sm text-zinc-500 font-medium my-2">
+            <div class="p-4 rounded-lg bg-white dark:bg-stone-800 shadow">
+              <h2 class="text-xl font-bold text-stone-800 dark:text-stone-200">
+                Getting Started
+              </h2>
+              <p class="text-sm text-stone-500 dark:text-stone-300 font-medium my-2">
                 HTTPizza is a practical monitoring system for websites and APIs—any online service
                 can be observed, alerting you when outages or errors occur.
               </p>
-              <p class="text-xs text-zinc-400 mt-3 font-medium">
+              <p class="text-xs text-stone-400 mt-3 font-medium">
                 * Pizza delivery notifications coming soon
               </p>
             </div>
 
-            <div class="p-4 rounded-lg bg-white shadow">
-              <h2 class="text-xl font-bold text-zinc-800">Example use cases</h2>
-              <p class="text-sm text-zinc-500 font-medium my-2">
+            <div class="p-4 rounded-lg bg-white dark:bg-stone-800 shadow">
+              <h2 class="text-xl font-bold text-stone-800 dark:text-stone-200">
+                Example use cases
+              </h2>
+              <p class="text-sm text-stone-500 dark:text-stone-300 font-medium my-2">
                 Not sure what to do? Try these!
               </p>
-              <ul class="text-sm text-zinc-500">
+              <ul class="text-sm text-stone-500 dark:text-stone-300">
                 <li class="flex items-start gap-2">
-                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%] text-zinc-500" />
+                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%]" />
                   <p>
-                    Verify non-<span class="font-mono bg-zinc-100 px-1">www</span> to
-                    <span class="font-mono bg-zinc-100 px-1">www</span>
+                    Verify non-<span class="font-mono bg-stone-100 dark:bg-stone-700 rounded px-1">www</span> to
+                    <span class="font-mono bg-stone-100 dark:bg-stone-700 rounded px-1">www</span>
                     redirects (or vice versa).
                   </p>
                 </li>
                 <li class="flex items-start gap-2">
-                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%] text-zinc-500" />
+                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%]" />
                   <p>Security probing—ensure unauthenticated requests receive appropriate errors.</p>
                 </li>
                 <li :if={false} class="flex items-start gap-2">
-                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%] text-zinc-500" />
+                  <.icon name="hero-chevron-right" class="shrink-0 scale-[65%]" />
                   <p>Performance monitoring—be alerted when endpoints take too long to respond.</p>
                 </li>
               </ul>

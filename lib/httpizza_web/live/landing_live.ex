@@ -15,11 +15,11 @@ defmodule HTTPizzaWeb.LandingLive do
       </h1>
 
       <div class="my-12 md:my-20">
-        <h2 class="font-black text-4xl text-zinc-600">
+        <h2 class="font-black text-4xl text-stone-600 dark:text-stone-100">
           Pie in the Sky!
         </h2>
 
-        <p class="my-4 text-lg text-zinc-600 font-medium md:w-1/2">
+        <p class="my-4 text-lg text-stone-600 dark:text-stone-100 font-medium md:w-1/2">
           All of the observability with none of the hassle. Stay in the know with HTTP observers that
           run on a <span class="font-mono font-black">cron</span>
           schedule with at intervals as low as 1 minute.
@@ -42,7 +42,7 @@ defmodule HTTPizzaWeb.LandingLive do
 
       <p class="mt-8 md:mt-20 text-2xl text-orange-400 font-bold">That's it!</p>
       <.link
-        class="shadow-md my-6 inline-block p-3 text-lg text-white rounded bg-orange-400 font-black"
+        class="shadow-md my-6 inline-block p-3 text-lg text-white rounded bg-orange-500 hover:bg-orange-400 font-black"
         navigate={~p"/users/log_in"}
       >
         Get started <.icon name="hero-arrow-right-mini" />
@@ -58,7 +58,7 @@ defmodule HTTPizzaWeb.LandingLive do
     ~H"""
     <div class="grow">
       <.badge><%= @number %></.badge>
-      <p class="font-medium text-zinc-600">
+      <p class="font-medium text-stone-600 dark:text-stone-100">
         <%= render_slot(@inner_block) %>
       </p>
     </div>
@@ -69,7 +69,7 @@ defmodule HTTPizzaWeb.LandingLive do
 
   defp badge(assigns) do
     ~H"""
-    <div class="shadow-lg my-6 bg-orange-500/10 text-orange-400 rounded p-5 text-xl font-black w-8 h-8 flex items-center justify-center">
+    <div class="shadow-lg my-6 bg-orange-500/10 dark:bg-orange-400/20 text-orange-400 rounded p-5 text-xl font-black w-8 h-8 flex items-center justify-center">
       <%= render_slot(@inner_block) %>
     </div>
     """

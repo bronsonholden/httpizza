@@ -52,7 +52,7 @@ defmodule HTTPizzaWeb.DashboardLive do
           title="HTTP Observers"
         />
         <.link
-          class="h-full py-1 pl-1 pr-2 text-xs font-bold hover:bg-orange-600 rounded-lg text-white bg-orange-500 flex items-center gap-1"
+          class="h-full py-1 pl-1 pr-2 text-xs font-bold hover:bg-orange-400 rounded text-white bg-orange-500 flex items-center gap-1"
           navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
         >
           <.icon name="hero-plus-mini" class="scale-75" /> New
@@ -61,7 +61,7 @@ defmodule HTTPizzaWeb.DashboardLive do
       <ObserverComponents.timeline_guide />
       <p
         :if={Enum.empty?(@http_observers)}
-        class="font-bold text-lg text-zinc-300 mx-auto max-w-xs text-center mt-12 mb-24"
+        class="font-bold text-lg text-stone-300 dark:text-stone-500 mx-auto max-w-xs text-center mt-12 mb-24"
       >
         Create an observer to get started.
       </p>
@@ -79,15 +79,15 @@ defmodule HTTPizzaWeb.DashboardLive do
             <button
               type="button"
               phx-click={expand_js(http_observer.id)}
-              class="rounded-full h-full flex items-center aspect-square hover:bg-zinc-100 hover:text-zinc-800"
+              class="rounded-full h-full flex items-center aspect-square hover:bg-stone-100 hover:text-stone-800"
             >
               <.icon
                 name="hero-chevron-right"
-                class="text-zinc-500 scale-[60%] group-[.open]/observer:hidden"
+                class="text-stone-500 scale-[60%] group-[.open]/observer:hidden"
               />
               <.icon
                 name="hero-chevron-down"
-                class="text-zinc-500 scale-[60%] hidden group-[.open]/observer:block"
+                class="text-stone-500 scale-[60%] hidden group-[.open]/observer:block"
               />
             </button>
 
@@ -96,11 +96,11 @@ defmodule HTTPizzaWeb.DashboardLive do
                 <%= String.upcase(to_string(http_observer.method)) %>
               </p>
               <p class="text-blue-500 break-all" phx-no-format>
-                <span class="text-zinc-400"><%=
+                <span class="text-stone-400"><%=
                   if(http_observer.https, do: "https", else: "http")
                 %>://</span><%=
                   http_observer.hostname
-                %><span class="text-zinc-400"><%=
+                %><span class="text-stone-400"><%=
                   http_observer.path
                 %></span>
               </p>
@@ -110,7 +110,7 @@ defmodule HTTPizzaWeb.DashboardLive do
               navigate={
                 ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}/edit"
               }
-              class="block hover:text-zinc-800 text-zinc-400 rounded-full"
+              class="block hover:text-stone-800 text-stone-400 rounded-full"
             >
               <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
             </.link>
@@ -148,7 +148,7 @@ defmodule HTTPizzaWeb.DashboardLive do
               </.dot>
               <.dot
                 :if={email_recipient.error}
-                color="bg-zinc-400"
+                color="bg-stone-400"
                 id={"#{http_observer.id}-#{index}-error"}
               >
                 Will be notified of errors
@@ -187,9 +187,9 @@ defmodule HTTPizzaWeb.DashboardLive do
 
   defp info_label(assigns) do
     ~H"""
-    <p class="px-1 border bg-zinc-100 rounded shrink-0 whitespace-nowrap">
+    <p class="px-1 border bg-stone-100 rounded shrink-0 whitespace-nowrap">
       <span class="text-orange-500"><%= @label %>:</span>
-      <span class="text-zinc-400 font-bold">
+      <span class="text-stone-400 font-bold">
         <%= @value %>
       </span>
     </p>
