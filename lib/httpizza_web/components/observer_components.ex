@@ -73,11 +73,11 @@ defmodule HTTPizzaWeb.ObserverComponents do
 
   def timeline_guide(assigns) do
     ~H"""
-    <div class="w-full flex justify-between items-center text-stone-400 dark:text-stone-100 text-xs my-4 gap-2">
+    <div class="select-none cursor-default w-full flex justify-between items-center text-stone-400 dark:text-stone-500 text-xs my-4 gap-2">
       <p class="flex items-center italic">
         <.icon name="hero-arrow-left-mini" class="scale-50" /> older
       </p>
-      <hr class="grow border-t-[1px] border-stone-200" />
+      <hr class="grow border-t-[1px] border-stone-400 dark:border-stone-500" />
       <p class="flex items-center italic">
         newer <.icon name="hero-arrow-right-mini" class="scale-50" />
       </p>

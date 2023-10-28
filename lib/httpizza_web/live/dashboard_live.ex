@@ -73,7 +73,7 @@ defmodule HTTPizzaWeb.DashboardLive do
         <div
           :for={http_observer <- @http_observers}
           id={"observer-#{http_observer.id}"}
-          class="open border-b group/observer"
+          class="open border-b border-stone-100 dark:border-stone-700 group/observer"
         >
           <div class="flex gap-2 items-center">
             <button
