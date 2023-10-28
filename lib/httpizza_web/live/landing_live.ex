@@ -22,7 +22,7 @@ defmodule HTTPizzaWeb.LandingLive do
         <p class="my-4 text-lg text-stone-600 dark:text-stone-100 font-medium md:w-1/2">
           All of the observability with none of the hassle. Stay in the know with HTTP observers that
           run on a <span class="font-mono font-black">cron</span>
-          schedule with at intervals as low as 1 minute.
+          schedule at intervals as low as 1 minute.
         </p>
       </div>
 
