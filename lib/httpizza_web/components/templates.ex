@@ -62,7 +62,7 @@ defmodule HTTPizzaWeb.Templates do
           </div>
         </div>
         <div class={[
-          "bg-stone-100 dark:bg-stone-700 p-4"
+          "bg-stone-100/70 dark:bg-stone-700/40 p-4"
         ]}>
           <div class={[
             "md:min-w-[22rem] md:w-[22rem] md:max-w-[22rem] flex flex-col gap-4"
