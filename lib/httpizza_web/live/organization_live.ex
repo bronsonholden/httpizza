@@ -139,7 +139,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
     <button
       phx-click={@on_click}
       disabled={@organization == @current_user.personal_organization}
-      class="whitespace-nowrap bg-red-500 text-white rounded p-2 font-medium disabled:bg-red-500/40"
+      class="whitespace-nowrap bg-red-500 text-white rounded p-2 font-medium disabled:bg-red-500/40 disabled:text-white/40 dark:disabled:text-white/20"
     >
       <%= @label %>
     </button>

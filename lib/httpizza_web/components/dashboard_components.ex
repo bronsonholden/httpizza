@@ -22,9 +22,9 @@ defmodule HTTPizzaWeb.DashboardComponents do
       </.link>
       <.icon
         name="hero-chevron-right-solid"
-        class="shrink-0 font-bold text-stone-500 dark:text-stone-400 scale-75"
+        class="shrink-0 font-bold text-stone-500 dark:text-stone-100 scale-75"
       />
-      <p class="font-bold text-stone-600 dark:text-stone-300"><%= @title %></p>
+      <p class="font-bold text-stone-600 dark:text-stone-100"><%= @title %></p>
     </div>
     """
   end
