@@ -23,7 +23,7 @@ defmodule HTTPizzaWeb.Templates do
 
   def dashboard(assigns) do
     ~H"""
-    <div class="z-0 w-full bg-stone-100 dark:bg-stone-800 relative min-h-[calc(100vh-64px)]">
+    <div class="z-0 w-full bg-stone-100 dark:bg-stone-700/40 relative min-h-[calc(100vh-64px)]">
       <div class="z-[-1] max-md:hidden absolute left-0 top-0 bottom-0 right-1/2 bg-white dark:bg-stone-800" />
       <div class="grow max-w-[96rem] mx-auto h-full flex flex-col md:flex-row bg-white dark:bg-stone-800 min-h-[calc(100vh-64px)]">
         <div class={[
