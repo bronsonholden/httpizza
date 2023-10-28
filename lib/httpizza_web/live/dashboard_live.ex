@@ -118,11 +118,11 @@ defmodule HTTPizzaWeb.DashboardLive do
 
           <div class="ml-20 hidden group-[.open]/observer:block">
             <div :for={check <- http_observer.header_checks} class="flex items-center">
-              <ObserverComponents.check_list_icon />
+              <.icon name="hero-magnifying-glass" class="text-stone-500 mr-2" />
               <ObserverComponents.check_list_item check={check} />
             </div>
             <div :for={status_check <- http_observer.status_checks} class="flex items-center">
-              <ObserverComponents.check_list_icon />
+              <.icon name="hero-magnifying-glass" class="text-stone-500 mr-2" />
               <ObserverComponents.check_list_item check={status_check} />
             </div>
 
@@ -132,6 +132,7 @@ defmodule HTTPizzaWeb.DashboardLive do
               :for={{email_recipient, index} <- Enum.with_index(http_observer.email_recipients)}
               class="flex items-center gap-1"
             >
+              <.icon name="hero-megaphone" class="text-stone-500 mr-2" />
               <.dot
                 :if={email_recipient.ok}
                 color="bg-green-500"

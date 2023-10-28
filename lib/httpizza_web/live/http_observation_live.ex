@@ -89,14 +89,14 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
           <.icon
             name={
               case check_result.status do
-                :ok -> "hero-check"
+                :ok -> "hero-check-circle"
                 :failed -> "hero-x-mark"
                 :error -> "hero-x-mark"
               end
             }
             class={
               [
-                "scale-75 mt-[6px]",
+                "mt-[14px]",
                 case check_result.status do
                   :ok -> "text-green-500"
                   :failed -> "text-red-500"
@@ -108,12 +108,9 @@ defmodule HTTPizzaWeb.HTTPObservationLive do
           />
           <div class="w-2/3 pr-4 pt-2 font-medium">
             <ObserverComponents.check_list_item check={get_check(check_result)} />
-            <div class="text-xs font-mono text-stone-500 flex">
-              <ObserverComponents.check_list_icon />
-              <p class="mt-2">
-                <%= check_result.reason %>
-              </p>
-            </div>
+            <p class="text-xs font-mono text-stone-400 dark:text-stone-500">
+              <%= check_result.reason %>
+            </p>
           </div>
         </div>
       </div>
