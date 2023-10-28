@@ -115,7 +115,6 @@ defmodule HTTPizzaWeb.OrganizationLive do
         socket.assigns.current_organization.id,
         socket.assigns.current_user.id
       )
-      |> IO.inspect()
       |> HTTPizza.Repo.delete()
 
     {:noreply,
