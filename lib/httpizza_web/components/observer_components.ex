@@ -71,7 +71,7 @@ defmodule HTTPizzaWeb.ObserverComponents do
       <p class="flex items-center italic">
         <.icon name="hero-arrow-left-mini" class="scale-50" /> older
       </p>
-      <hr class="grow border-t-[1px] border-stone-400 dark:border-stone-500" />
+      <hr class="grow border-t-[1px] border-stone-300 dark:border-stone-500" />
       <p class="flex items-center italic">
         newer <.icon name="hero-arrow-right-mini" class="scale-50" />
       </p>
