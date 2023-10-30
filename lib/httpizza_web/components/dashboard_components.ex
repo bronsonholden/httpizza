@@ -46,6 +46,12 @@ defmodule HTTPizzaWeb.DashboardComponents do
       />
       <.navigation_link
         current_path={@current_path}
+        path={~p"/dashboard/#{@slug}/http-listeners"}
+        icon="hero-signal"
+        label="HTTP Listeners"
+      />
+      <.navigation_link
+        current_path={@current_path}
         path={~p"/dashboard/#{@slug}/team"}
         icon="hero-users"
         label="Team"

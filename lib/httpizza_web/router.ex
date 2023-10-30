@@ -90,6 +90,11 @@ defmodule HTTPizzaWeb.Router do
             end
           end
 
+          scope "/http-listeners" do
+            live "/", HTTPListenersLive, :index
+            live "/new", NewHTTPListenerLive, :index
+          end
+
           scope "/http-observations" do
             live "/:id", HTTPObservationLive, :show
           end
