@@ -37,6 +37,7 @@ defmodule HTTPizzaWeb.HTTPListenersLive do
       personal_organization={@current_user.personal_organization}
       current_organization={@current_organization}
       slug={@current_organization_slug}
+      path="/http-listeners"
     >
       <div class="flex items-start justify-between w-full">
         <DashboardComponents.breadcrumbs
