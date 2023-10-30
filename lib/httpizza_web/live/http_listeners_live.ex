@@ -2,7 +2,6 @@ defmodule HTTPizzaWeb.HTTPListenersLive do
   use HTTPizzaWeb, :live_view
 
   alias HTTPizza.IAM
-  alias HTTPizzaWeb.ObserverComponents
   alias HTTPizzaWeb.DashboardComponents
 
   import HTTPizzaWeb.Templates
