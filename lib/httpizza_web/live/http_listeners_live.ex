@@ -16,14 +16,9 @@ defmodule HTTPizzaWeb.HTTPListenersLive do
 
   @impl true
   def handle_params(_, uri, %{assigns: %{current_organization: %IAM.Organization{}}} = socket) do
-    http_observers =
-      socket.assigns.current_organization.id
-      |> HTTPizza.Observers.list_organization_http_observers()
-
     socket =
       socket
       |> assign(:current_uri, uri)
-      |> assign(:http_observers, http_observers)
 
     {:noreply, socket}
   end
