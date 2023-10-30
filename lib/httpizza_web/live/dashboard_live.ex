@@ -79,16 +79,10 @@ defmodule HTTPizzaWeb.DashboardLive do
             <button
               type="button"
               phx-click={expand_js(http_observer.id)}
-              class="rounded-full h-full flex items-center aspect-square hover:bg-stone-100 hover:text-stone-800"
+              class="rounded-full h-full flex items-center aspect-square hover:bg-stone-100 text-stone-500 hover:text-stone-800 dark:hover:bg-stone-700 dark:hover:text-stone-200"
             >
-              <.icon
-                name="hero-chevron-right"
-                class="text-stone-500 scale-[60%] group-[.open]/observer:hidden"
-              />
-              <.icon
-                name="hero-chevron-down"
-                class="text-stone-500 scale-[60%] hidden group-[.open]/observer:block"
-              />
+              <.icon name="hero-chevron-right" class="scale-[60%] group-[.open]/observer:hidden" />
+              <.icon name="hero-chevron-down" class="scale-[60%] hidden group-[.open]/observer:block" />
             </button>
 
             <div class="grow flex items-start gap-2 font-mono text-sm tracking-tight font-bold">
