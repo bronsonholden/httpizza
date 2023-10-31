@@ -578,6 +578,12 @@ defmodule HTTPizzaWeb.CoreComponents do
 
   attr(:id, :string, required: true)
   attr(:direction, :string, values: ~w[top bottom left right], default: "bottom")
+
+  attr(:interactive, :boolean,
+    default: false,
+    doc: "If the tooltip remains visible when itself is hovered"
+  )
+
   slot(:trigger, required: true)
   slot(:inner_block, required: true)
 
@@ -597,7 +603,8 @@ defmodule HTTPizzaWeb.CoreComponents do
         <%= render_slot(@trigger) %>
       </div>
       <div class={[
-        "group/tooltip hidden hover:block peer-hover/trigger:block relative z-[1000]"
+        "group/tooltip hidden peer-hover/trigger:block relative z-[1000]",
+        if(@interactive, do: "hover:block")
       ]}>
         <div class={[
           "absolute border border-[12px] pointer-events-none",
