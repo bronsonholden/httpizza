@@ -120,11 +120,9 @@ defmodule HTTPizzaWeb.DashboardLive do
               <ObserverComponents.check_list_item check={status_check} />
             </div>
 
-            <div class="mb-2" />
-
             <div
               :for={{email_recipient, index} <- Enum.with_index(http_observer.email_recipients)}
-              class="flex items-center gap-1"
+              class="flex items-center gap-1 my-2"
             >
               <.icon name="hero-megaphone" class="text-stone-500 mr-2" />
               <.dot
@@ -152,7 +150,7 @@ defmodule HTTPizzaWeb.DashboardLive do
             </div>
           </div>
 
-          <p class="text-right text-xs text-stone-600 dark:text-stone-400 mt-6">
+          <p class="text-right text-xs text-stone-600 dark:text-stone-400 mt-2">
             Next run <%= Timex.format!(http_observer.scheduled_at, "{relative}", :relative) %>
           </p>
 
