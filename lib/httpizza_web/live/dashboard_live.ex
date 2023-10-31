@@ -124,7 +124,7 @@ defmodule HTTPizzaWeb.DashboardLive do
               :for={{email_recipient, index} <- Enum.with_index(http_observer.email_recipients)}
               class="flex items-center gap-1 my-2"
             >
-              <.icon name="hero-megaphone" class="text-stone-500 mr-2" />
+              <.icon name="hero-bell-alert" class="text-stone-500 mr-2" />
               <.dot
                 :if={email_recipient.ok}
                 color="bg-green-500"
