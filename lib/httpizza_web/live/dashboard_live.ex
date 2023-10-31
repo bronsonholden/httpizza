@@ -152,7 +152,7 @@ defmodule HTTPizzaWeb.DashboardLive do
             </div>
           </div>
 
-          <p class="text-xs text-stone-600 dark:text-stone-400 mt-6">
+          <p class="text-right text-xs text-stone-600 dark:text-stone-400 mt-6">
             Next run <%= Timex.format!(http_observer.scheduled_at, "{relative}", :relative) %>
           </p>
 
