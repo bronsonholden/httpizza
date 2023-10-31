@@ -100,14 +100,19 @@ defmodule HTTPizzaWeb.DashboardLive do
               </p>
             </div>
 
-            <.link
-              navigate={
-                ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}/edit"
-              }
-              class="block hover:text-stone-800 dark:hover:text-stone-200 text-stone-400 rounded-full"
-            >
-              <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
-            </.link>
+            <.tooltip id={"edit-http-observer-#{http_observer.id}"}>
+              <:trigger>
+                <.link
+                  navigate={
+                    ~p"/dashboard/#{@current_organization_slug}/http-observers/#{http_observer.id}/edit"
+                  }
+                  class="block hover:text-stone-800 dark:hover:text-stone-200 text-stone-400 rounded-full"
+                >
+                  <.icon name="hero-pencil-square-mini" class="scale-[90%]" />
+                </.link>
+              </:trigger>
+              Edit
+            </.tooltip>
           </div>
 
           <div class="ml-8 hidden group-[.open]/observer:block">
