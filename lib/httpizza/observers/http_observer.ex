@@ -78,5 +78,22 @@ defmodule HTTPizza.Observers.HTTPObserver do
       # every day
       "0 0 * * *"
     ])
+    |> maybe_put_scheduled_at()
+  end
+
+  def maybe_put_scheduled_at(changeset) do
+    if Ecto.Changeset.changed?(changeset, :schedule) do
+      schedule = Ecto.Changeset.get_change(changeset, :schedule)
+
+      with {:ok, expr} <- Crontab.CronExpression.Parser.parse(schedule),
+           {:ok, naive_next_run} <- Crontab.Scheduler.get_next_run_date(expr),
+           {:ok, next_run} <- DateTime.from_naive(naive_next_run, "Etc/UTC") do
+        Ecto.Changeset.put_change(changeset, :scheduled_at, next_run)
+      else
+        _ -> changeset
+      end
+    else
+      changeset
+    end
   end
 end

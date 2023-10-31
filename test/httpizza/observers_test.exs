@@ -47,6 +47,8 @@ defmodule HTTPizza.ObserversTest do
       assert http_observer.path == "/"
       assert http_observer.hostname == "some hostname"
       assert http_observer.schedule == "0 * * * *"
+      assert http_observer.scheduled_at
+      assert Timex.diff(http_observer.scheduled_at, DateTime.utc_now(), :seconds) <= 3600
     end
 
     test "create_http_observer/1 with invalid data returns error changeset" do
@@ -54,7 +56,7 @@ defmodule HTTPizza.ObserversTest do
     end
 
     test "update_http_observer/2 with valid data updates the http_observer" do
-      http_observer = http_observer_fixture()
+      http_observer = http_observer_fixture(%{schedule: "0 * * * *"})
 
       update_attrs = %{
         https: false,
@@ -72,6 +74,8 @@ defmodule HTTPizza.ObserversTest do
       assert http_observer.path == "images/old.png"
       assert http_observer.hostname == "www.example.com"
       assert http_observer.schedule == "*/5 * * * *"
+      assert http_observer.scheduled_at
+      assert Timex.diff(http_observer.scheduled_at, DateTime.utc_now(), :seconds) <= 300
     end
 
     test "update_http_observer/2 with invalid data returns error changeset" do
