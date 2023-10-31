@@ -80,6 +80,10 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
           phx-debounce="200"
           options={[
             {"Every minute", "* * * * *"},
+            {"Every 5 minutes", "*/5 * * * *"},
+            {"Every 10 minutes", "*/10 * * * *"},
+            {"Every 15 minutes", "*/15 * * * *"},
+            {"Every 30 minutes", "*/30 * * * *"},
             {"Every hour", "0 * * * *"},
             {"Every day", "0 0 * * *"}
           ]}
