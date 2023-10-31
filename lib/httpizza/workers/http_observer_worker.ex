@@ -129,7 +129,7 @@ defmodule HTTPizza.HTTPObserverWorker do
              (email_recipient.failed and status == :failed) do
           Oban.insert(
             multi,
-            :job,
+            {:job, email_recipient.email},
             HTTPizza.Notifications.EmailNotification.Job.new(%{
               "recipient" => email_recipient.email,
               "http_observation_id" => observation_id
