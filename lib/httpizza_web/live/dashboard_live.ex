@@ -110,7 +110,7 @@ defmodule HTTPizzaWeb.DashboardLive do
             </.link>
           </div>
 
-          <div class="ml-20 hidden group-[.open]/observer:block">
+          <div class="ml-8 hidden group-[.open]/observer:block">
             <div :for={check <- http_observer.header_checks} class="flex items-center">
               <.icon name="hero-magnifying-glass" class="text-stone-500 mr-2" />
               <ObserverComponents.check_list_item check={check} />
@@ -150,9 +150,10 @@ defmodule HTTPizzaWeb.DashboardLive do
             </div>
           </div>
 
-          <p class="text-right text-xs text-stone-600 dark:text-stone-400 mt-2">
-            Next run <%= Timex.format!(http_observer.scheduled_at, "{relative}", :relative) %>
-          </p>
+          <div class="flex justify-between text-xs text-stone-600 dark:text-stone-400 mt-4">
+            <p class="font-mono">cron: <%= http_observer.schedule %></p>
+            <p>Next run <%= Timex.format!(http_observer.scheduled_at, "{relative}", :relative) %></p>
+          </div>
 
           <div class="py-2">
             <ObserverComponents.status_bar
