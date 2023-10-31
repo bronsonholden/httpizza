@@ -50,6 +50,7 @@ defmodule HTTPizza.Observers do
 
     from(o in HTTPObserver,
       where: o.organization_id == ^organization_id,
+      order_by: [asc: o.hostname, asc: o.path, asc: o.https, asc: o.inserted_at],
       preload: [http_observations: ^observations]
     )
     |> Repo.all()

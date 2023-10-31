@@ -90,9 +90,9 @@ defmodule HTTPizzaWeb.DashboardLive do
                 <%= String.upcase(to_string(http_observer.method)) %>
               </p>
               <p class="text-blue-500 break-all" phx-no-format>
-                <span class="text-stone-400"><%=
-                  if(http_observer.https, do: "https", else: "http")
-                %>://</span><%=
+                <%= if http_observer.https do %>
+                  <span class="text-sky-500 dark:text-sky-300">https</span><% else %>
+                  <span class="text-red-300 dark:text-red-400">http</span><% end %><span class="text-stone-300 dark:text-stone-500">://</span><%=
                   http_observer.hostname
                 %><span class="text-stone-400"><%=
                   http_observer.path
