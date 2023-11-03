@@ -102,4 +102,6 @@ if config_env() == :prod do
     secret: System.get_env("AWS_SECRET_ACCESS_KEY")
 
   config :swoosh, :api_client, Swoosh.ApiClient.Hackney
+
+  config :stripity_stripe, api_key: System.get_env("STRIPE_SECRET_KEY")
 end
