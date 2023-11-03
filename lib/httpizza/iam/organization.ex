@@ -36,7 +36,7 @@ defmodule HTTPizza.IAM.Organization do
     organization
     |> cast(attrs, [:name, :slug, :customer_id, :billing_email])
     |> unique_constraint(:slug)
-    |> validate_required([:slug, :billing_email])
+    |> validate_required(:slug)
     |> validate_length(:slug, min: 2)
     |> validate_format(:slug, ~r/^([a-z0-9]+-)*[a-z0-9]+$/)
     |> validate_exclusion(:slug, ~w(personal))
