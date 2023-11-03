@@ -211,6 +211,22 @@ defmodule HTTPizzaWeb.UserAuth do
     end
   end
 
+  @doc """
+  Used for routes that require the authenticated user be an admin.
+  """
+  def require_authenticated_admin(%{assigns: %{current_user: %IAM.User{}}} = conn, _opts) do
+    if conn.assigns.current_user.admin do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You are not allowed to access this page.")
+      |> redirect(to: ~p"/users/log_in")
+      |> halt()
+    end
+  end
+
+  def require_authenticated_admin(conn, opts), do: require_authenticated_user(conn, opts)
+
   defp put_token_in_session(conn, token) do
     conn
     |> put_session(:user_token, token)

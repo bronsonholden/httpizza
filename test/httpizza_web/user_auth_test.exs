@@ -269,4 +269,38 @@ defmodule HTTPizzaWeb.UserAuthTest do
       refute conn.status
     end
   end
+
+  describe "require_authenticated_admin/2" do
+    test "redirects if user is not authenticated", %{conn: conn} do
+      conn = conn |> fetch_flash() |> UserAuth.require_authenticated_admin([])
+      assert conn.halted
+
+      assert redirected_to(conn) == ~p"/users/log_in"
+
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) ==
+               "You must log in to access this page."
+    end
+
+    test "redirects if authenticated user is not an admin", %{conn: conn, user: user} do
+      conn =
+        conn
+        |> assign(:current_user, user)
+        |> fetch_flash()
+        |> UserAuth.require_authenticated_admin([])
+
+      assert conn.halted
+
+      assert redirected_to(conn) == ~p"/users/log_in"
+
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) ==
+               "You are not allowed to access this page."
+    end
+
+    test "does not redirect if user is authenticated", %{conn: conn, user: user} do
+      user = %{user | admin: true}
+      conn = conn |> assign(:current_user, user) |> UserAuth.require_authenticated_admin([])
+      refute conn.halted
+      refute conn.status
+    end
+  end
 end
