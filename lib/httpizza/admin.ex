@@ -6,8 +6,7 @@ defmodule HTTPizza.Admin do
   alias HTTPizza.Repo
   alias HTTPizza.IAM.Organization
 
-  def create_stripe_customer(%Organization{billing_email: billing_email} = organization)
-      when not is_binary(billing_email) do
+  def create_stripe_customer(%Organization{billing_email: billing_email} = organization) do
     HTTPizza.CreateStripeCustomerWorker.new(%{
       "id" => organization.id,
       "email" => organization.billing_email,
