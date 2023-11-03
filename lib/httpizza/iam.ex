@@ -8,28 +8,6 @@ defmodule HTTPizza.IAM do
 
   alias HTTPizza.IAM.{Organization, OrganizationUser, User, UserToken, UserNotifier}
 
-  ## Admin controls
-
-  @doc """
-  Set `admin` to `true` for the given user by email.
-  """
-  def promote_user_by_email(email) do
-    email
-    |> get_user_by_email()
-    |> Ecto.Changeset.cast(%{admin: true}, [:admin])
-    |> Repo.update()
-  end
-
-  @doc """
-  Set `admin` to `false` for the given user by email.
-  """
-  def demote_user_by_email(email) do
-    email
-    |> get_user_by_email()
-    |> Ecto.Changeset.cast(%{admin: false}, [:admin])
-    |> Repo.update()
-  end
-
   ## Database getters
 
   @doc """
