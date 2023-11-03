@@ -81,3 +81,5 @@ config :swoosh, :api_client, false
 if File.exists?(Path.join([File.cwd!(), "config", "dev.secret.exs"])) do
   import_config "dev.secret.exs"
 end
+
+config :stripity_stripe, api_key: fn -> System.get_env("STRIPE_SECRET_KEY") end
