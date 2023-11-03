@@ -13,6 +13,7 @@ defmodule HTTPizza.IAM.Organization do
     field :name, :string
     field :slug, :string
     field :customer_id, :string
+    field :billing_email, :string
 
     has_many :organization_users, OrganizationUser
     has_many :users, through: [:organization_users, :user]
@@ -33,9 +34,9 @@ defmodule HTTPizza.IAM.Organization do
   @doc false
   def changeset(organization, attrs) do
     organization
-    |> cast(attrs, [:name, :slug, :customer_id])
+    |> cast(attrs, [:name, :slug, :customer_id, :billing_email])
     |> unique_constraint(:slug)
-    |> validate_required([:slug])
+    |> validate_required([:slug, :billing_email])
     |> validate_length(:slug, min: 2)
     |> validate_format(:slug, ~r/^([a-z0-9]+-)*[a-z0-9]+$/)
     |> validate_exclusion(:slug, ~w(personal))

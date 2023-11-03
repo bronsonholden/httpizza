@@ -20,12 +20,14 @@ defmodule HTTPizzaWeb.AdminLive do
           <tr>
             <th class="border text-left p-2">Name</th>
             <th class="border text-left p-2">Slug</th>
+            <th class="border text-left p-2">Billing email</th>
             <th class="border text-left p-2">Customer ID</th>
           </tr>
         </thead>
         <tr :for={organization <- @organizations}>
           <td class="border p-2"><%= organization.name %></td>
           <td class="border p-2"><%= organization.slug %></td>
+          <td class="border p-2"><%= organization.billing_email %></td>
           <td class="border p-2"><%= organization.customer_id %></td>
         </tr>
       </table>

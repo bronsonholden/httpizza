@@ -38,6 +38,15 @@ defmodule HTTPizzaWeb.NewOrganizationLive do
           required
           phx-debounce="200"
         />
+
+        <.input
+          field={@form[:billing_email]}
+          type="text"
+          label="Billing email"
+          required
+          phx-debounce="200"
+        />
+
         <.input
           autocomplete="off"
           autocorrect="off"
@@ -70,7 +79,7 @@ defmodule HTTPizzaWeb.NewOrganizationLive do
         Oban.insert(
           HTTPizza.CreateStripeCustomerWorker.new(%{
             "id" => organization.id,
-            "email" => socket.assigns.current_user.email,
+            "email" => organization.billing_email,
             "name" => organization.name
           })
         )

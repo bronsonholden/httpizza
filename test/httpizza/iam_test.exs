@@ -536,7 +536,7 @@ defmodule HTTPizza.IAMTest do
     end
 
     test "create_organization/1 with valid data creates a organization" do
-      valid_attrs = %{name: "ACME, Inc.", slug: "acme-inc"}
+      valid_attrs = %{name: "ACME, Inc.", billing_email: "acme@example.com", slug: "acme-inc"}
 
       assert {:ok, %Organization{} = organization} = IAM.create_organization(valid_attrs)
       assert organization.name == "ACME, Inc."

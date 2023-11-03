@@ -37,6 +37,7 @@ defmodule HTTPizza.IAMFixtures do
       attrs
       |> Enum.into(%{
         name: "ACME, Inc.",
+        billing_email: "acme@example.com",
         slug: "acme-inc"
       })
       |> HTTPizza.IAM.create_organization()

@@ -10,13 +10,17 @@ defmodule HTTPizzaWeb.NewOrganizationLiveTest do
     %{conn: log_in_user(conn, user), user: user}
   end
 
-  test "redirects to dashboard page for created organization", %{conn: conn, user: user} do
+  test "redirects to dashboard page for created organization", %{conn: conn} do
     {:ok, live_view, _html} = live(conn, ~p"/organizations/new")
 
     result =
       live_view
       |> render_change("create", %{
-        "organization" => %{"name" => "Globex Corporation", "slug" => "globex"}
+        "organization" => %{
+          "name" => "Globex Corporation",
+          "billing_email" => "globex@example.com",
+          "slug" => "globex"
+        }
       })
       |> follow_redirect(conn, ~p"/dashboard/globex")
 
@@ -28,7 +32,7 @@ defmodule HTTPizzaWeb.NewOrganizationLiveTest do
 
     assert_enqueued(
       worker: HTTPizza.CreateStripeCustomerWorker,
-      args: %{"id" => id, "name" => "Globex Corporation", "email" => user.email}
+      args: %{"id" => id, "name" => "Globex Corporation", "email" => "globex@example.com"}
     )
   end
 end
