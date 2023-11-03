@@ -35,4 +35,4 @@ config :logger, level: :warning
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
 
-config :httpizza, Oban, testing: :inline
+config :httpizza, Oban, testing: :manual

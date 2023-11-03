@@ -23,6 +23,7 @@ defmodule HTTPizzaWeb.ConnCase do
       @endpoint HTTPizzaWeb.Endpoint
 
       use HTTPizzaWeb, :verified_routes
+      use Oban.Testing, repo: HTTPizza.Repo
 
       # Import conveniences for testing with connections
       import Plug.Conn

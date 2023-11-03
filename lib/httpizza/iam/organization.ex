@@ -12,6 +12,7 @@ defmodule HTTPizza.IAM.Organization do
   schema "organizations" do
     field :name, :string
     field :slug, :string
+    field :customer_id, :string
 
     has_many :organization_users, OrganizationUser
     has_many :users, through: [:organization_users, :user]
@@ -19,8 +20,8 @@ defmodule HTTPizza.IAM.Organization do
     timestamps()
   end
 
-  def changeset(organization, %{users: users} = attrs) do
-    changeset(organization, Map.delete(attrs, :users))
+  def changeset(organization, %{"users" => users} = attrs) do
+    changeset(organization, Map.delete(attrs, "users"))
     |> put_assoc(
       :organization_users,
       Enum.map(users, fn user ->
@@ -32,7 +33,7 @@ defmodule HTTPizza.IAM.Organization do
   @doc false
   def changeset(organization, attrs) do
     organization
-    |> cast(attrs, [:name, :slug])
+    |> cast(attrs, [:name, :slug, :customer_id])
     |> unique_constraint(:slug)
     |> validate_required([:slug])
     |> validate_length(:slug, min: 2)

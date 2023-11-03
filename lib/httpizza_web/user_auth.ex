@@ -162,6 +162,21 @@ defmodule HTTPizzaWeb.UserAuth do
     end
   end
 
+  def on_mount(:ensure_authenticated_admin, _params, session, socket) do
+    socket = mount_current_user(socket, session)
+
+    if not is_nil(socket.assigns.current_user) and socket.assigns.current_user.admin do
+      {:cont, socket}
+    else
+      socket =
+        socket
+        |> Phoenix.LiveView.put_flash(:error, "You are not allowed to access this page.")
+        |> Phoenix.LiveView.redirect(to: ~p"/users/log_in")
+
+      {:halt, socket}
+    end
+  end
+
   def on_mount(:redirect_if_user_is_authenticated, _params, session, socket) do
     socket = mount_current_user(socket, session)
 
@@ -210,6 +225,22 @@ defmodule HTTPizzaWeb.UserAuth do
       |> halt()
     end
   end
+
+  @doc """
+  Used for routes that require the authenticated user be an admin.
+  """
+  def require_authenticated_admin(%{assigns: %{current_user: %IAM.User{}}} = conn, _opts) do
+    if conn.assigns.current_user.admin do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You are not allowed to access this page.")
+      |> redirect(to: ~p"/users/log_in")
+      |> halt()
+    end
+  end
+
+  def require_authenticated_admin(conn, opts), do: require_authenticated_user(conn, opts)
 
   defp put_token_in_session(conn, token) do
     conn

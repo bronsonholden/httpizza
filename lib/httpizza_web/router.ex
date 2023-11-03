@@ -66,6 +66,17 @@ defmodule HTTPizzaWeb.Router do
   end
 
   scope "/", HTTPizzaWeb do
+    pipe_through [:browser, :require_authenticated_admin]
+
+    live_session :require_authenticated_admin,
+      on_mount: [{HTTPizzaWeb.UserAuth, :ensure_authenticated_admin}] do
+      scope "/admin" do
+        live "/", AdminLive, :index
+      end
+    end
+  end
+
+  scope "/", HTTPizzaWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
