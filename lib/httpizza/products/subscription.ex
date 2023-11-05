@@ -6,7 +6,10 @@ defmodule HTTPizza.Products.Subscription do
   @foreign_key_type :binary_id
   schema "subscriptions" do
     field :subscription_id, :string
-    field :status, Ecto.Enum, values: [:incomplete, :active, :canceled, :unpaid]
+
+    field :status, Ecto.Enum,
+      values: [:incomplete, :incomplete_expired, :active, :canceled, :unpaid]
+
     field :live, :boolean, default: false
     field :current_period_start, :utc_datetime
     field :current_period_end, :utc_datetime
