@@ -92,7 +92,8 @@ defmodule HTTPizza.IAMTest do
       assert is_nil(user.confirmed_at)
       assert is_nil(user.password)
 
-      user = IAM.get_user!(user.id) |> Repo.preload(:personal_organization)
+      # TODO: Move to separate tests
+      user = IAM.get_user!(user.id) |> Repo.preload(personal_organization: [:subscriptions])
       assert user.personal_organization
     end
   end

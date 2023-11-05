@@ -1,6 +1,7 @@
 defmodule HTTPizza.IAM.Organization do
   use Ecto.Schema
 
+  alias HTTPizza.Products
   alias HTTPizza.IAM.OrganizationUser
 
   import Ecto.Changeset
@@ -15,6 +16,7 @@ defmodule HTTPizza.IAM.Organization do
     field :customer_id, :string
     field :billing_email, :string
 
+    has_many :subscriptions, Products.Subscription
     has_many :organization_users, OrganizationUser
     has_many :users, through: [:organization_users, :user]
 

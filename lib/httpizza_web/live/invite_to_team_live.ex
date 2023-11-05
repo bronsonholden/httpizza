@@ -14,7 +14,22 @@ defmodule HTTPizzaWeb.InviteToTeamLive do
     if socket.assigns.current_organization == socket.assigns.current_user.personal_organization do
       {:ok, push_navigate(socket, to: ~p"/dashboard/personal")}
     else
-      {:ok, assign(socket, :form, to_form(%{}))}
+      socket =
+        with :ok <-
+               HTTPizza.OrganizationPolicy.authorize(
+                 "invite_user",
+                 socket.assigns.current_user,
+                 socket.assigns.current_organization
+               ) do
+          assign(socket, :form, to_form(%{}))
+        else
+          {:unauthorized, reason} ->
+            socket
+            |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}/team")
+            |> put_flash(:error, reason)
+        end
+
+      {:ok, socket}
     end
   end
 

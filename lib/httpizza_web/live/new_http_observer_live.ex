@@ -10,7 +10,22 @@ defmodule HTTPizzaWeb.NewHTTPObserverLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    with :ok <-
+           HTTPizza.HTTPObserverPolicy.authorize(
+             "create",
+             socket.assigns.current_user,
+             socket.assigns.current_organization
+           ) do
+      {:ok, socket}
+    else
+      {:unauthorized, reason} ->
+        socket =
+          socket
+          |> put_flash(:error, reason)
+          |> push_navigate(to: ~p"/dashboard/#{socket.assigns.current_organization_slug}")
+
+        {:ok, socket}
+    end
   end
 
   @impl true

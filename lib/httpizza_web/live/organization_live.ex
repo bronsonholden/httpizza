@@ -41,7 +41,10 @@ defmodule HTTPizzaWeb.OrganizationLive do
 
       <p class="text-2xl font-bold my-8"><%= @current_organization.name %> organization</p>
 
-      <div class="border rounded-lg border-red-300 dark:border-red-800 bg-red-300/20 dark:bg-red-800/10 p-4 space-y-4 my-12">
+      <div
+        :if={false}
+        class="border rounded-lg border-red-300 dark:border-red-800 bg-red-300/20 dark:bg-red-800/10 p-4 space-y-4 my-12"
+      >
         <p class="font-bold text-red-500">Danger Zone</p>
         <div class="flex flex-col items-start sm:flex-row sm:items-center gap-4 text-sm w-full">
           <p class="grow text-red-500">Deletes the organization, all observers, and all data.</p>
@@ -102,7 +105,7 @@ defmodule HTTPizzaWeb.OrganizationLive do
   @impl true
   def handle_event("delete_organization", _params, socket) do
     # TODO: If org is personal organization, disallow
-    HTTPizza.IAM.delete_organization(socket.assigns.current_organization)
+    # HTTPizza.IAM.delete_organization(socket.assigns.current_organization)
 
     {:noreply, push_navigate(socket, to: ~p"/dashboard")}
   end
@@ -110,12 +113,12 @@ defmodule HTTPizzaWeb.OrganizationLive do
   @impl true
   def handle_event("leave_organization", _params, socket) do
     # TODO: If org is personal organization, disallow
-    {:ok, _} =
-      HTTPizza.IAM.get_organization_user_by_ids(
-        socket.assigns.current_organization.id,
-        socket.assigns.current_user.id
-      )
-      |> HTTPizza.Repo.delete()
+    # {:ok, _} =
+    #   HTTPizza.IAM.get_organization_user_by_ids(
+    #     socket.assigns.current_organization.id,
+    #     socket.assigns.current_user.id
+    #   )
+    #   |> HTTPizza.Repo.delete()
 
     {:noreply,
      socket

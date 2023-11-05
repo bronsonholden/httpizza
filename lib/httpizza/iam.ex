@@ -515,6 +515,14 @@ defmodule HTTPizza.IAM do
     |> Repo.all()
   end
 
+  def count_organization_users(organization_id) do
+    from(
+      ou in OrganizationUser,
+      where: ou.organization_id == ^organization_id
+    )
+    |> Repo.aggregate(:count)
+  end
+
   @doc """
   Get an organization by its slug.
 
@@ -530,6 +538,24 @@ defmodule HTTPizza.IAM do
   """
   def get_organization_by_slug!(slug) do
     from(o in Organization, where: o.slug == ^slug)
+    |> Repo.one()
+  end
+
+  @doc """
+  Get an organization by its customer ID.
+
+  Raises `Ecto.NoResultsError` if the Organization does not exist.
+
+  ## Examples
+
+      iex> get_organization_by_slug!("acme-inc")
+      %Organization{}
+
+      iex> get_organization_by_slug!("pseudo-co")
+      ** (Ecto.NoResultsError)
+  """
+  def get_organization_by_customer_id!(customer_id) do
+    from(o in Organization, where: o.customer_id == ^customer_id)
     |> Repo.one()
   end
 

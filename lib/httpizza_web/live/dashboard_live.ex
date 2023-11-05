@@ -27,6 +27,23 @@ defmodule HTTPizzaWeb.DashboardLive do
       |> assign(:current_uri, uri)
       |> assign(:http_observers, http_observers)
 
+    socket =
+      with :ok <-
+             HTTPizza.HTTPObserverPolicy.authorize(
+               "create",
+               socket.assigns.current_user,
+               socket.assigns.current_organization
+             ) do
+        socket
+        |> assign(:allow_create, true)
+        |> assign(:reason, nil)
+      else
+        {:unauthorized, reason} ->
+          socket
+          |> assign(:allow_create, false)
+          |> assign(:reason, reason)
+      end
+
     {:noreply, socket}
   end
 
@@ -51,12 +68,7 @@ defmodule HTTPizzaWeb.DashboardLive do
           slug={@current_organization_slug}
           title="HTTP Observers"
         />
-        <.link
-          class="h-full py-1 pl-1 pr-2 text-xs font-bold hover:bg-orange-400 rounded text-white bg-orange-500 flex items-center gap-1"
-          navigate={~p"/dashboard/#{@current_organization_slug}/http-observers/new"}
-        >
-          <.icon name="hero-plus-mini" class="scale-75" /> New
-        </.link>
+        <.new_link allow_create={@allow_create} reason={@reason} slug={@current_organization_slug} />
       </div>
       <ObserverComponents.timeline_guide />
       <p
@@ -203,5 +215,34 @@ defmodule HTTPizzaWeb.DashboardLive do
     %JS{}
     |> JS.add_class("open", to: "[id='observer-#{id}']:not(.open)")
     |> JS.remove_class("open", to: "[id='observer-#{id}'].open")
+  end
+
+  attr(:slug, :string, required: true)
+  attr(:allow_create, :boolean, default: true)
+  attr(:reason, :string)
+
+  defp new_link(%{allow_create: true} = assigns) do
+    ~H"""
+    <.link
+      class="h-full py-1 pl-1 pr-2 text-xs font-bold hover:bg-orange-400 rounded text-white bg-orange-500 flex items-center gap-1"
+      navigate={~p"/dashboard/#{@slug}/http-observers/new"}
+    >
+      <.icon name="hero-plus-mini" class="scale-75" /> New
+    </.link>
+    """
+  end
+
+  defp new_link(%{allow_create: false, reason: _} = assigns) do
+    ~H"""
+    <.tooltip id="new-link-tooltip">
+      <:trigger>
+        <button class="cursor-default h-full py-1 pl-1 pr-2 text-xs font-bold rounded text-white bg-orange-400/80 rounded text-stone-100 dark:text-stone-300/70 flex items-center gap-1">
+          <.icon name="hero-plus-mini" class="scale-75" /> New
+        </button>
+      </:trigger>
+
+      <p class="whitespace-nowrap"><%= @reason %></p>
+    </.tooltip>
+    """
   end
 end
