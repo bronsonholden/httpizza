@@ -94,7 +94,7 @@ defmodule HTTPizzaWeb.CheckoutLive do
               ~p"/dashboard/#{@current_organization_slug}"
             ])
           }
-          data-stripe-key="pk_test_51O4b6iGR5qdj4YEvXgfnWoMowh8xC31DkFMZtNOZcdJQ8SOWrZUdACHGzbAh1WCsgIXTlNvhm4y9u6N2kGPmiapu00GfAaqeW0"
+          data-stripe-key={System.get_env("STRIPE_PUBLISHABLE_KEY")}
           data-client-secret={@client_secret}
         />
         <button
