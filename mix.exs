@@ -63,7 +63,7 @@ defmodule HTTPizza.MixProject do
       {:crontab, "~> 1.1"},
       {:timex, "~> 3.0"},
       {:phoenix_swoosh, "~> 1.0"},
-      {:stripity_stripe, "~> 2.0"}
+      {:stripity_stripe, "~> 3.0"}
     ]
   end
 

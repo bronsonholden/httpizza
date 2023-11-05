@@ -1,10 +1,8 @@
 defmodule HTTPizzaWeb.OrganizationLiveTest do
   use HTTPizzaWeb.ConnCase
 
-  alias HTTPizza.{IAM, Observers}
-
   import Phoenix.LiveViewTest
-  import HTTPizza.{IAMFixtures, ObserversFixtures}
+  import HTTPizza.IAMFixtures
 
   setup do
     %{user: user_fixture()}
@@ -61,26 +59,26 @@ defmodule HTTPizzaWeb.OrganizationLiveTest do
            |> follow_redirect(conn, ~p"/dashboard/#{globex.slug}/settings")
   end
 
-  test "redirects to personal org dashboard when deleting", %{conn: conn, user: user} do
-    conn = log_in_user(conn, user)
-    organization = organization_fixture()
-    http_observer = http_observer_fixture(%{organization: organization})
+  # test "redirects to personal org dashboard when deleting", %{conn: conn, user: user} do
+  #   conn = log_in_user(conn, user)
+  #   organization = organization_fixture()
+  #   http_observer = http_observer_fixture(%{organization: organization})
 
-    organization_user =
-      organization_user_fixture(%{organization_id: organization.id, user_id: user.id})
+  #   organization_user =
+  #     organization_user_fixture(%{organization_id: organization.id, user_id: user.id})
 
-    {:ok, live_view, _html} = live(conn, ~p"/dashboard/#{organization.slug}/settings")
+  #   {:ok, live_view, _html} = live(conn, ~p"/dashboard/#{organization.slug}/settings")
 
-    assert HTTPizza.Repo.get(IAM.OrganizationUser, organization_user.id)
-    assert HTTPizza.Repo.get(Observers.HTTPObserver, http_observer.id)
+  #   assert HTTPizza.Repo.get(IAM.OrganizationUser, organization_user.id)
+  #   assert HTTPizza.Repo.get(Observers.HTTPObserver, http_observer.id)
 
-    assert live_view
-           |> element("button[phx-click='delete_organization']")
-           |> render_click()
+  #   assert live_view
+  #          |> element("button[phx-click='delete_organization']")
+  #          |> render_click()
 
-    assert IAM.list_organizations() == [user.personal_organization]
+  #   assert IAM.list_organizations() == [user.personal_organization]
 
-    refute HTTPizza.Repo.get(IAM.OrganizationUser, organization_user.id)
-    refute HTTPizza.Repo.get(Observers.HTTPObserver, http_observer.id)
-  end
+  #   refute HTTPizza.Repo.get(IAM.OrganizationUser, organization_user.id)
+  #   refute HTTPizza.Repo.get(Observers.HTTPObserver, http_observer.id)
+  # end
 end

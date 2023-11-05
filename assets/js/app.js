@@ -22,9 +22,11 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+import Checkout from "./hooks/checkout"
 import Tooltip from "./hooks/tooltip"
 
 const hooks = {
+  Checkout,
   Tooltip
 }
 

@@ -57,6 +57,13 @@ defmodule HTTPizzaWeb.DashboardComponents do
         label="Team"
       />
       <.navigation_link
+        :if={@slug != "personal"}
+        current_path={@current_path}
+        path={~p"/dashboard/#{@slug}/billing"}
+        icon="hero-banknotes"
+        label="Billing"
+      />
+      <.navigation_link
         current_path={@current_path}
         path={~p"/dashboard/#{@slug}/settings"}
         icon="hero-adjustments-horizontal"

@@ -17,6 +17,17 @@ defmodule HTTPizzaWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :stripe do
+    plug HTTPizzaWeb.Plugs.Stripe
+  end
+
+  scope "/webhooks", HTTPizzaWeb do
+    scope "/stripe" do
+      pipe_through :stripe
+      post "/", StripeController, :create
+    end
+  end
+
   scope "/", HTTPizzaWeb do
     pipe_through :browser
   end
@@ -86,7 +97,9 @@ defmodule HTTPizzaWeb.Router do
 
         scope "/:organization" do
           live "/", DashboardLive, :show
+          live "/billing", BillingLive, :show
           live "/settings", OrganizationLive, :show
+          live "/checkout", CheckoutLive, :show
 
           scope "/team" do
             live "/", TeamLive, :index

@@ -72,7 +72,7 @@ defmodule HTTPizzaWeb.TeamLive do
     """
   end
 
-  defp invite_link(%{personal: false} = assigns) do
+  defp invite_link(%{disabled: false} = assigns) do
     ~H"""
     <.link
       class="h-full py-1 pl-1 pr-2 text-xs font-bold hover:bg-orange-400 rounded text-white bg-orange-500 flex items-center gap-1"
@@ -83,7 +83,7 @@ defmodule HTTPizzaWeb.TeamLive do
     """
   end
 
-  defp invite_link(%{personal: true} = assigns) do
+  defp invite_link(%{disabled: true, reason: _reason} = assigns) do
     ~H"""
     <.tooltip id="delete-button-tooltip">
       <:trigger>
@@ -95,18 +95,43 @@ defmodule HTTPizzaWeb.TeamLive do
           <.icon name="hero-user-plus-mini" class="scale-75" /> Invite
         </button>
       </:trigger>
-      <p class="whitespace-nowrap">Can't invite to your personal organization</p>
+      <p class="whitespace-nowrap"><%= @reason %></p>
     </.tooltip>
     """
   end
 
   defp invite_link(assigns) do
     assigns =
-      assign(
-        assigns,
-        :personal,
-        assigns.current_user.personal_organization == assigns.organization
-      )
+      assigns
+      |> assign(:disabled, false)
+      |> assign(:reason, nil)
+
+    assigns =
+      if assigns.current_user.personal_organization == assigns.organization do
+        assigns
+        |> assign(
+          :disabled,
+          assigns.current_user.personal_organization == assigns.organization
+        )
+        |> assign(:reason, "Can't invite to your personal organization")
+      else
+        assigns
+      end
+
+    assigns =
+      with :ok <-
+             HTTPizza.OrganizationPolicy.authorize(
+               "invite_user",
+               assigns.current_user,
+               assigns.organization
+             ) do
+        assigns
+      else
+        {:unauthorized, reason} ->
+          assigns
+          |> assign(:disabled, true)
+          |> assign(:reason, reason)
+      end
 
     invite_link(assigns)
   end

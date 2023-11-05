@@ -7,6 +7,14 @@
     </div>
     <ul class="flex items-center gap-4 font-semibold leading-6 text-stone-900">
       <%= if @current_user do %>
+        <li :if={@current_user.admin}>
+          <.link
+            href={~p"/admin"}
+            class="text-[0.8125rem] leading-6 text-stone-900 dark:text-stone-200 font-semibold hover:text-stone-700 dark:hover:text-stone-50"
+          >
+            Admin
+          </.link>
+        </li>
         <li>
           <.link
             href={~p"/dashboard"}

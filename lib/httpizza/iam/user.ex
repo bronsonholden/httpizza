@@ -58,7 +58,10 @@ defmodule HTTPizza.IAM.User do
   def personal_organization_changeset(user) do
     user
     |> put_assoc(:organization_users, [
-      %{organization: %{slug: HTTPizzaWeb.Slug.generate(), name: "Personal"}, personal: true}
+      %{
+        organization: %{slug: HTTPizzaWeb.Slug.generate(), name: "Personal"},
+        personal: true
+      }
     ])
   end
 

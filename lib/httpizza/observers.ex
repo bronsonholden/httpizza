@@ -65,6 +65,11 @@ defmodule HTTPizza.Observers do
     |> Repo.all()
   end
 
+  def count_organization_http_observers(organization_id) do
+    from(o in HTTPObserver, where: o.organization_id == ^organization_id)
+    |> Repo.aggregate(:count)
+  end
+
   @doc """
   Gets a single HTTP Observer.
 
@@ -99,6 +104,7 @@ defmodule HTTPizza.Observers do
   def get_organization_observer(organization_id, observer_id) do
     from(o in HTTPObserver, where: o.organization_id == ^organization_id)
     |> Repo.get(observer_id)
+    |> Repo.preload(:organization)
   end
 
   @doc """

@@ -385,11 +385,15 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
         %{assigns: %{action: :new}} = socket
       ) do
     organization = socket.assigns.current_organization
-    params = Map.put(http_observer_params, "organization_id", organization.id)
 
-    # TODO: Check permission to create for org?
-    params
-    |> Observers.create_http_observer()
+    params =
+      http_observer_params
+      |> Map.put("organization_id", organization.id)
+
+    %Observers.HTTPObserver{}
+    |> Observers.change_http_observer(params)
+    |> validate_schedule(socket.assigns.current_organization)
+    |> HTTPizza.Repo.insert()
     |> case do
       {:ok, _observer} ->
         socket =
@@ -399,8 +403,8 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
 
         {:noreply, socket}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
+      {:error, %Ecto.Changeset{} = error_changeset} ->
+        {:noreply, socket |> assign(check_errors: true) |> assign_form(error_changeset)}
     end
   end
 
@@ -417,7 +421,9 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
       |> Map.update("email_recipients", [], & &1)
 
     socket.assigns.http_observer
-    |> Observers.update_http_observer(http_observer_params)
+    |> Observers.change_http_observer(http_observer_params)
+    |> validate_schedule(socket.assigns.current_organization)
+    |> HTTPizza.Repo.update()
     |> case do
       {:ok, _observer} ->
         socket =
@@ -435,11 +441,27 @@ defmodule HTTPizzaWeb.HTTPObserverFormLive do
   @impl true
   def handle_event("validate", %{"http_observer" => http_observer_params}, socket) do
     changeset =
-      %Observers.HTTPObserver{}
+      socket.assigns.http_observer
       |> Observers.change_http_observer(http_observer_params)
+      |> validate_schedule(socket.assigns.current_organization)
       |> Map.put(:action, :validate)
 
     {:noreply, assign_form(socket, changeset)}
+  end
+
+  defp validate_schedule(changeset, organization) do
+    with :ok <-
+           HTTPizza.HTTPObserverPolicy.authorize(
+             "schedule",
+             nil,
+             organization,
+             Ecto.Changeset.get_change(changeset, :schedule)
+           ) do
+      changeset
+    else
+      {:unauthorized, reason} ->
+        Ecto.Changeset.add_error(changeset, :schedule, reason)
+    end
   end
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do

@@ -62,16 +62,16 @@ defmodule HTTPizzaWeb.InviteToTeamLiveTest do
   end
 
   test "does not invite an existing team member", %{conn: conn, organization: organization} do
-    user = user_fixture(%{email: "johndoe@example.com"})
-    organization_user_fixture(%{organization_id: organization.id, user_id: user.id})
+    organization = IAM.get_organization!(organization.id) |> HTTPizza.Repo.preload(:users)
+    [user] = organization.users
 
     {:ok, live_view, _html} = live(conn, ~p"/dashboard/#{organization.slug}/team/invite")
 
     assert IAM.list_user_tokens_for_context("join:#{organization.id}") == []
 
     assert live_view
-           |> render_submit("invite", %{"email" => "johndoe@example.com"}) =~
-             "johndoe@example.com is already a team member"
+           |> render_submit("invite", %{"email" => user.email}) =~
+             "#{user.email} is already a team member"
 
     assert IAM.list_user_tokens_for_context("join:#{organization.id}") == []
   end

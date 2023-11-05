@@ -34,8 +34,9 @@ defmodule HTTPizza.Observers.HTTPObserver do
         %{organization: %HTTPizza.IAM.Organization{} = organization} = attrs
       ) do
     http_observer
-    |> changeset(Map.delete(attrs, :organization))
+    |> cast(%{}, [])
     |> put_assoc(:organization, organization)
+    |> changeset(Map.delete(attrs, :organization))
   end
 
   @doc false
