@@ -149,14 +149,6 @@ defmodule HTTPizza.Products do
   end
 
   @doc """
-  Delete all subscriptions with a status of `incomplete_expired`.
-  """
-  def delete_incomplete_expired_subscriptions() do
-    from(s in Subscription, where: s.status == :incomplete_expired)
-    |> Repo.delete_all()
-  end
-
-  @doc """
   Returns an `%Ecto.Changeset{}` for tracking subscription changes.
 
   ## Examples

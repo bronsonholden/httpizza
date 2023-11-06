@@ -66,7 +66,8 @@ config :httpizza, Oban,
     Oban.Plugins.Pruner,
     {Oban.Plugins.Cron,
      crontab: [
-       {"* * * * *", HTTPizza.Observers.HTTPObserver.Scheduler}
+       {"* * * * *", HTTPizzaWeb.Cron.HTTPObserverScheduler},
+       {"0 0 * * *", HTTPizzaWeb.Cron.DeleteIncompletExpiredSubscriptions}
      ]}
   ],
   repo: HTTPizza.Repo
