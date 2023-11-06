@@ -29,7 +29,7 @@ defmodule HTTPizza.Observers do
       from(v in HTTPObservation,
         where: parent_as(:observers).id == v.http_observer_id,
         order_by: [desc: v.inserted_at],
-        limit: 60,
+        limit: 75,
         select: %{id: v.id}
       )
 
