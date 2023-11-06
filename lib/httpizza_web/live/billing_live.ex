@@ -26,7 +26,9 @@ defmodule HTTPizzaWeb.BillingLive do
   end
 
   defp maybe_set_subscription_details(socket, nil) do
-    assign(socket, :subscription, nil)
+    socket
+    |> assign(:subscription, nil)
+    |> assign(:upcoming_invoice, nil)
   end
 
   defp maybe_set_subscription_details(socket, subscription) do
@@ -48,6 +50,15 @@ defmodule HTTPizzaWeb.BillingLive do
       |> assign(:plan, plan.product.name)
       |> assign(:interval, plan.interval)
       |> assign(:amount, plan.amount)
+
+    socket =
+      if sub.cancel_at_period_end do
+        socket
+      else
+        {:ok, invoice} = Stripe.Invoice.upcoming(%{subscription: subscription.subscription_id})
+
+        assign(socket, :upcoming_invoice, invoice)
+      end
 
     socket
   end
@@ -117,6 +128,49 @@ defmodule HTTPizzaWeb.BillingLive do
           >
             Keep my plan
           </button>
+        </div>
+
+        <div :if={not @will_expire} class="my-6">
+          <h2 class="text-lg font-bold">Upcoming payment</h2>
+
+          <table class="my-4 w-full border border-stone-200 dark:border-stone-600">
+            <thead>
+              <tr>
+                <th class="border border-stone-200 dark:border-stone-600 py-2 px-4">
+                  Description
+                </th>
+                <th class="border border-stone-200 dark:border-stone-600 py-2 px-4">
+                  Amount
+                </th>
+              </tr>
+            </thead>
+            <tbody :for={line <- @upcoming_invoice.lines.data}>
+              <tr>
+                <td class="border border-stone-200 dark:border-stone-600 py-2 px-4">
+                  <%= line.description %>
+                </td>
+                <td class="border border-stone-200 dark:border-stone-600 py-2 px-4 font-mono text-right">
+                  $<%= display_price(line.amount_excluding_tax) %>
+                </td>
+              </tr>
+              <tr :for={discount <- line.discount_amounts}>
+                <td class="border border-stone-200 dark:border-stone-600 py-2 px-4">Discount</td>
+                <td class="border border-stone-200 dark:border-stone-600 py-2 px-4 font-mono text-right">
+                  -$<%= display_price(discount.amount) %>
+                </td>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <td class="px-4 py-2">
+                  Total
+                </td>
+                <td class="text-right px-4 py-2 font-mono">
+                  $<%= display_price(@upcoming_invoice.total_excluding_tax) %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       <% else %>
         <h1 class="text-2xl font-bold my-4">
