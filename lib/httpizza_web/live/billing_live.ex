@@ -103,9 +103,9 @@ defmodule HTTPizzaWeb.BillingLive do
 
           <ProductComponents.plan_feature_list plan={String.downcase(@plan)} />
 
-          <div>
+          <div :if={@will_expire}>
             <h2 class="font-medium text-stone-600 dark:text-stone-400">
-              <%= if(@will_expire, do: "Expires", else: "Renews") %>
+              Expires
             </h2>
 
             <p>
@@ -132,6 +132,11 @@ defmodule HTTPizzaWeb.BillingLive do
 
         <div :if={not @will_expire} class="my-6">
           <h2 class="text-lg font-bold">Upcoming payment</h2>
+
+          <p class="text-stone-600 dark:text-stone-400">
+            <%= DateTime.from_unix!(@upcoming_invoice.created)
+            |> Timex.format!("{Mshort} {D}, {YYYY}") %>
+          </p>
 
           <table class="my-4 w-full border border-stone-200 dark:border-stone-600">
             <thead>
