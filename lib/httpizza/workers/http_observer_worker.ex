@@ -16,8 +16,10 @@ defmodule HTTPizza.HTTPObserverWorker do
   def observe(%HTTPObserver{} = observer) do
     uri = build_uri(observer)
 
+    {:ok, vsn} = :application.get_key(:finch, :vsn)
+
     result =
-      Finch.build(observer.method, uri)
+      Finch.build(observer.method, uri, [{"User-Agent", "Finch/#{vsn} (HTTPizza bot)"}])
       |> Finch.request(HTTPizza.Finch)
 
     with {:ok, response} <- result do
