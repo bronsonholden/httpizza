@@ -21,4 +21,4 @@ specific pages require authentication or not, as needed).
 
 I had lofty goals for it, including Slack integration and SMS, but they fell by the wayside. In
 the end, it did what I needed to do and the company I worked for scrapped the project we were
-building with it, so I refocused on my React/Rails work.
+building with Phoenix, so I refocused on my React/Rails work.
